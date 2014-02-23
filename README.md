@@ -76,33 +76,8 @@ A whole bunch of things will be installed, but _only_ if they aren't already.
 
 ### Ubuntu
 * APT packages
-  * build-essential
-  * libssl-dev
-  * git-core
   * tree
-  * sl
-  * id3tool
-  * cowsay
-  * nmap
-  * telnet
-  * htop
-
-### Both
-* Nave
-  * node (latest stable)
-    * npm
-    * grunt-cli
-    * linken
-    * bower
-    * node-inspector
-    * yo
-* rbenv
-  * ruby 2.0.0-p247
-* gems
-  * bundler
-  * awesome_print
-  * pry
-  * lolcat
+ 
 
 ## The ~/ "copy" step
 Any file in the `copy` subdirectory will be copied into `~/`. Any file that _needs_ to be modified with personal information (like [.gitconfig](copy/.gitconfig) which contains an email address and private key) should be _copied_ into `~/`. Because the file you'll be editing is no longer in `~/.dotfiles`, it's less likely to be accidentally committed into your public dotfiles repo.

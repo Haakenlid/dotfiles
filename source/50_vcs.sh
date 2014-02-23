@@ -1,4 +1,3 @@
-
 # Git shortcuts
 
 alias g='git'

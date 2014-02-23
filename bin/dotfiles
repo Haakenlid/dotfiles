@@ -135,7 +135,7 @@ fi
 # with recent XCode or CLT)
 if [[ ! "$(type -P git)" && "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]]; then
   e_header "Installing Git"
-  sudo apt-get -qq install git-core
+  sudo apt-get -qq install git
 fi
 
 # If Git isn't installed by now, something exploded. We gots to quit!
@@ -152,7 +152,7 @@ if [[ ! -d ~/.dotfiles ]]; then
   new_dotfiles_install=1
   # ~/.dotfiles doesn't exist? Clone it!
   e_header "Downloading dotfiles"
-  git clone --recursive git://github.com/cowboy/dotfiles.git ~/.dotfiles
+  git clone --recursive git://github.com/haakenlid/dotfiles.git ~/.dotfiles
   cd ~/.dotfiles
 else
   # Make sure we have the latest files.

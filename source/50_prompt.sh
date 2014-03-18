@@ -47,6 +47,14 @@ function prompt_exitcode() {
   [[ $1 != 0 ]] && echo " $c2$1$c9"
 }
 
+# Virtualenv
+function prompt_virtualevn() {
+if [[ $VIRTUAL_ENV != "" ]]
+  then
+      echo "$c1($c0${VIRTUAL_ENV##*/}$c1)$c9"
+fi
+}
+
 # Git status.
 function prompt_git() {
   prompt_getcolors
@@ -122,6 +130,8 @@ function prompt_command() {
   prompt_getcolors
   # http://twitter.com/cowboy/status/150254030654939137
   PS1="\n"
+  # virtualenv: active enviroment
+  PS1="$PS1$(prompt_virtualevn)"
   # svn: [repo:lastchanged]
   PS1="$PS1$(prompt_svn)"
   # git: [branch:flags]

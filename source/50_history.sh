@@ -1,18 +1,19 @@
 # History settings
 
 # Allow use to re-edit a faild history substitution.
-shopt -s histreedit
+# shopt -s histreedit
 # History expansions will be verified before execution.
-shopt -s histverify
+# shopt -s histverify
 
-# Entries beginning with space aren't added into history, and duplicate
-# entries will be erased (leaving the most recent entry).
-export HISTCONTROL="ignorespace:erasedups"
-# Give history timestamps.
 export HISTTIMEFORMAT="[%F %T] "
-# Lots o' history.
-export HISTSIZE=10000
-export HISTFILESIZE=10000
+export HISTCONTROL=ignoredups:erasedups  # no duplicate entries
+export HISTSIZE=100000                   # big big history
+export HISTFILESIZE=100000               # big big history
+shopt -s histappend                      # append to history, don't overwrite it
+
+# Save and reload the history after each command finishes
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+
 
 # Easily re-execute the last history command.
 alias r="fc -s"

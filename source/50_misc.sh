@@ -21,7 +21,7 @@ if [[ -e ~/.ssh/known_hosts ]]; then
 fi
 
 # sets up virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
+export WORKON_HOME=srv/virtual_enviroments
 source /usr/local/bin/virtualenvwrapper.sh
 
 # export PYTHONPATH=$PYTHONPATH:/usr/bin/

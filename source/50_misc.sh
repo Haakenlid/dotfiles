@@ -22,6 +22,8 @@ fi
 
 # sets up virtualenvwrapper
 export WORKON_HOME=/srv/virtual_enviroments
+# export VIRTUALENVWRAPPER_LOG_DIR="$WORKON_HOME"
+# export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
 source /usr/local/bin/virtualenvwrapper.sh
 
 # export PYTHONPATH=$PYTHONPATH:/usr/bin/

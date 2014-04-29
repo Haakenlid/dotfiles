@@ -1,9 +1,9 @@
 # Editing
-export EDITOR='subl -w'
-export LESSEDIT='subl %f'
-export VIM_EDITOR='vim'
-alias q='subl'
+export EDITOR='vim -w'
+export LESSEDIT='vim %f'
+export GIT_EDITOR='vim'
 export VISUAL="$EDITOR"
+alias q='subl'
 alias q.='q .'
 
 function qs() {

@@ -57,3 +57,10 @@ Desktop.ini
 
 # NPM
 .npmignore
+
+# Django
+*.db
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace

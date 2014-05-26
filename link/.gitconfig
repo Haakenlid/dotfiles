@@ -1,3 +1,7 @@
 [user]
 	email = haakenlid@gmail.com
 	name = Håken Lid
+[color]
+	ui = auto
+[core]
+	excludesfile = /home/haakenlid/.gitignore_global

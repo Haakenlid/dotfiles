@@ -22,11 +22,17 @@
 # 32  42  green     36  46  cyan
 # 33  43  yellow    37  47  white
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+
 if [[ ! "${prompt_colors[@]}" ]]; then
   prompt_colors=(
     "36" # information color
     "37" # bracket color
     "31" # error color
+    "33" # symbol color
   )
 
   if [[ "$SSH_TTY" ]]; then
@@ -44,14 +50,14 @@ alias prompt_getcolors='prompt_colors[9]=; local i; for i in ${!prompt_colors[@]
 # Exit code of previous command.
 function prompt_exitcode() {
   prompt_getcolors
-  [[ $1 != 0 ]] && echo " $c2$1$c9"
+  [[ $1 != 0 ]] && echo "$c1$END$c2$1$c9"
 }
 
 # Virtualenv
 function prompt_virtualevn() {
 if [[ $VIRTUAL_ENV != "" ]]
   then
-      echo "$c1($c0${VIRTUAL_ENV##*/}$c1)$c9"
+      echo "$c3ⓔ $c0${VIRTUAL_ENV##*/}$c1$END"
 fi
 }
 
@@ -66,15 +72,15 @@ function prompt_git() {
   [[ "$output" ]] || output="$(git branch | perl -ne '/^\* (.*)/ && print $1')"
   flags="$(
     echo "$status" | awk 'BEGIN {r=""} \
-      /^# Changes to be committed:$/        {r=r "+"}\
-      /^# Changes not staged for commit:$/  {r=r "!"}\
-      /^# Untracked files:$/                {r=r "?"}\
+      /Changes to be committed:$/        {r=r "+"}\
+      /Changes not staged for commit:$/  {r=r "!"}\
+      /Untracked files:$/                {r=r "?"}\
       END {print r}'
   )"
   if [[ "$flags" ]]; then
-    output="$output$c1:$c0$flags"
+    output="$output$c3$flags"
   fi
-  echo "$c1[$c0$output$c1]$c9"
+  echo "$c3 $c0$output$c1$END"
 }
 
 # hg status.
@@ -117,13 +123,14 @@ trap 'prompt_stack=("${prompt_stack[@]}" "$BASH_COMMAND")' DEBUG
 function prompt_command() {
   local exit_code=$?
   # If the first command in the stack is prompt_command, no command was run.
-  # Set exit_code to 0 and reset the stack.
+    # Set exit_code to 0 and reset the stack.
   [[ "${prompt_stack[0]}" == "prompt_command" ]] && exit_code=0
   prompt_stack=()
 
   # Manually load z here, after $? is checked, to keep $? from being clobbered.
   [[ "$(type -t _z)" ]] && _z --add "$(pwd -P 2>/dev/null)" 2>/dev/null
 
+  END=" / "
   # While the simple_prompt environment var is set, disable the awesome prompt.
   [[ "$simple_prompt" ]] && PS1='\n$ ' && return
 
@@ -133,21 +140,22 @@ function prompt_command() {
   # virtualenv: active enviroment
   PS1="$PS1$(prompt_virtualevn)"
   # svn: [repo:lastchanged]
-  PS1="$PS1$(prompt_svn)"
+  # PS1="$PS1$(prompt_svn)"
   # git: [branch:flags]
   PS1="$PS1$(prompt_git)"
   # hg:  [branch:flags]
-  PS1="$PS1$(prompt_hg)"
+  # PS1="$PS1$(prompt_hg)"
   # misc: [cmd#:hist#]
   # PS1="$PS1$c1[$c0#\#$c1:$c0!\!$c1]$c9"
   # path: [user@host:path]
-  PS1="$PS1$c1[$c0\u$c1@$c0\h$c1:$c0\w$c1]$c9"
+  PS1="$PS1$c0\u$c3@$c0\h$c1:$c0\w/"
   PS1="$PS1\n"
   # date: [HH:MM:SS]
-  PS1="$PS1$c1[$c0$(date +"%H$c1:$c0%M$c1:$c0%S")$c1]$c9"
+  PS1="$PS1$c0$(date +"%H$c1:$c0%M$c1:$c0%S$c3 ⌛ $c0%Y$c1-$c0%m$c1-$c0%d")"
   # exit code: 127
   PS1="$PS1$(prompt_exitcode "$exit_code")"
-  PS1="$PS1 \$ "
+  PS1="$PS1 $c1\$ "
 }
 
-PROMPT_COMMAND="prompt_command"
+export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"
+

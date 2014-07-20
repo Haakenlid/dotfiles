@@ -12,12 +12,12 @@ export WORKON_HOME=/srv/virtual_enviroments
 # export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
 source /usr/local/bin/virtualenvwrapper.sh
 
-export PYTHONPATH=$PYTHONPATH:/usr/bin/
+# export PYTHONPATH=$PYTHONPATH:/usr/bin/
 
 # dont freeze terminal by pressing Ctrl-S
 stty -ixon
 
-# use tmux by default 
+# use tmux by default
 # if which tmux 2>&1 >/dev/null; then
 #     #if not inside a tmux session, and if no session is started, start a new session
 #     test -z "$TMUX" && (tmux attach || tmux new-session)

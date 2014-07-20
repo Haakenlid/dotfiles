@@ -39,6 +39,7 @@
 *.log
 *.sql
 *.sqlite
+*.sqlite3
 *.db
 
 # OS generated files #
@@ -47,7 +48,7 @@
 ._*
 .Spotlight-V100
 .Trashes
-Thumbs.db 
+Thumbs.db
 Desktop.ini
 
 # NPM #

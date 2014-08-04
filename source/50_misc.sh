@@ -7,9 +7,9 @@ export LESS=-XR
 complete -W "$(echo $(cat ~/.bash_history | sed -n 's/^ssh \([^ ]*@[^ ]*\).*/\1/p'|sort -u))" ssh sshfs
 
 # sets up virtualenvwrapper
-export WORKON_HOME=/srv/virtual_enviroments
-# export VIRTUALENVWRAPPER_LOG_DIR="$WORKON_HOME"
-# export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
+export WORKON_HOME=~/.venvs/
+export VIRTUALENVWRAPPER_LOG_DIR="$WORKON_HOME"
+export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
 source /usr/local/bin/virtualenvwrapper.sh
 
 export PYTHONPATH=$PYTHONPATH:/usr/bin/

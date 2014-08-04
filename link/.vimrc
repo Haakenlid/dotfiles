@@ -12,11 +12,14 @@ filetype indent plugin on
 imap jj <Esc>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
 =======
 >>>>>>> origin
+=======
+>>>>>>> fb728ff13c0a7e5f21110923b40a11b679ae7eea
 inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 set dictionary="/usr/dict/words"
 source ~/.vimrc_python

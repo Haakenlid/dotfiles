@@ -42,6 +42,7 @@ alias :q=exit
 
 function unity-restart(){
 <<<<<<< HEAD
+<<<<<<< HEAD
 	# To restart unity when hacking settings.
 	killall unity-panel-service
 	setsid unity
@@ -53,3 +54,8 @@ alias tree="tree -AF --dirsfirst -L 5 --filelimit 100"
 	setsid unity
 }
 >>>>>>> origin
+=======
+	killall unity-panel-service
+	setsid unity
+}
+>>>>>>> fb728ff13c0a7e5f21110923b40a11b679ae7eea

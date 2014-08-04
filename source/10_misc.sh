@@ -41,9 +41,15 @@ function stit() {
 alias :q=exit
 
 function unity-restart(){
+<<<<<<< HEAD
 	# To restart unity when hacking settings.
 	killall unity-panel-service
 	setsid unity
 }
 
 alias tree="tree -AF --dirsfirst -L 5 --filelimit 100"
+=======
+	killall unity-panel-service
+	setsid unity
+}
+>>>>>>> origin

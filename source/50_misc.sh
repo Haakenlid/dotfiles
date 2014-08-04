@@ -12,7 +12,7 @@ export WORKON_HOME=/srv/virtual_enviroments
 # export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
 source /usr/local/bin/virtualenvwrapper.sh
 
-# export PYTHONPATH=$PYTHONPATH:/usr/bin/
+export PYTHONPATH=$PYTHONPATH:/usr/bin/
 
 # dont freeze terminal by pressing Ctrl-S
 stty -ixon

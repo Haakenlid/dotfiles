@@ -55,6 +55,7 @@ Desktop.ini
 #######
 .npmignore
 
+<<<<<<< HEAD
 # Sublime Text project files #
 ##############################
 *.sublime-project
@@ -64,3 +65,11 @@ Desktop.ini
 #########################
 *.pyc
 __pycache__
+=======
+# Django
+*.db
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+>>>>>>> origin

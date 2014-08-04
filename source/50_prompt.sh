@@ -116,10 +116,6 @@ function prompt_svn() {
   fi
 }
 
-# Maintain a per-execution call stack.
-prompt_stack=()
-trap 'prompt_stack=("${prompt_stack[@]}" "$BASH_COMMAND")' DEBUG
-
 function prompt_command() {
   local exit_code=$?
   # If the first command in the stack is prompt_command, no command was run.
@@ -136,26 +132,32 @@ function prompt_command() {
 
   prompt_getcolors
   # http://twitter.com/cowboy/status/150254030654939137
-  PS1="\n"
-  # virtualenv: active enviroment
+  PS1="\n" # empty line
+  #
   PS1="$PS1$(prompt_virtualevn)"
-  # svn: [repo:lastchanged]
-  # PS1="$PS1$(prompt_svn)"
-  # git: [branch:flags]
+  # ⓔ venv /
   PS1="$PS1$(prompt_git)"
-  # hg:  [branch:flags]
-  # PS1="$PS1$(prompt_hg)"
-  # misc: [cmd#:hist#]
-  # PS1="$PS1$c1[$c0#\#$c1:$c0!\!$c1]$c9"
-  # path: [user@host:path]
-  PS1="$PS1$c0\u$c3@$c0\h$c1:$c0\w/"
-  PS1="$PS1\n"
-  # date: [HH:MM:SS]
+  # ⓔ venv /  master /
+  PS1="$PS1$c0\u$c3@$c0\h$c1"
+  # ⓔ venv /  master / user@host
+  PS1="$PS1:$c0\w/"
+  # ⓔ venv /  master / user@host:/working/directiory/
+  PS1="$PS1\n"  # line break
+  #
   PS1="$PS1$c0$(date +"%H$c1:$c0%M$c1:$c0%S$c3 ⌛ $c0%Y$c1-$c0%m$c1-$c0%d")"
-  # exit code: 127
+  # 12:49:29 ⌛ 2014-08-04
   PS1="$PS1$(prompt_exitcode "$exit_code")"
+  # 12:49:29 ⌛ 2014-08-04 / 127
   PS1="$PS1 $c1\$ "
+  # 12:49:29 ⌛ 2014-08-04 / 127 $
 }
 
-export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"
+# We don't need to set this multiple times.
+if [ -z "$PROMPT_COMMAND_CHANGED" ]; then
+  # Maintain a per-execution call stack.
+  prompt_stack=()
+  trap 'prompt_stack=("${prompt_stack[@]}" "$BASH_COMMAND")' DEBUG
+  export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"
+  export PROMPT_COMMAND_CHANGED=1
+fi
 

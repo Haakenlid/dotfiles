@@ -58,7 +58,7 @@ shopt -u compat41
 # quoted. This is the behavior of POSIX mode through version 4.1. The default
 # Bash behavior remains as in previous versions.
 
-shopt -s complete_fullquote
+# shopt -s complete_fullquote
 # ?
 
 shopt -u direxpand
@@ -118,7 +118,7 @@ shopt -s globstar
 # files and zero or more directories and subdirectories. If the pattern is
 # followed by a ‘/’, only directories and subdirectories match.
 
-shopt -u globasciiranges
+# shopt -u globasciiranges
 # ?
 
 shopt -u gnu_errfmt

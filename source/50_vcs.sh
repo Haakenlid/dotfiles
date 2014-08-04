@@ -1,7 +1,7 @@
 # Git shortcuts
 
 alias g='git'
-alias ga='git add -A'
+alias ga='git add -A :/'
 alias gp='git push'
 alias gpa='gp --all'
 alias gu='git pull'

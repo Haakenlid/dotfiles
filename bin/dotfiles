@@ -172,6 +172,7 @@ export PATH
 # Tweak file globbing.
 shopt -s dotglob
 shopt -s nullglob
+# kan bli overskrevet av shopt.sh
 
 # Create caches directory, if it doesn't already exist.
 mkdir -p "$HOME/.dotfiles/caches"

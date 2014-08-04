@@ -23,11 +23,13 @@ __pycache__
 *.xz
 *.lzma
 
-#packing-only formats
+# packing-only formats #
+########################
 *.iso
 *.tar
 
-#package management formats
+# package management formats #
+##############################
 *.dmg
 *.xpi
 *.gem
@@ -40,23 +42,44 @@ __pycache__
 *.log
 *.sql
 *.sqlite
+*.sqlite3
+*.db
 
 # OS generated files #
 ######################
 .DS_Store
-
-# Thumbnails
 ._*
-
-# Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-
-# Windows image file caches
-Thumbs.db 
-
-# Folder config file
+Thumbs.db
 Desktop.ini
 
-# NPM
+# NPM #
+#######
 .npmignore
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+# Sublime Text project files #
+##############################
+*.sublime-project
+*.sublime-workspace
+
+# Python compiled files #
+#########################
+*.pyc
+__pycache__
+=======
+=======
+>>>>>>> fb728ff13c0a7e5f21110923b40a11b679ae7eea
+# Django
+*.db
+
+# Sublime Text
+*.sublime-project
+<<<<<<< HEAD
+*.sublime-workspace
+>>>>>>> origin
+=======
+*.sublime-workspace
+>>>>>>> fb728ff13c0a7e5f21110923b40a11b679ae7eea

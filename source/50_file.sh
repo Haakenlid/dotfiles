@@ -3,12 +3,14 @@
 # dirs  755 drwxr-xr-x (777 minus 022)
 umask 022
 
+alias ls="command ls --color"
+export LS_COLORS='di=33:ln=01;32:pi=40;33:bd=40;33:cd=33;01:ow=40;33:ex=35;01:'
 
 # Directory listing
 # alias ll='tree -tapughDFiCL 1 --dirsfirst --timefmt "%Y-%m-%d %H:%M"'
 alias ll='ls -alFh --time-style=+"%Y-%m-%d %H:%M"'
+alias tree='tree -CFL 2 --dirsfirst'
 alias lsd='CLICOLOR_FORCE=1 ll | grep --color=never "^d"'
-alias tree='tree -CF --dirsfirst'
 
 # Easier navigation: .., ..., -
 alias ..='cd ..'

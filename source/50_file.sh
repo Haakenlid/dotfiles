@@ -3,24 +3,12 @@
 # dirs  755 drwxr-xr-x (777 minus 022)
 umask 022
 
-# Always use color output for `ls`
-if [[ "$OSTYPE" =~ ^darwin ]]; then
-  alias ls="command ls -G"
-else
-  alias ls="command ls --color"
- export LS_COLORS='di=33:ln=01;32:pi=40;33:bd=40;33:cd=33;01:ow=40;33:ex=35;01:'
-fi
 
 # Directory listing
-if [[ "$(type -P tree)" ]]; then
-  alias ll='tree -tapughDFiCL 1 --dirsfirst --timefmt "%Y-%m-%d %H:%M"'
-  alias tree='tree -CF --dirsfirst'
-  # alias ll='tree --dirsfirst -aLpughDFiC 1'
-  alias lsd='ll -d'
-else
-  alias ll='ls -alFh'
-  alias lsd='CLICOLOR_FORCE=1 ll | grep --color=never "^d"'
-fi
+# alias ll='tree -tapughDFiCL 1 --dirsfirst --timefmt "%Y-%m-%d %H:%M"'
+alias ll='ls -alFh --time-style=+"%Y-%m-%d %H:%M"'
+alias lsd='CLICOLOR_FORCE=1 ll | grep --color=never "^d"'
+alias tree='tree -CF --dirsfirst'
 
 # Easier navigation: .., ..., -
 alias ..='cd ..'

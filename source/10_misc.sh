@@ -1,4 +1,5 @@
 export PROMPT_COMMAND=""
+unset PROMPT_COMMAND_CHANGED
 
 function path_remove() {
   IFS=:

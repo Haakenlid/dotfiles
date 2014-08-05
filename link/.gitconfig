@@ -5,5 +5,3 @@
 	ui = auto
 [core]
 	excludesfile = /home/haakenlid/.gitignore_global
-[push]
-	default = simple

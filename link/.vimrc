@@ -54,65 +54,65 @@ endif
 
 
 "NeoBundle Scripts-----------------------------
-if has('vim_starting')
-  set nocompatible               " Be iMproved
+" if has('vim_starting')
+  " set nocompatible               " Be iMproved
 
   " Required:
-  set runtimepath+=/home/haakenlid/.vim/bundle/neobundle.vim/
-endif
+  " set runtimepath+=/home/haakenlid/.vim/bundle/neobundle.vim/
+" endif
 
 " Required:
-call neobundle#begin(expand('/home/haakenlid/.vim/bundle'))
+" call neobundle#begin(expand('/home/haakenlid/.vim/bundle'))
 
 " Let NeoBundle manage NeoBundle
 " Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+" NeoBundleFetch 'Shougo/neobundle.vim'
 
 " My Bundles here:
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'Lokaltog/vim-easymotion'
+" NeoBundle 'Shougo/neosnippet.vim'
+" NeoBundle 'Shougo/neosnippet-snippets'
+" NeoBundle 'tpope/vim-fugitive'
+" NeoBundle 'kien/ctrlp.vim'
+" NeoBundle 'flazz/vim-colorschemes'
+" NeoBundle 'Lokaltog/vim-easymotion'
 
 " You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+" NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
 
 " Required:
-call neobundle#end()
-
+" call neobundle#end()
+" 
 " Required:
-filetype plugin indent on
+" filetype plugin indent on
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
-NeoBundleCheck
+" NeoBundleCheck
 "End NeoBundle Scripts-------------------------
 
 "Powerline Scripts -------------------------
 
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+" python3 from powerline.vim import setup as powerline_setup
+" python3 powerline_setup()
+" python3 del powerline_setup
 
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" let g:EasyMotion_do_mapping = 0 " Disable default mappings
 
 " Bi-directional find motion
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
-nmap gt <Plug>(easymotion-s)
+" nmap gt <Plug>(easymotion-s)
 " or
 " `s{char}{char}{label}`
 " Need one more keystroke, but on average, it may be more comfortable.
-nmap s <Plug>(easymotion-s2)
+" nmap s <Plug>(easymotion-s2)
 
 " Turn on case sensitive feature
-let g:EasyMotion_smartcase = 1
+" let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
+" map <Leader>j <Plug>(easymotion-j)
+" map <Leader>k <Plug>(easymotion-k)

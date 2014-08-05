@@ -51,7 +51,7 @@ shopt -u compat40
 # ‘<’ and ‘>’ operators (see previous item) and the effect of interrupting a
 # command list.
 
-shopt -u compat41
+# shopt -u compat41
 # If set, Bash, when in posix mode, treats a single quote in a double-quoted
 # parameter expansion as a special character. The single quotes must match (an
 # even number) and the characters between the single quotes are considered
@@ -61,7 +61,7 @@ shopt -u compat41
 # shopt -s complete_fullquote
 # ?
 
-shopt -u direxpand
+# shopt -u direxpand
 # ?
 
 shopt -s dirspell
@@ -150,7 +150,7 @@ shopt -u huponexit
 shopt -s interactive_comments
 # Allow a word beginning with ‘#’ to cause that word and all remaining characters on that line to be ignored in an interactive shell. This option is enabled by default.
 
-shopt -u lastpipe
+# shopt -u lastpipe
 # If set, and job control is not active, the shell runs the last command of a
 # pipeline not executed in the background in the current shell environment.
 

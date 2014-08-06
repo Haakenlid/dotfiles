@@ -34,8 +34,8 @@ alias r="fc -s"
 
 # up and down arrow searches history from input.
 
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
+# bind '"\e[A": history-search-backward'
+# bind '"\e[B": history-search-forward'
 
 alias timestamp="date -d 'today' +'%Y-%m-%d_%H:%M:%S'"
 

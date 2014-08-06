@@ -61,25 +61,44 @@ function undo_clean_history() {
 }
 
 function search_for_terms_in_history {
-    if [ $1 ]; then
-        MATCHES=$(history | grep -v '?? ' | sed 's/ $//g' | sed 's/\[[-0-9: ]*\] //' | sort -k 2 | tac | uniq -f 1 | sort -n )
-        COLORS=('01;33' '01;34' '01;32' '01;31' '01;35' '01;36' '01;33' '01;34' '01;32' '01;31' '01;35' '01;36')
-        color_index=0
-        for SEARCHTERM in $@; do
-            COLOR=${COLORS[color_index]}
-            ((color_index++))
-            SEARCHTERM=$(echo $SEARCHTERM | sed 's/^\^/\(?<=^.{7}\)/')
-            MATCHES=$(echo "$MATCHES" | GREP_COLOR=$COLOR grep --ignore-case --perl-regexp --color=always "$SEARCHTERM")
-        done
+    HISTTIMEFORMAT="" # we don't want timestamps. Matches are chronological anyway.
+    MATCH_COLORS=('01;96' '01;93' '01;95' '01;92' '01;91' '01;94')
+    LINENUMBERCOLOR='01;49'
+    LINENUMBERPATTERN='^.{7}' # change this if column count changes for line numbers
+    number_of_colors=${#MATCH_COLORS[@]}
+    # lists command history, purging duplicates and stripping space at end of lines.
+    MATCHES=$(history | grep -v '  ??' | sed 's/ $//g' | sort -k 2 | tac | uniq -f 1 | sort -n )
+    color_index=0
 
-        if  [[ "$MATCHES" ]]; then
-            echo
-            echo "$MATCHES"
-        else
-            echo -e "No matches for the term(s): $@"
-        fi
+    for SEARCHTERM in $@; do
+        (( color_index = (color_index + 1) % ${#MATCH_COLORS[@]} ))
+        COLOR=${MATCH_COLORS[color_index]}
+        # fixes it so that you can use ^ regexp pattern.
+        SEARCHTERM=$(echo $SEARCHTERM | sed "s/^\^/\(?<=$LINENUMBERPATTERN\)/" )
+        # searches and highlights searchterm with color
+        MATCHES=$(echo "$MATCHES" | GREP_COLOR=$COLOR grep -P --ignore-case --color=always "$SEARCHTERM")
+    done
+
+    if [ -z $1 ]; then
+        MATCHES=$(echo "$MATCHES" | tail -n 10 )
+    fi
+
+    # highlight line numbers
+    MATCHES=$(echo "$MATCHES" | GREP_COLOR=$LINENUMBERCOLOR grep -P --color=always "$LINENUMBERPATTERN")
+
+    if [ -z $1 ]; then
+        echo -e "Search in bash command history."
+        echo -e "Usage: ?? [terms to look for]"
+        echo -e "With no arguments lists 10 newest commands from history."
+        echo -e "\n$MATCHES"
     else
-        echo -e "Search in bash command history. \nUsage: ?? [terms to look for]"
+        if [[ $MATCHES != "" ]]; then
+            TREFF=$(echo "$MATCHES" | wc -l )
+            echo -e "\n$MATCHES"
+        else
+            TREFF=0
+        fi
+        echo -e "\nSearch for $@ returned $TREFF results"
     fi
 }
 

@@ -47,7 +47,7 @@ function cleanhistory() {
     for REMOVETERM in $@; do
             NEW_HISTORY=$(echo "$NEW_HISTORY" | grep -vi "$REMOVETERM")
     done
-    NEW_HISTORY=$(echo "$NEW_HISTORY" |nl|sort -k2 -k1|uniq -f1|sort -n|cut -f2|grep "^.\{10,100\}$"|tac|uniq -w2|tac)
+    NEW_HISTORY=$(echo "$NEW_HISTORY" | sed 's/ $//' |nl|sort -k2 -k1|uniq -f1|sort -n|cut -f2|grep "^.\{10,100\}$"|tac|uniq -w2|tac)
     echo "$NEW_HISTORY" > $HOME/.bash_history
     echo -e "History logs have been streamlined."
     echo -e "$(wc -l $BACKUP $HOME/.bash_history | sed -e '$d')"
@@ -67,7 +67,7 @@ function search_for_terms_in_history {
     LINENUMBERPATTERN='^.{7}' # change this if column count changes for line numbers
     number_of_colors=${#MATCH_COLORS[@]}
     # lists command history, purging duplicates and stripping space at end of lines.
-    MATCHES=$(history | grep -v '  ??' | sed 's/ $//g' | sort -k 2 | tac | uniq -f 1 | sort -n )
+    MATCHES=$(history | grep -v '  ??' | sed 's/ $//' | sort -k2 | tac | uniq -f1 | sort -n )
     color_index=0
 
     for SEARCHTERM in $@; do

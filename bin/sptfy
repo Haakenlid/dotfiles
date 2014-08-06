@@ -12,35 +12,49 @@ then
   exit
 fi
 
+
+function playerstatus() {
+    STATUS=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus'|grep 'string "[^"]*"'|sed 's/.*"\(.*\)"[^"]*$/\1/')
+    if [[ $STATUS == Playing ]]; then
+        echo "▶"
+    else
+        echo "■"
+    fi
+    }
+
+
 function trackinfo()
     {
         METADATA=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata')
         TITLE=$(echo -e "$METADATA" | egrep -A 1 "title"|egrep -v "title"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$  )
         ALBUM=$(echo -e "$METADATA" | egrep -A 2 "album"|egrep -v "album"|egrep -v "array"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$ )
         ARTIST=$(echo -e "$METADATA" | egrep -A 2 "artist"|egrep -v "artist"|egrep -v "array"|cut -b 27-|cut -d '"' -f 1|egrep -v ^$ )
-        echo -e " ▶ \e[1m$TITLE\e[0m – $ARTIST – $ALBUM"
+        echo -e " $SYMBOL \e[1m$TITLE\e[0m – $ARTIST – $ALBUM"
     }
+
+SYMBOL="▶"
 
 case $1 in
     "volume")
         if [[ $2 ]]; then
             echo "Setting volume to $2"
-            amixer -D pulse sset Master "$2"0% > \dev\null
+            amixer -D pulse sset Master "$2"0% > /dev/null
         else
             echo "Setting volume to 5."
-            amixer -D pulse sset Master 50% > \dev\null
+            amixer -D pulse sset Master 50% > /dev/null
         fi
         ;;
     "play")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > \dev\null
-        echo "Play/Pause spotify"
+        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > /dev/null
+        SYMBOL=$(playerstatus)
+        trackinfo
         ;;
     "next")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next > \dev\null
+        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next > /dev/null
         trackinfo
         ;;
     "prev")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > \dev\null
+        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > /dev/null
         trackinfo
         ;;
     "getStatus")

@@ -6,7 +6,7 @@ export HISTTIMEFORMAT="[%F %T] "
 export HISTCONTROL=ignoreboth            # no duplicate entries
 export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
-export HISTIGNORE="cd *:df *:exit:fg:bg:file *:ll:ls:mc:top:clear:?q:z *"
+export HISTIGNORE="cd *:df *:exit:fg:bg:file *:ll:ls:mc:top:clear:?q:z *:\?\?"
 
 # Save and reload the history after each command finishes
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
@@ -47,7 +47,7 @@ function cleanhistory() {
     for REMOVETERM in $@; do
             NEW_HISTORY=$(echo "$NEW_HISTORY" | grep -vi "$REMOVETERM")
     done
-    NEW_HISTORY=$(echo "$NEW_HISTORY" | sed 's/ $//' |nl|sort -k2 -k1|uniq -f1|sort -n|cut -f2|grep "^.\{10,100\}$"|tac|uniq -w2|tac)
+    NEW_HISTORY=$(echo "$NEW_HISTORY" | sed 's/ $//' |nl|sort -k2 -k1|uniq -f1|sort -n|cut -f2|grep "^.\{10,200\}$"|tac|uniq -w2|tac)
     echo "$NEW_HISTORY" > $HOME/.bash_history
     echo -e "History logs have been streamlined."
     echo -e "$(wc -l $BACKUP $HOME/.bash_history | sed -e '$d')"
@@ -62,24 +62,26 @@ function undo_clean_history() {
 
 function search_for_terms_in_history {
     HISTTIMEFORMAT="" # we don't want timestamps. Matches are chronological anyway.
-    MATCH_COLORS=('01;96' '01;93' '01;95' '01;92' '01;91' '01;94')
-    LINENUMBERCOLOR='01;49'
+    MATCH_COLORS=('01;49;36' '01;49;33' '01;49;32' '01;49;35' '01;49;31' '01;49;34')
+    LINENUMBERCOLOR='01;49;39'
     LINENUMBERPATTERN='^.{7}' # change this if column count changes for line numbers
     number_of_colors=${#MATCH_COLORS[@]}
     # lists command history, purging duplicates and stripping space at end of lines.
     MATCHES=$(history | grep -v '  ??' | sed 's/ $//' | sort -k2 | tac | uniq -f1 | sort -n )
     color_index=0
-
+    SEARCHTERMS=''
     for SEARCHTERM in $@; do
         (( color_index = (color_index + 1) % ${#MATCH_COLORS[@]} ))
         COLOR=${MATCH_COLORS[color_index]}
         # fixes it so that you can use ^ regexp pattern.
+        SEARCHTERMS+=' \e['$COLOR'm'$SEARCHTERM
         SEARCHTERM=$(echo $SEARCHTERM | sed "s/^\^/\(?<=$LINENUMBERPATTERN\)/" )
         # searches and highlights searchterm with color
-        MATCHES=$(echo "$MATCHES" | GREP_COLOR=$COLOR grep -P --ignore-case --color=always "$SEARCHTERM")
+        MATCHES=$(echo "$MATCHES" | GREP_COLOR=$COLOR grep -Pi --color=always "$SEARCHTERM")
     done
 
     if [ -z $1 ]; then
+        # no searchterm - lets just display last ten entries.
         MATCHES=$(echo "$MATCHES" | tail -n 10 )
     fi
 
@@ -90,15 +92,18 @@ function search_for_terms_in_history {
         echo -e "Search in bash command history."
         echo -e "Usage: ?? [terms to look for]"
         echo -e "With no arguments lists 10 newest commands from history."
-        echo -e "\n$MATCHES"
+        echo
+        echo -e "$MATCHES"
     else
         if [[ $MATCHES != "" ]]; then
             TREFF=$(echo "$MATCHES" | wc -l )
-            echo -e "\n$MATCHES"
+            echo -e "\e["$LINENUMBERCOLOR"m"
+            echo -e "$MATCHES"
         else
+            # zero matches
             TREFF=0
         fi
-        echo -e "\nSearch for $@ returned $TREFF results"
+        echo -e "\nSearch for$SEARCHTERMS\e[0m returned $TREFF results"
     fi
 }
 

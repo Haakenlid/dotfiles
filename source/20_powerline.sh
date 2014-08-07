@@ -11,5 +11,5 @@ fi
 function powerline_command(){
   # add powerline tmux support for updated virtualenv and shit.
   # set timeout and suppress error warnings :)
-  timeout -k 1 .5 _powerline_tmux_set_pwd 2>/dev/null
+  timeout -k 3 1 _powerline_tmux_set_pwd 2>/dev/null
 }

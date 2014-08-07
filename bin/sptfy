@@ -29,6 +29,9 @@ function playerstatus() {
 }
 
 function trackinfo() {
+  if [ "$(pidof spotify)" = "" ]; then
+    return 1
+  fi
   METADATA=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata')
   TITLE=$(echo -e "$METADATA" | egrep -A 1 "title"|egrep -v "title"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$  )
   ALBUM=$(echo -e "$METADATA" | egrep -A 2 "album"|egrep -v "album"|egrep -v "array"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$ )
@@ -39,13 +42,20 @@ function trackinfo() {
 
 case $ARG in
   "volume")
-    if [[ $2 ]]; then
-      echo "Setting volume to $2"
-      amixer -D pulse sset Master "$2"0% > /dev/null
-    else
-      echo "Setting volume to 5."
-      amixer -D pulse sset Master 50% > /dev/null
-    fi
+    case $2 in
+      "-") amixer -D pulse sset Master 10%- > /dev/null ;;
+      "--") amixer -D pulse sset Master 20%- > /dev/null ;;
+      "---") amixer -D pulse sset Master 30%- > /dev/null ;;
+      "----") amixer -D pulse sset Master 50%- > /dev/null ;;
+      "-----") amixer -D pulse sset Master 80%- > /dev/null ;;
+      "+") amixer -D pulse sset Master 10%+ > /dev/null ;;
+      "++") amixer -D pulse sset Master 30%+ > /dev/null ;;
+      "+++") amixer -D pulse sset Master 100%+ > /dev/null ;;
+      "++++") amixer -D pulse sset Master 200%+ > /dev/null ;;
+      "+++++") amixer -D pulse sset Master 500%+ > /dev/null ;;
+      "max") amixer -D pulse sset Master 100% > /dev/null ;;
+      *) echo "volume:  $(amixer get Master | egrep -o "[0-9]+%") " ;;
+    esac
     ;;
   "play")
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > /dev/null
@@ -70,5 +80,7 @@ case $ARG in
   *)
     echo "Command line Spotify controller."
     echo "usage sptfy [ volume (value) | play | next | back | kill ]"
+    SYMBOL=$(playerstatus)
+    trackinfo
     ;;
 esac

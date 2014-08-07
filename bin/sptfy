@@ -1,66 +1,74 @@
 #!/bin/bash
 
-if [ $# -lt 1 ]
-then
-    echo " usage [volume (value) | play | next | next | prev | getTitle | getArtist | getAlbum | getStatus ] "
-    exit
-fi
-
-if [ "$(pidof spotify)" = "" ]
-then
-  echo "Spotify is not running"
-  exit
-fi
-
-
-function playerstatus() {
-    STATUS=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus'|grep 'string "[^"]*"'|sed 's/.*"\(.*\)"[^"]*$/\1/')
-    if [[ $STATUS == Playing ]]; then
-        echo "▶"
-    else
-        echo "■"
-    fi
-    }
-
-
-function trackinfo()
-    {
-        METADATA=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata')
-        TITLE=$(echo -e "$METADATA" | egrep -A 1 "title"|egrep -v "title"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$  )
-        ALBUM=$(echo -e "$METADATA" | egrep -A 2 "album"|egrep -v "album"|egrep -v "array"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$ )
-        ARTIST=$(echo -e "$METADATA" | egrep -A 2 "artist"|egrep -v "artist"|egrep -v "array"|cut -b 27-|cut -d '"' -f 1|egrep -v ^$ )
-        echo -e " $SYMBOL \e[1m$TITLE\e[0m – $ARTIST – $ALBUM"
-    }
 
 SYMBOL="▶"
 
-case $1 in
-    "volume")
-        if [[ $2 ]]; then
-            echo "Setting volume to $2"
-            amixer -D pulse sset Master "$2"0% > /dev/null
-        else
-            echo "Setting volume to 5."
-            amixer -D pulse sset Master 50% > /dev/null
-        fi
-        ;;
-    "play")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > /dev/null
-        SYMBOL=$(playerstatus)
-        trackinfo
-        ;;
-    "next")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next > /dev/null
-        trackinfo
-        ;;
-    "prev")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > /dev/null
-        trackinfo
-        ;;
-    "getStatus")
-        dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus'|grep 'string "[^"]*"'|sed 's/.*"\(.*\)"[^"]*$/\1/'
-        ;;
-    *)
-        echo "Unknown command: " $1
-        ;;
+function start_spotify() {
+  echo -n "Starting spotify "
+	(nohup spotify >& /dev/null)&
+  disown
+  for i in {1..25}; do echo -n '.'; sleep .1; done
+  echo -en '\rSpotify is running.                         \n'
+}
+
+if [ "$(pidof spotify)" = "" ]
+  then
+  start_spotify
+  ARG="play"
+else
+  ARG="$1"
+fi
+
+function playerstatus() {
+  STATUS=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'PlaybackStatus'|grep 'string "[^"]*"'|sed 's/.*"\(.*\)"[^"]*$/\1/')
+  if [[ $STATUS == Playing ]]; then
+    echo "▶"
+  else
+    echo "■"
+  fi
+}
+
+function trackinfo() {
+  METADATA=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:'org.mpris.MediaPlayer2.Player' string:'Metadata')
+  TITLE=$(echo -e "$METADATA" | egrep -A 1 "title"|egrep -v "title"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$  )
+  ALBUM=$(echo -e "$METADATA" | egrep -A 2 "album"|egrep -v "album"|egrep -v "array"|cut -b 44-|cut -d '"' -f 1|egrep -v ^$ )
+  ARTIST=$(echo -e "$METADATA" | egrep -A 2 "artist"|egrep -v "artist"|egrep -v "array"|cut -b 27-|cut -d '"' -f 1|egrep -v ^$ )
+  echo -e "\n $SYMBOL\e[1;49;92m $TITLE \e[0;1m– $ARTIST –\e[0;0;0m $ALBUM"
+}
+
+
+case $ARG in
+  "volume")
+    if [[ $2 ]]; then
+      echo "Setting volume to $2"
+      amixer -D pulse sset Master "$2"0% > /dev/null
+    else
+      echo "Setting volume to 5."
+      amixer -D pulse sset Master 50% > /dev/null
+    fi
+    ;;
+  "play")
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > /dev/null
+    SYMBOL=$(playerstatus)
+    trackinfo
+    ;;
+  "next")
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next > /dev/null
+    trackinfo
+    ;;
+  "back")
+    dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous > /dev/null
+    trackinfo
+    ;;
+  "start")
+    start_spotify
+    ;;
+  "kill")
+    killall -s TERM spotify
+    echo "Spotify closed."
+    ;;
+  *)
+    echo "Command line Spotify controller."
+    echo "usage sptfy [ volume (value) | play | next | back | kill ]"
+    ;;
 esac

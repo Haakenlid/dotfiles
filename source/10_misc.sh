@@ -18,33 +18,33 @@ if [ "$TERM" == "xterm" ]; then
 fi
 
 function tit() {
-	# sets terminal window title
-	TITLE=${1:-`pwd`}
-	echo -en "\033]0;$TITLE\a"
-	# echo $TITLE
+  # sets terminal window title
+  TITLE=${1:-`pwd`}
+  echo -en "\033]0;$TITLE\a"
+  # echo $TITLE
 }
 
 function wtit() {
-	# sets tmux window title
-	TITLE=${1:-`pwd`}
-	printf '\033k'$TITLE'\033\\'
-	# echo $TITLE
+  # sets tmux window title
+  TITLE=${1:-`pwd`}
+  printf '\033k'$TITLE'\033\\'
+  # echo $TITLE
 }
 
 function stit() {
-	# sets tmux window title
-	TITLE=${1:-`pwd`}
-	tmux rename-session $TITLE
-	# echo $TITLE
+  # sets tmux window title
+  TITLE=${1:-`pwd`}
+  tmux rename-session $TITLE
+  # echo $TITLE
 }
 
 #Vim-style exit
 alias :q=exit
 
 function unity-restart(){
-	# To restart unity when hacking settings.
-	killall unity-panel-service
-	setsid unity
+  # To restart unity when hacking settings.
+  killall unity-panel-service
+  setsid unity
 }
 
 #Show gmail inbox headers
@@ -52,7 +52,7 @@ function gmail(){
     if [[ $1 ]]; then
       case $1 in
         "-r")
-          unset GMAIL_USER GMAIL_PASSWORD
+          unset GOOGLE_USER GOOGLE_PASSWORD
           echo Your username and password have been cleared.
           return 0
           ;;
@@ -63,31 +63,32 @@ function gmail(){
       esac
     fi
 
-    if [[ -z $GMAIL_USER ]]; then
-      read -p 'username:  ' GMAIL_USER
-      if [[ ! $GMAIL_USER =~ @ ]]; then
-        GMAIL_USER="$GMAIL_USER"@gmail.com
-      fi
+    if [[ -z $GOOGLE_USER ]]; then
+      read -p 'username:  ' GOOGLE_USER
     fi
 
-    if [[ -z $GMAIL_PASSWORD ]]; then
-      read -p 'password:  ' GMAIL_PASSWORD # to hide password input use "read -s -p"
+    if [[ ! $GOOGLE_USER =~ @ ]]; then
+      GOOGLE_USER="$GOOGLE_USER"@gmail.com
     fi
 
-    LOGIN="$GMAIL_USER":"$GMAIL_PASSWORD"
-    echo -e "\nFetching new mail from $GMAIL_USER\n"
+    if [[ -z $GOOGLE_PASSWORD ]]; then
+      read -p 'password:  ' GOOGLE_PASSWORD # to hide password input use "read -s -p"
+    fi
+
+    LOGIN="$GOOGLE_USER":"$GOOGLE_PASSWORD"
+    echo -e "\nFetching new mail from $GOOGLE_USER\n"
 
     OUTPUT=$(curl -u $LOGIN --silent "https://mail.google.com/mail/feed/atom")
 
     LOGIN_FAILED=$(echo $OUTPUT | grep -i '<TITLE>Unauthorized</TITLE>')
     if [[ $LOGIN_FAILED ]]; then
       echo "ERROR: Login failed. Please check your username and password."
-      unset GMAIL_USER GMAIL_PASSWORD
+      unset GOOGLE_USER GOOGLE_PASSWORD
       return 1
     fi
 
     OUTPUT=$(
-      echo "$OUTPUT"/
+      echo "$OUTPUT" \
       | awk '
           BEGIN {
             FS="[<>]"                                        # FS = Field separator

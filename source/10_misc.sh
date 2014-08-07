@@ -49,16 +49,33 @@ function unity-restart(){
 
 #Show gmail inbox headers
 function gmail(){
-    echo Fetching new mail from "$GMU"@gmail.com
-    curl -u $GMU:$GPW --silent "https://mail.google.com/mail/feed/atom"\
+    if [[ -z $GMAIL_USER ]]; then
+      read -p 'user:' GMAIL_USER
+      # export GMAIL_USER
+    fi
+    if [[ -z $GMAIL_PASSWORD ]]; then
+      read -p 'password:' GMAIL_PASSWORD
+      # export GMAIL_PASSWORD
+    fi
+    LOGIN="$GMAIL_USER":"$GMAIL_PASSWORD"
+    echo Fetching new mail from "$GMAIL_USER"@gmail.com
+    OUTPUT=$(curl -u $LOGIN --silent "https://mail.google.com/mail/feed/atom"\
     | awk 'BEGIN{
     FS="[<>]";
     RS="(</entry>)?<entry>"}
     NR!=1{print\
         "\n\033[0;49;93m"$27"   \033[0;32m("$31")"\
         "\n\033[1;37m"$3\
-        "\n\033[0;49;96m"$7" ... \033[0m"}'\
-    | less
+        "\n\033[0;49;96m"$7" ... \033[0m"}' )
+
+  if [[ -z $OUTPUT ]]; then
+    echo 'No new email'
+
+  elif (( $(echo "$OUTPUT" | wc -l ) > 20 )); then
+    echo -e "$OUTPUT" | less
+  else
+    echo -e  "$OUTPUT"
+  fi
 }
 
 

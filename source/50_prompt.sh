@@ -120,7 +120,8 @@ function prompt_command() {
   local exit_code=$?
 
   # If the first command in the stack is prompt_command, no command was run.
-  this_command=$(history | tail -n1)
+  this_command=$(fc -ln -0)
+  # this_command=$(history | tail -n1)
   [[ "$this_command" == "$that_command" ]] && exit_code=0
   that_command=$this_command
 

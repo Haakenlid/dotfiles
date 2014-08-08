@@ -37,7 +37,7 @@ if [[ ! "${prompt_colors[@]}" ]]; then
 
   if [[ "$SSH_TTY" ]]; then
     # connected via ssh
-    prompt_colors[0]="32"
+    prompt_colors[0]="34"
   elif [[ "$USER" == "root" ]]; then
     # logged in as root
     prompt_colors[0]="35"
@@ -149,7 +149,7 @@ function prompt_command() {
   # 12:49:29 ⌛ 2014-08-04
   PS1="$PS1$(prompt_exitcode "$exit_code")"
   # 12:49:29 ⌛ 2014-08-04 / 127
-  PS1="$PS1 $c1\$ "
+  PS1="$PS1 \e[0m\$ "
   # 12:49:29 ⌛ 2014-08-04 / 127 $
 }
 

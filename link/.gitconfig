@@ -1,14 +1,12 @@
 [user]
-	email = haakenlid@gmail.com
-	name = Håken Lid
+  email = haakenlid@gmail.com
+    name = Håken Lid
 [color]
-	ui = auto
+    ui = auto
 [core]
-	excludesfile = /home/haakenlid/.gitignore_global
+  excludesfile = /home/haakenlid/.gitignore_global
   autocrlf = input
   whitespace = fix,space-before-tab,tab-in-indent,trailing-space
-[push]
-	default = simple
 [apply]
   whitespace = fix
 [alias]

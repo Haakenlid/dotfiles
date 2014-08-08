@@ -7,8 +7,6 @@
 	excludesfile = /home/haakenlid/.gitignore_global
   autocrlf = input
   whitespace = fix,space-before-tab,tab-in-indent,trailing-space
-[push]
-	default = simple
 [apply]
   whitespace = fix
 [alias]

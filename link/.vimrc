@@ -81,7 +81,7 @@ endif
 
 " Required:
 " call neobundle#end()
-" 
+"
 " Required:
 " filetype plugin indent on
 
@@ -92,17 +92,11 @@ endif
 
 "Powerline Scripts -------------------------
 
-<<<<<<< HEAD
 python3 import sys
 python3 sys.path.append('/home/haakenlid/.local/lib/python3.4/site-packages/')
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
-=======
-" python3 from powerline.vim import setup as powerline_setup
-" python3 powerline_setup()
-" python3 del powerline_setup
->>>>>>> d4e9edbfcceb9c99ea3a67fc2dcb397b5933e52b
 
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)

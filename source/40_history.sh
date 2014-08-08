@@ -1,7 +1,5 @@
 # History settings
 
-# Allow use to re-edit a faild history substitution.
-
 export HISTTIMEFORMAT="[%F %T] "
 export HISTCONTROL=ignoreboth            # no duplicate entries
 export HISTSIZE=100000                   # big big history
@@ -29,9 +27,6 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # http://ss64.com/bash/history.html
 
-# Easily re-execute the last history command.
-alias r="fc -s"
-
 # up and down arrow searches history from input.
 
 # bind '"\e[A": history-search-backward'
@@ -39,7 +34,7 @@ alias r="fc -s"
 
 alias timestamp="date -d 'today' +'%Y-%m-%d_%H:%M:%S'"
 
-function cleanhistory() {
+function clean_history() {
     mkdir -p $HOME/.backup
     BACKUP=$HOME/.backup/.bash_history_$(timestamp).backup
     cp $HOME/.bash_history $BACKUP

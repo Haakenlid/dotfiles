@@ -118,10 +118,11 @@ function prompt_svn() {
 
 function prompt_command() {
   local exit_code=$?
+
   # If the first command in the stack is prompt_command, no command was run.
-    # Set exit_code to 0 and reset the stack.
-  [[ "${prompt_stack[0]}" == "prompt_command" ]] && exit_code=0
-  prompt_stack=()
+  this_command=$(history | tail -n1)
+  [[ "$this_command" == "$that_command" ]] && exit_code=0
+  that_command=$this_command
 
   # Manually load z here, after $? is checked, to keep $? from being clobbered.
   [[ "$(type -t _z)" ]] && _z --add "$(pwd -P 2>/dev/null)" 2>/dev/null
@@ -152,12 +153,4 @@ function prompt_command() {
   # 12:49:29 ⌛ 2014-08-04 / 127 $
 }
 
-# We don't need to set this multiple times.
-if [ -z "$PROMPT_COMMAND_CHANGED" ]; then
-  # Maintain a per-execution call stack.
-  prompt_stack=()
-  trap 'prompt_stack=("${prompt_stack[@]}" "$BASH_COMMAND")' DEBUG
-  export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"
-  export PROMPT_COMMAND_CHANGED=1
-fi
-
+export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"

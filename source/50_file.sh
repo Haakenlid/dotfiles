@@ -8,7 +8,7 @@ export LS_COLORS='di=33:ln=01;32:pi=40;33:bd=40;33:cd=33;01:ow=40;33:ex=35;01:'
 
 # Directory listing
 # alias ll='tree -tapughDFiCL 1 --dirsfirst --timefmt "%Y-%m-%d %H:%M"'
-alias ll='ls -alFh --time-style=+"%Y-%m-%d %H:%M" | sed "s/^\(..........\) ...\(....\)......\(....\)..... \(....\) \(....-..-..\) \(..:..\)/\x1b[0m\1  \x1b[97m\2 \x1b[0m\3  \x1b[97m\4  \x1b[0m\5 \x1b[97m\6\x1b[0m /"'
+alias ll='ls -alFh --time-style=+"%Y-%m-%d %H:%M" | sed "s/^\(..........\) ...\(\S...\).* \(\S...\).* \(....\) \(....-..-..\) \(..:..\)/\x1b[0m\1  \x1b[97m\2 \x1b[0m\3  \x1b[97m\4  \x1b[0m\5 \x1b[97m\6\x1b[0m /"'
 alias lsd='CLICOLOR_FORCE=1 ll | grep --color=never "^d"'
 alias tree="tree -ACF --dirsfirst -L 2 --filelimit 100"
 

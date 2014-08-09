@@ -92,11 +92,11 @@ endif
 
 "Powerline Scripts -------------------------
 
-python3 import sys
-python3 sys.path.append('/home/haakenlid/.local/lib/python3.4/site-packages/')
-python3 from powerline.vim import setup as powerline_setup
-python3 powerline_setup()
-python3 del powerline_setup
+python import os, sys
+python sys.path.append(os.getenv('HOME')+'/.dotfiles/powerline/')
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
 
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)

@@ -1,0 +1,103 @@
+# a basic .muttrc for use with Gmail
+# http://www.mutt.org/doc/manual/manual-2.html
+# http://www.bartbania.com/index.php/consolify-your-gmail-with-mutt/
+
+set imap_user = $GOOGLE_USER@gmail.com
+set imap_pass = $GOOGLE_PASSWORD
+set smtp_url = smtp://$GOOGLE_USER@smtp.gmail.com:587/
+set smtp_pass = $GOOGLE_PASSWORD
+set from = $GOOGLE_USER@gmail.com
+set realname = "Håken Lid"
+
+#======================================================#
+# Boring details
+set use_from = yes
+set envelope_from ="yes"
+
+# If not set in environment variables:
+# set spoolfile = /var/spool/mail/haakenlid
+
+#======================================================#
+# Folders
+# set folder ="~/Mail"                # Mailboxes in here
+set record ="+sent"                 # where to store sent messages
+set postponed ="+postponed"         # where to store draft messages
+
+bind editor <space> noop
+macro index gi "<change-folder>=INBOX<enter>" "Go to inbox"
+macro index ga "<change-folder>=[Google Mail]/All Mail<enter>" "Go to all mail"
+macro index gs "<change-folder>=[Google Mail]/Sent Mail<enter>" "Go to Sent Mail"
+macro index gd "<change-folder>=[Google Mail]/Drafts<enter>" "Go to drafts"
+
+# SECURING
+set move = no  #Stop asking to "move read messages to mbox"!
+set imap_keepalive = 900
+
+# REMOTE GMAIL FOLDERS
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed ="+[Google Mail]/Drafts"
+set trash = "+[Google Mail]/Trash"
+# set any_label = "+[Google Mail]/any_label"
+
+# LOCAL FOLDERS FOR CACHED HEADERS AND CERTIFICATES
+set header_cache =~/.mutt/cache/headers
+set message_cachedir =~/.mutt/cache/bodies
+set certificate_file =~/.mutt/certificates
+
+#======================================================#
+# Watch these mailboxes for new mail:
+# mailboxes ! +Fetchmail +slrn +mutt
+set sort_browser=alpha    # Sort mailboxes by alpha(bet)
+
+#======================================================#
+# Order of headers and what to show
+# hdr_order Date: From: User-Agent: X-Mailer \
+          # To: Cc: Reply-To: Subject:
+# ignore *
+# unignore Date: From: User-Agent: X-Mailer  \
+         # To: Cc: Reply-To: Subject:
+
+#======================================================#
+# which editor do you want to use?
+# vim of course!
+set editor="vim -c 'set tw=70 et' '+/^$' "
+set edit_headers          # See the headers when editing
+auto_view text/html       # settings in .mailcap file
+alternative_order text/plain text/enriched text/html     # save html for lastk
+
+#======================================================#
+# Aliases
+set sort_alias=alias     # sort aliases in alpha order by alias name
+
+#======================================================#
+# Odds and ends
+set markers          # mark wrapped lines of text in the pager with a +
+set smart_wrap       # Don't wrap mid-word
+set pager_context=5  # Retain 5 lines of previous page when scrolling.
+set status_on_top    # Status bar on top.
+push <show-version>  # Shows mutt version at startup
+
+#======================================================#
+# Index Key Bindings
+bind index gg       first-entry
+bind index G        last-entry
+
+bind index R        group-reply
+bind index <tab>    sync-mailbox
+# bind index <space>  collapse-thread
+
+# Ctrl-R to mark all as read
+# macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
+# Sync email
+macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
+macro index o "<shell-escape>offlineimap -qf INBOX<enter>" "run offlineimap to sync inbox"
+
+# Saner copy/move dialogs
+macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
+macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+# Browse up and down
+bind index K previous-page
+bind index J next-page

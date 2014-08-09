@@ -48,16 +48,16 @@ function gmail(){
       read -p 'username:  ' GOOGLE_USER
     fi
 
-    if [[ ! $GOOGLE_USER =~ @ ]]; then
-      GOOGLE_USER="$GOOGLE_USER"@gmail.com
-    fi
-
     if [[ -z $GOOGLE_PASSWORD ]]; then
       read -p 'password:  ' GOOGLE_PASSWORD # to hide password input use "read -s -p"
     fi
 
-    LOGIN="$GOOGLE_USER":"$GOOGLE_PASSWORD"
-    echo -e "\nFetching new mail from $GOOGLE_USER\n"
+    if [[ ! $GOOGLE_USER =~ @ ]]; then
+      local LOGIN="$GOOGLE_USER"@gmail.com:"$GOOGLE_PASSWORD"
+    else
+      local LOGIN="$GOOGLE_USER":"$GOOGLE_PASSWORD"
+    fi
+    echo -e "\nFetching new mail for $GOOGLE_USER\n"
 
     OUTPUT=$(curl -u $LOGIN --silent "https://mail.google.com/mail/feed/atom")
 

@@ -66,12 +66,3 @@ Desktop.ini
 *.sublime-project
 *.sublime-workspace
 
-# Python compiled files #
-#########################
-*.pyc
-__pycache__
-
-# Sublime Text #
-################
-*.sublime-project
-*.sublime-workspace

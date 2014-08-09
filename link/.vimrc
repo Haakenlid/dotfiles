@@ -92,12 +92,14 @@ endif
 "End NeoBundle Scripts-------------------------
 
 "Powerline Scripts -------------------------
-
-python import os, sys
-python sys.path.append(os.getenv('HOME')+'/.dotfiles/powerline/')
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+try
+    python import os, sys
+    python sys.path.append(os.getenv('HOME')+'/.dotfiles/powerline/')
+    python from powerline.vim import setup as powerline_setup
+    python powerline_setup()
+    python del powerline_setup
+catch
+endtry
 
 set laststatus=2 " Always display the statusline in all windows
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)

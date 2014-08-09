@@ -125,3 +125,9 @@ function colormap(){
     done
   done
 }
+function wp(){
+
+  COLUMNS=`tput cols`
+  dig +short txt ${1}.wp.dg.cx | sed -e 's/" "//g' -e 's/^"//g' -e 's/"$//g' -e 's/ http:/\n\nhttp:/' | fmt -w $COLUMNS
+
+}

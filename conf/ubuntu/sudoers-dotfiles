@@ -6,4 +6,3 @@ Cmnd_Alias APT = /usr/bin/apt-get
 
 # Members of the sudo and admin groups can run these commands without password.
 %sudo ALL=(ALL) ALL, NOPASSWD:APT
-%admin ALL=(ALL) ALL, NOPASSWD:APT

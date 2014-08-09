@@ -2,7 +2,7 @@
 export EDITOR='vim -w'
 export LESSEDIT='vim %f'
 export GIT_EDITOR='vim'
-export VISUAL="$EDITOR"
+export VISUAL='vim'
 alias q='subl'
 alias q.='q .'
 set -o vi # vim keybindings in bash

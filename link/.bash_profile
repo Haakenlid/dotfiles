@@ -1,3 +1,3 @@
-if [ -f ~/.bashrc ]; then
-  source ~/.bashrc
+if [ -f ~/.bashrc && -z $PS1 ]; then
+  # source ~/.bashrc
 fi

@@ -17,7 +17,7 @@ fi
 export PYTHONPATH=$PYTHONPATH:/usr/bin/
 
 # dont freeze terminal by pressing Ctrl-S
-stty -ixon
+stty -ixon >& /dev/null
 
 # use tmux by default
 # if which tmux 2>&1 >/dev/null; then

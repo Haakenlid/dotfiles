@@ -3,4 +3,3 @@
 export POWERLINE_NO_BASH_PROMPT="True"
 source ~/.dotfiles/powerline/powerline/bindings/bash/powerline.sh
 export PATH="$PATH:$HOME/.dotfiles/powerline/scripts:"
-

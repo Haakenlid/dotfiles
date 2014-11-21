@@ -8,6 +8,7 @@
 *.so
 __pycache__
 *.pyc
+.sass-cache
 
 # Temporary files #
 ###################

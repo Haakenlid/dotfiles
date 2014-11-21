@@ -1,7 +1,7 @@
 # Files will be created with these permissions:
 # files 644 -rw-r--r-- (666 minus 022)
 # dirs  755 drwxr-xr-x (777 minus 022)
-umask 022
+umask 002
 
 alias ls="command ls --color"
 export LS_COLORS='di=33:ln=01;32:pi=40;33:bd=40;33:cd=33;01:ow=40;33:ex=35;01:'

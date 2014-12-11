@@ -3,13 +3,20 @@
 
 _workon()
 {
-  command -v django-admin >/dev/null 2>&1 || fc -s workon
+  command -v django-admin >/dev/null 2>&1 || fc -s 'workon'
 }
 
 notebook()
 {
   _workon
   fc -s 'django-admin shell_plus --notebook'
+  reset
+}
+
+sasswatch()
+{
+  _workon
+  fc -s 'sass --watch'
   reset
 }
 

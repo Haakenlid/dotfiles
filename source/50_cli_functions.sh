@@ -1,3 +1,4 @@
+
 function tit() {
   # sets terminal window title
   TITLE=${1:-`pwd`}

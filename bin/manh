@@ -40,4 +40,4 @@ $(man "$@" 2>/dev/null | man2html -bare -nodepage)
 EOF
 
 # Open HTML (if it does exist).
-[[ -e "$file" ]] && open "$file"
+[[ -e "$file" ]] && gnome-open "$file"

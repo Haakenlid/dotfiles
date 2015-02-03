@@ -1,6 +1,7 @@
 # Spotifiy shortcuts
 
 program_exists () {
+  # test that program exists
   type "$1" &> /dev/null ;
 }
 

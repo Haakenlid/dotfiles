@@ -4,17 +4,14 @@
 SYMBOL="▶"
 
 function start_spotify() {
-  echo -n "Starting spotify "
-	(nohup spotify >& /dev/null)&
-  disown
-  for i in {1..25}; do echo -n '.'; sleep .1; done
-  echo -en '\rSpotify is running.                         \n'
+  echo "Starting spotify"
+	(nohup spotify >& /dev/null) & disown
 }
 
 if [ "$(pidof spotify)" = "" ]
   then
   start_spotify
-  ARG="play"
+  exit 0
 else
   ARG="$1"
 fi
@@ -39,23 +36,45 @@ function trackinfo() {
   echo -e "\n $SYMBOL\e[1;49;92m $TITLE \e[0;1m– $ARTIST –\e[0;0;0m $ALBUM"
 }
 
+function usage_spotify() {
+    SYMBOL=$(playerstatus)
+    echo "Command line Spotify controller."
+    echo "usage sptfy [ volume (value) | play | next | back | kill ]"
+    echo "volume:  $(amixer get Master | egrep -o "[0-9]+%") "
+    trackinfo
+}
 
 case $ARG in
   "volume")
+    # change OS volume
     case $2 in
-      "-") amixer -D pulse sset Master 10%- > /dev/null ;;
-      "--") amixer -D pulse sset Master 20%- > /dev/null ;;
-      "---") amixer -D pulse sset Master 30%- > /dev/null ;;
-      "----") amixer -D pulse sset Master 50%- > /dev/null ;;
-      "-----") amixer -D pulse sset Master 80%- > /dev/null ;;
-      "+") amixer -D pulse sset Master 10%+ > /dev/null ;;
-      "++") amixer -D pulse sset Master 30%+ > /dev/null ;;
-      "+++") amixer -D pulse sset Master 100%+ > /dev/null ;;
-      "++++") amixer -D pulse sset Master 200%+ > /dev/null ;;
-      "+++++") amixer -D pulse sset Master 500%+ > /dev/null ;;
-      "max") amixer -D pulse sset Master 100% > /dev/null ;;
-      *) echo "volume:  $(amixer get Master | egrep -o "[0-9]+%") " ;;
+      "-") VOLUME="10%-" ;;
+      "--") VOLUME="20%-" ;;
+      "---") VOLUME="30%-" ;;
+      "----") VOLUME="50%-" ;;
+      "-----") VOLUME="80%-" ;;
+      "+") VOLUME="10%+" ;;
+      "++") VOLUME="30%+" ;;
+      "+++") VOLUME="100%+" ;;
+      "++++") VOLUME="200%+" ;;
+      "+++++") VOLUME="500%+" ;;
+      "max") VOLUME="100%" ;;
+      *)
+        if [[ $2 =~ ^[0-9]$ ]]; then
+          VOLUME=$(($2*10))%
+        else
+          VOLUME=""
+        fi
+      ;;
     esac
+    if [[ -n $VOLUME ]]; then
+      amixer -D pulse sset Master "$VOLUME" > /dev/null
+      sleep .4
+      NEW_VOLUME=$(amixer get Master | egrep -o "[0-9]+%")
+      echo "volume: $NEW_VOLUME"
+    else
+      usage_spotify
+    fi
     ;;
   "play")
     dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause > /dev/null
@@ -78,9 +97,6 @@ case $ARG in
     echo "Spotify closed."
     ;;
   *)
-    echo "Command line Spotify controller."
-    echo "usage sptfy [ volume (value) | play | next | back | kill ]"
-    SYMBOL=$(playerstatus)
-    trackinfo
+    usage_spotify
     ;;
 esac

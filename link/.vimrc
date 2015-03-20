@@ -2,12 +2,16 @@ set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set nu
+set rnu
 set listchars=tab:>-,extends:>,precedes:<
 set list
 set mouse=a
 set backspace=indent,eol,start
 filetype indent plugin on
+
+au FocusLost * :set number
+au FocusGained * :set relativenumber
+syntax on
 
 imap jj <Esc>
 

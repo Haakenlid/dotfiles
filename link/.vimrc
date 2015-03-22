@@ -2,18 +2,23 @@ set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set rnu
+set rnu 
+set nu 
 set listchars=tab:>-,extends:>,precedes:<
 set list
 set mouse=a
 set backspace=indent,eol,start
-filetype indent plugin on
+set cursorline
+hi CursorLine   cterm=NONE ctermbg=235 
+hi CursorLineNr cterm=bold ctermfg=Yellow ctermbg=235 
+
+filetype indent plugin on 
 
 au FocusLost * :set number
 au FocusGained * :set relativenumber
 syntax on
 
-imap jj <Esc>
+imap jj <Esc> 
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %

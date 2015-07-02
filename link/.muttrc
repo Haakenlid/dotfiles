@@ -101,3 +101,4 @@ macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 # Browse up and down
 bind index K previous-page
 bind index J next-page
+source ~/.dotfiles/link/mutt-colors-solarized-dark-256.muttrc

@@ -46,13 +46,7 @@ Note:
 ### Actual Installation
 
 ```sh
-bash -c "$(curl -fsSL https://bit.ly/cowboy-dotfiles)" && source ~/.bashrc
-```
-
-If, for some reason, [bit.ly](https://bit.ly/) is down, you can use the canonical URL.
-
-```sh
-bash -c "$(curl -fsSL https://raw.github.com/cowboy/dotfiles/master/bin/dotfiles)" && source ~/.bashrc
+bash -c "$(curl -fsSL https://raw.github.com/haakenlid/dotfiles/master/bin/dotfiles)" && source ~/.bashrc
 ```
 
 ## The "init" step
@@ -77,7 +71,7 @@ A whole bunch of things will be installed, but _only_ if they aren't already.
 ### Ubuntu
 * APT packages
   * tree
- 
+
 
 ## The ~/ "copy" step
 Any file in the `copy` subdirectory will be copied into `~/`. Any file that _needs_ to be modified with personal information (like [.gitconfig](copy/.gitconfig) which contains an email address and private key) should be _copied_ into `~/`. Because the file you'll be editing is no longer in `~/.dotfiles`, it's less likely to be accidentally committed into your public dotfiles repo.
@@ -100,13 +94,13 @@ I think [my bash prompt](source/50_prompt.sh) is awesome. It shows git and svn r
 
 Git repos display as **[branch:flags]** where flags are:
 
-**?** untracked files  
-**!** changed (but unstaged) files  
+**?** untracked files
+**!** changed (but unstaged) files
 **+** staged files
 
 SVN repos display as **[rev1:rev2]** where rev1 and rev2 are:
 
-**rev1** last changed revision  
+**rev1** last changed revision
 **rev2** revision
 
 Check it out:
@@ -114,11 +108,11 @@ Check it out:
 ![My awesome bash prompt](http://farm8.staticflickr.com/7142/6754488927_563dd73553_b.jpg)
 
 ## Inspiration
-<https://github.com/gf3/dotfiles>  
-<https://github.com/mathiasbynens/dotfiles>  
+<https://github.com/gf3/dotfiles>
+<https://github.com/mathiasbynens/dotfiles>
 (and 15+ years of accumulated crap)
 
 ## License
-Copyright (c) 2013 "Cowboy" Ben Alman  
-Licensed under the MIT license.  
+Copyright (c) 2013 "Cowboy" Ben Alman
+Licensed under the MIT license.
 <http://benalman.com/about/license/>

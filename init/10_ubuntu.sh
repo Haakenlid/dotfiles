@@ -13,21 +13,14 @@ if [[ ! -e "$sudoers_dest" || "$sudoers_dest" -ot "$sudoers_src" ]]; then
 The sudoers file can be updated to allow certain commands to be executed
 without needing to use sudo. This is potentially dangerous and should only
 be attempted if you are logged in as root in another shell.
-
-# This will be skipped if "Y" isn't pressed within the next 15 seconds.
 EOF
-  # read -N 1 -t 15 -p "Update sudoers file? [y/N] " update_sudoers; echo
-  # if [[ "$update_sudoers" =~ [Yy] ]]; then
-    e_header "Updating sudoers"
-    visudo -cf "$sudoers_src" >/dev/null && {
-      sudo cp "$sudoers_src" "$sudoers_dest" &&
-      sudo chmod 0440 "$sudoers_dest"
-    } >/dev/null 2>&1 &&
-    echo "File $sudoers_dest updated." ||
-    echo "Error updating $sudoers_dest file."
-  # else
-    # echo "Skipping."
-  # fi
+  e_header "Updating sudoers"
+  visudo -cf "$sudoers_src" >/dev/null && {
+    sudo cp "$sudoers_src" "$sudoers_dest" &&
+    sudo chmod 0440 "$sudoers_dest"
+  } >/dev/null 2>&1 &&
+  echo "File $sudoers_dest updated." ||
+  echo "Error updating $sudoers_dest file."
 fi
 
 # Update APT.
@@ -38,6 +31,8 @@ sudo apt-get -qq dist-upgrade
 # Install APT packages.
 packages=(
   tree
+  htop
+  grc
 )
 
 list=()

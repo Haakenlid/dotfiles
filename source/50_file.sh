@@ -19,10 +19,12 @@ function lesser(){
     # rm ~/.lessertmp
   fi
 }
+function LL() {
+  ls -AlFh --time-style=+"%Y-%m-%d %H:%M" "$@"
+}
 
 function ll() {
-ls -AlFh --time-style=+"%Y-%m-%d %H:%M" "$@" \
-| sed "s/^\(\S*\)\s*\S* \(\S....\).* \(\S....\).* \(....\) \(....-..-..\) \(..:..\)"\
+LL | sed "s/^\([dlrwxs-]*\)[ 0-9]*\(\S...\).* \(\S...\).*\? \(....\) \(....-..-..\) \(..:..\)"\
 "/\x1b[0m\1  \x1b[97m\2 \x1b[0m\3  \x1b[97m\4  \x1b[0m\5 \x1b[97m\6\x1b[0m/"\
 | lesser
 }

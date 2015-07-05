@@ -16,3 +16,7 @@ alias nocolor='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"'
 
 # failed experiment
 # alias cd!='cd $(fc -r | grep -m1 -o "/.*/")'
+
+mcd () {
+  mkdir -p $1 && cd $1
+}

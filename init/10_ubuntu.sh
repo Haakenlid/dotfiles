@@ -9,11 +9,6 @@ sudoers_file="sudoers-dotfiles"
 sudoers_src=~/.dotfiles/conf/ubuntu/$sudoers_file
 sudoers_dest="/etc/sudoers.d/$sudoers_file"
 if [[ ! -e "$sudoers_dest" || "$sudoers_dest" -ot "$sudoers_src" ]]; then
-  cat <<EOF
-The sudoers file can be updated to allow certain commands to be executed
-without needing to use sudo. This is potentially dangerous and should only
-be attempted if you are logged in as root in another shell.
-EOF
   e_header "Updating sudoers"
   visudo -cf "$sudoers_src" >/dev/null && {
     sudo cp "$sudoers_src" "$sudoers_dest" &&
@@ -33,6 +28,7 @@ packages=(
   tree
   htop
   grc
+  vim
 )
 
 list=()

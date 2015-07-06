@@ -1,5 +1,8 @@
 # History settings
 
+# make sure there's a bach_history file
+touch ~/.bash_history
+
 export HISTTIMEFORMAT="[%F %T] "
 export HISTCONTROL=ignoreboth            # no duplicate entries
 export HISTSIZE=100000                   # big big history

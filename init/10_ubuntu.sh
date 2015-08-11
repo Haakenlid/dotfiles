@@ -21,7 +21,7 @@ fi
 # Update APT.
 e_header "Updating APT"
 sudo apt-get update
-sudo apt-get dist-upgrade
+sudo apt-get dist-upgrade -y
 
 # Install APT packages.
 packages=(

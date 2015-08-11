@@ -1,3 +1,18 @@
+function change() {
+  needle=$1
+  replacement=$2
+  extension=$3
+  if [[ -z "$replacement" ]]; then
+    echo "usage: change needle replacement [extension]"
+    return 1
+  fi
+  if [[ -z "$extension" ]]; then
+    ag -l "$needle" | xargs -I @ sed -i s/$needle/$replacement/g @
+  else
+    ag -lG="*.$extension" "$needle" | xargs -I @ sed -i s/$needle/$replacement/g @
+  fi
+}
+
 
 function tit() {
   # sets terminal window title

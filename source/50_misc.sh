@@ -6,14 +6,9 @@ export LESS=-XR
 # SSH auto-completion based on entries in history.
 complete -W "$(echo $(cat ~/.bash_history | sed -n 's/^ssh \([^ ]*@[^ ]*\).*/\1/p'|sort -u))" ssh sshfs
 
-# sets up virtualenvwrapper
-if [[ -e ~/.virtualenvs ]] && [[ ! -e ~/.venvs ]]; then
-  ln -Ts ~/.virtualenvs ~/.venvs
-fi
-
 if [[ -e /usr/local/bin/virtualenvwrapper.sh ]]; then
   source /usr/local/bin/virtualenvwrapper.sh
-  export WORKON_HOME=~/.venvs/
+  export WORKON_HOME=~/.virtualenvs/
   export VIRTUALENVWRAPPER_LOG_DIR="$WORKON_HOME"
   export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
 fi

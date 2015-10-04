@@ -82,6 +82,8 @@ push <show-version>  # Shows mutt version at startup
 # Index Key Bindings
 bind index gg       first-entry
 bind index G        last-entry
+bind index K        previous-unread
+bind index J        next-unread
 
 bind index R        group-reply
 bind index <tab>    sync-mailbox
@@ -89,6 +91,9 @@ bind index <tab>    sync-mailbox
 
 # Ctrl-R to mark all as read
 # macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
+# Ctrl-B to open urls with w3m
+macro pager \Cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
 
 # Sync email
 macro index O "<shell-escape>offlineimap<enter>"           "run offlineimap to sync all mail"
@@ -99,6 +104,6 @@ macro index C "<copy-message>?<toggle-mailboxes>" "copy a message to a mailbox"
 macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
 # Browse up and down
-bind index K previous-page
-bind index J next-page
+# bind index K previous-page
+# bind index J next-page
 source ~/.dotfiles/link/mutt-colors-solarized-dark-256.muttrc

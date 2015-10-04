@@ -13,7 +13,11 @@ if [[ -e /usr/local/bin/virtualenvwrapper.sh ]]; then
   export VIRTUALENVWRAPPER_HOOK_DIR="$WORKON_HOME"
 fi
 
-export PYTHONPATH=$PYTHONPATH:/usr/bin/
+export PYTHONPATH="$PYTHONPATH:/usr/bin/"
+
+# access npm packages intalled in home
+# npm config set prefix '~/.npm-packages'
+export PATH="$PATH:$HOME/.npm-packages/bin"
 
 # dont freeze terminal by pressing Ctrl-S
 stty -ixon >& /dev/null

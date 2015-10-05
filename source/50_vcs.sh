@@ -15,8 +15,8 @@ alias gm='git commit -m'
 alias gma='git commit --all -m'
 alias gb='git branch'
 alias gba='git branch -a'
-function gc() { git checkout "${@:-master}"; } # Checkout master by default
-alias gco='gc'
+# function gc() { git checkout "${@:-master}"; } # Checkout master by default
+alias gc='git checkout'
 alias gcb='gc -b'
 alias gr='git remote'
 alias grv='gr -v'
@@ -68,12 +68,4 @@ AWK
 # Just the last few commits, please!
 for n in {1..5}; do alias gf$n="gf -n $n"; done
 
-# OSX-specific Git shortcuts
-if [[ "$OSTYPE" =~ ^darwin ]]; then
-  alias gdk='git ksdiff'
-  alias gdkc='gdk --cached'
-  alias gt='gittower -s'
-  if [[ ! "$SSH_TTY" ]]; then
-    alias gd='gdk'
-  fi
-fi
+

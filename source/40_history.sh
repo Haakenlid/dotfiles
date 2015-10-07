@@ -1,8 +1,8 @@
 # History settings
 
 # make sure there's a bash_history file
-if tty -s; then
-    touch ~/.bash_history
+if [ ! -f $HOME/.bash_history ]; then
+    touch $HOME/.bash_history
 fi
 
 export HISTTIMEFORMAT="[%F %T] "

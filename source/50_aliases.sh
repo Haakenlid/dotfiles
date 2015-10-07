@@ -1,5 +1,10 @@
 # Spotifiy shortcuts
 
+alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
+# alias TASSEN='ssh universitas.no'
+# alias FUNKY='ssh funkytime.no'
+alias soba='source $HOME/.bashrc'
+
 program_exists () {
   # test that program exists
   type "$1" &> /dev/null ;

@@ -1,7 +1,9 @@
 # History settings
 
-# make sure there's a bach_history file
-touch ~/.bash_history
+# make sure there's a bash_history file
+if tty -s; then
+    touch ~/.bash_history
+fi
 
 export HISTTIMEFORMAT="[%F %T] "
 export HISTCONTROL=ignoreboth            # no duplicate entries

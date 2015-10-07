@@ -1,8 +1,8 @@
 # Spotifiy shortcuts
 
-alias uio-ssh='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
-alias tassen-ssh='ssh -t universitas.no "_workon; bash"'
-alias funky-ssh='ssh -t funkytime.no "_workon; bash"'
+alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
+# alias TASSEN='ssh universitas.no'
+# alias FUNKY='ssh funkytime.no'
 alias soba='source $HOME/.bashrc'
 
 program_exists () {

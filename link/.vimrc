@@ -134,5 +134,29 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 " let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
-" map <Leader>j <Plug>(easymotion-j)
-" map <Leader>k <Plug>(easymotion-k)
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
+colorscheme molokai
+
+" NERDTree
+let NERDTreeShowHidden = 1
+nmap <C-N> :NERDTreeToggle<CR>
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" CTRL-P settings
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_max_height=15
+let g:ctrlp_match_window_reversed=0
+let g:ctrlp_show_hidden=1
+let g:ctrlp_mruf_max=500
+let g:ctrlp_clear_cache_on_exit=1
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+if executable('ag')
+  let g:ctrlp_user_command = 'ag %s -lS --hidden --nocolor -g ""'
+endif

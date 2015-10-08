@@ -14,7 +14,7 @@
       "priority": 10,
       "args": {
         "username": "haakenlid",
-        "password": "ubhkwfuohxodrsfq"
+        "password": ""
       }
     }, {
       "function": "powerline.segments.common.time.date",

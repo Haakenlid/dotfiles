@@ -112,7 +112,7 @@ NeoBundleCheck
 "Powerline Scripts -------------------------
 try
     python import os, sys
-    python sys.path.append(os.getenv('HOME')+'/.dotfiles/powerline/')
+    python sys.path.append(os.getenv('HOME')+'/.dotfiles/libs/powerline/')
     python from powerline.vim import setup as powerline_setup
     python powerline_setup()
     python del powerline_setup

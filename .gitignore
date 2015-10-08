@@ -1,7 +1,9 @@
+*SECRET*
+*LOCAL*
 caches/
 backups/
 link/.ssh/authorized_keys
 link/.ssh/id_*
 link/.ssh/known_hosts
-*SECRET*
-*LOCAL*
+link/.ptpython/history
+link/.vim/bundle/

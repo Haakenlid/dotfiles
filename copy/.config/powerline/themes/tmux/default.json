@@ -1,0 +1,24 @@
+{
+  "segments": {
+    "right": [{
+      "function": "powerline.segments.common.vcs.branch",
+      "name": "branch"
+    }, {
+      "function": "powerline.segments.common.env.virtualenv",
+      "name": "virtualenv"
+    }, {
+      "function": "powerline.segments.common.players.spotify",
+      "name": "player"
+    }, {
+      "function": "powerline.segments.common.mail.email_imap_alert",
+      "priority": 10,
+      "args": {
+        "username": "haakenlid",
+        "password": "ubhkwfuohxodrsfq"
+      }
+    }, {
+      "function": "powerline.segments.common.time.date",
+      "name": "tmux_date"
+    }]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "dividers": {
+    "left": {
+      "hard": " ",
+      "soft": " "
+    }
+  },
+  "spaces": 1,
+  "segment_data": {
+    "tmux_date": {
+      "args": {
+        "format": "%F ⌚ %T"
+      }
+    }
+  }
+}

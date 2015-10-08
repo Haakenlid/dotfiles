@@ -23,3 +23,6 @@ Desktop.ini
 .svn
 .hg
 
+# npm #
+#######
+node_modules

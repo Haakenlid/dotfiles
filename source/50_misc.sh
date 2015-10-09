@@ -22,9 +22,3 @@ export PATH="$PATH:$HOME/.npm-packages/bin"
 # dont freeze terminal by pressing Ctrl-S
 stty -ixon >& /dev/null
 
-# use tmux by default
-# if which tmux 2>&1 >/dev/null; then
-#     #if not inside a tmux session, and if no session is started, start a new session
-#     test -z "$TMUX" && (tmux attach || tmux new-session)
-# fi
-

@@ -6,5 +6,3 @@ link/.ssh/authorized_keys
 link/.ssh/id_*
 link/.ssh/known_hosts
 link/.ptpython/history
-link/.vim/bundle/
-link/.vim/.netrwhist

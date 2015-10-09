@@ -1,9 +1,11 @@
+imap jj <Esc>
+
 set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set rnu 
-set nu 
+set rnu
+set nu
 set listchars=tab:>-,extends:>,precedes:<
 set list
 set mouse=a
@@ -12,31 +14,38 @@ set cursorline
 set laststatus=2 " Always display the statusline in all windows
 set showtabline=2 " Always display the tabline, even if there is only one tab
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
-hi CursorLine   cterm=NONE ctermbg=235 
-hi CursorLineNr cterm=bold ctermfg=Yellow ctermbg=235 
 
-filetype indent plugin on 
+hi CursorLine   cterm=NONE ctermbg=235
+hi CursorLineNr cterm=bold ctermfg=Yellow ctermbg=235
+
+augroup vimrc
+  autocmd!
+augroup END
+
+" Splits
+set splitbelow " New split goes below
+set splitright " New split goes right
+
+filetype indent plugin on
 
 au FocusLost * :set number
 au FocusGained * :set relativenumber
 syntax on
 
-imap jj <Esc> 
+" Show absolute numbers in insert mode, otherwise relative line numbers.
+autocmd vimrc InsertEnter * :set norelativenumber
+autocmd vimrc InsertLeave * :set relativenumber
+
+" Make it obvious where 80 characters is
+set textwidth=80
+set colorcolumn=+1
+
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 
-inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 set dictionary="/usr/dict/words"
 
-"Use TAB to complete when typing words, else inserts TABs as usual.
-"Uses dictionary and source files to find matching words to complete.
-
-"See help completion for source,
-"Note: usual completion is on <C-n> but more trouble to press all the time.
-"Never type the same word twice and maybe learn a new spellings!
-"Use the Linux dictionary when spelling is in doubt.
-"Window users can copy the file to their machine.
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
@@ -53,6 +62,7 @@ function! Tab_Or_Complete()
         return "\<Tab>"
     endif
 endfunction
+inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 
 if ! has('gui_running')
     " set ttimeoutlen=10
@@ -63,51 +73,41 @@ if ! has('gui_running')
     augroup END
 endif
 
+" https://github.com/junegunn/vim-plug
+" Reload .vimrc and :PlugInstall to install plugins.
+call plug#begin('~/.vim/plugged')
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'ctrlpvim/ctrlp.vim'
 
-"NeoBundle Scripts-----------------------------
-" Note: Skip initialization for vim-tiny or vim-small.
-if 0 | endif
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'flazz/vim-colorschemes'
+" Plug 'Lokaltog/vim-easymotion'
 
-if has('vim_starting')
-  if &compatible
-    set nocompatible               " Be iMproved
-  endif
+" Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-eunuch'
 
-  " Required:
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
+" Plug 'fatih/vim-go', {'for': 'go'}
+" Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+" Plug 'mhinz/vim-signify'
+" Plug 'mattn/emmet-vim'
+" Plug 'mustache/vim-mustache-handlebars'
+" Plug 'chase/vim-ansible-yaml'
+" Plug 'wavded/vim-stylus'
+" Plug 'klen/python-mode', {'for': 'python'}
+" Plug 'terryma/vim-multiple-cursors'
+" Plug 'wting/rust.vim', {'for': 'rust'}
 
-" Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
+call plug#end()
 
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
 
-" My Bundles here:
-" Refer to |:NeoBundle-examples|.
-" Note: You don't set neobundle setting in .gvimrc!
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'kien/ctrlp.vim'
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-commentary'
-NeoBundle 'tpope/vim-repeat'
-
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-
-"End NeoBundle Scripts-------------------------
 
 "Powerline Scripts -------------------------
 try
@@ -119,8 +119,6 @@ try
 catch
 endtry
 
-set laststatus=2 " Always display the statusline in all windows
-set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 " let g:EasyMotion_do_mapping = 0 " Disable default mappings
 

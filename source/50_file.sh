@@ -24,7 +24,7 @@ function LL() {
 }
 
 function ll() {
-LL | sed "s/^\([dlrwxs-]*\)[ 0-9]\+\(\S...\).* \(\S...\).*\?\(....\) \(....-..-..\) \(..:..\)"\
+LL | sed "s/^\([dlrwxst-]*\)[ 0-9]\+\(\S...\).* \(\S...\).*\?\(....\) \(....-..-..\) \(..:..\)"\
 "/\x1b[0m\1  \x1b[97m\2 \x1b[0m\3  \x1b[97m\4  \x1b[0m\5 \x1b[97m\6\x1b[0m/"\
 | lesser
 }
@@ -37,17 +37,12 @@ function tre(){
 # Easier navigation: .., ..., -
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
 alias -- -='cd -'
 
 # File size
-alias fs="stat -f '%z bytes'"
+alias fs="stat -c '%s bytes'"
 alias df="df -h"
-
-# Recursively delete `.DS_Store` files
-alias dsstore="find . -name '*.DS_Store' -type f -ls -delete"
-
-# Aliasing eachdir like this allows you to use aliases/functions as commands.
-alias eachdir=". eachdir"
 
 # Create a new directory and enter it
 function md() {
@@ -56,5 +51,5 @@ function md() {
 
 # Fast directory switching
 _Z_NO_PROMPT_COMMAND=1
-_Z_DATA=~/.dotfiles/caches/.z
-. ~/.dotfiles/libs/z/z.sh
+_Z_DATA=~$DOTFILES/caches/.z
+. $DOTFILES/libs/z/z.sh

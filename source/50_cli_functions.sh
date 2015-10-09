@@ -130,9 +130,3 @@ function wp(){
   dig +short txt ${1}.wp.dg.cx | sed -e 's/" "//g' -e 's/^"//g' -e 's/"$//g' -e 's/ http:/\n\nhttp:/' | fmt -w $COLUMNS
 }
 
-
-# function $(){
-  # echo 'Quit pasting in commands from the internet, you lazy bum.'
-  # "$@"
-# }
-#alias '$'=lazy_bum

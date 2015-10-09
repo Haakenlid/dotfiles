@@ -324,5 +324,8 @@ if [[ "$backup" ]]; then
   echo -e "\nBackups were moved to ~/${backup_dir#$HOME/}"
 fi
 
+e_header "Updating vim plugins"
+vim +PlugUpdate +qa
+
 # All done!
 e_header "All done!"

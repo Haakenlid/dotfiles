@@ -46,7 +46,7 @@ cmap w!! w !sudo tee > /dev/null %
 
 set dictionary="/usr/dict/words"
 
-fun! <SID>StripTrailingWhitespaces()
+function! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
@@ -72,40 +72,6 @@ if ! has('gui_running')
         au InsertLeave * set timeoutlen=1000
     augroup END
 endif
-
-" https://github.com/junegunn/vim-plug
-" Reload .vimrc and :PlugInstall to install plugins.
-call plug#begin('~/.vim/plugged')
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tpope/vim-sensible'
-Plug 'davidhalter/jedi-vim'
-" Plug 'Shougo/neosnippet.vim'
-" Plug 'Shougo/neosnippet-snippets'
-" Plug 'flazz/vim-colorschemes'
-" Plug 'Lokaltog/vim-easymotion'
-
-" Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-vinegar'
-" Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-eunuch'
-
-" Plug 'fatih/vim-go', {'for': 'go'}
-" Plug 'nathanaelkane/vim-indent-guides'
-" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'mhinz/vim-signify'
-" Plug 'mattn/emmet-vim'
-" Plug 'mustache/vim-mustache-handlebars'
-" Plug 'chase/vim-ansible-yaml'
-" Plug 'wavded/vim-stylus'
-" Plug 'klen/python-mode', {'for': 'python'}
-" Plug 'terryma/vim-multiple-cursors'
-" Plug 'wting/rust.vim', {'for': 'rust'}
-
-call plug#end()
 
 
 
@@ -162,3 +128,39 @@ let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -lS --ignore=".git" --hidden --nocolor -g ""'
 endif
+
+" https://github.com/junegunn/vim-plug
+" Reload .vimrc and :PlugInstall to install plugins.
+call plug#begin('~/.vim/plugged')
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-sensible'
+Plug 'davidhalter/jedi-vim'
+Plug 'airblade/vim-gitgutter'
+" Plug 'Shougo/neosnippet.vim'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'flazz/vim-colorschemes'
+" Plug 'Lokaltog/vim-easymotion'
+
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-eunuch'
+
+" Plug 'fatih/vim-go', {'for': 'go'}
+" Plug 'nathanaelkane/vim-indent-guides'
+" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+" Plug 'mhinz/vim-signify'
+" Plug 'mattn/emmet-vim'
+" Plug 'mustache/vim-mustache-handlebars'
+" Plug 'chase/vim-ansible-yaml'
+" Plug 'wavded/vim-stylus'
+" Plug 'klen/python-mode', {'for': 'python'}
+" Plug 'terryma/vim-multiple-cursors'
+" Plug 'wting/rust.vim', {'for': 'rust'}
+
+call plug#end()
+

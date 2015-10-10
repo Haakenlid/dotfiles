@@ -5,6 +5,7 @@ Copy this file to ~/.ptpython/config.py
 """
 from __future__ import unicode_literals
 from prompt_toolkit.keys import Keys
+from prompt_toolkit.key_binding.vi_state import ViState, InputMode
 from pygments.token import Token
 from ptpython.layout import CompletionVisualisation
 
@@ -74,7 +75,7 @@ def configure(repl):
     repl.enable_system_bindings = True
 
     # Ask for confirmation on exit.
-    repl.confirm_exit = True
+    repl.confirm_exit = False
 
     # Enable input validation. (Don't try to execute when the input contains
     # syntax errors.)
@@ -102,6 +103,7 @@ def configure(repl):
         b = event.current_buffer
         if b.accept_action.is_returnable:
             b.accept_action.validate_and_handle(event.cli, b)
+
 
     """
     # Custom key binding for some simple autocorrection while typing.

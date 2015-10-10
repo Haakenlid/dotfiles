@@ -140,6 +140,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-sensible'
 Plug 'davidhalter/jedi-vim'
 Plug 'airblade/vim-gitgutter'
+Plug 'majutsushi/tagbar'
+
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'flazz/vim-colorschemes'
@@ -150,17 +152,11 @@ Plug 'airblade/vim-gitgutter'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-eunuch'
 
-" Plug 'fatih/vim-go', {'for': 'go'}
 " Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'mhinz/vim-signify'
 " Plug 'mattn/emmet-vim'
-" Plug 'mustache/vim-mustache-handlebars'
 " Plug 'chase/vim-ansible-yaml'
-" Plug 'wavded/vim-stylus'
-" Plug 'klen/python-mode', {'for': 'python'}
 " Plug 'terryma/vim-multiple-cursors'
-" Plug 'wting/rust.vim', {'for': 'rust'}
 
 call plug#end()
 

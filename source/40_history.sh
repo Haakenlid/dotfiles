@@ -6,13 +6,13 @@ if [ ! -f $HOME/.bash_history ]; then
 fi
 
 export HISTTIMEFORMAT="[%F %T] "
-export HISTCONTROL=ignoreboth            # no duplicate entries
+# export HISTCONTROL=ignoreboth            # no duplicate entries
 export HISTSIZE=100000                   # big big history
 export HISTFILESIZE=100000               # big big history
 export HISTIGNORE="cd *:df *:exit:fg:bg:file *:ll:ls:mc:top:clear:?q:z *:\$$?*"
 
 # Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 
 # KEY
 #    -c   Clear the history list. This may be combined with
@@ -72,7 +72,7 @@ function search_for_terms_in_history {
     local COLOR_INDEX=0
     local SEARCHTERMS=''
     local HITS_LENGTH=0
-    local DELIMITER='#CACHE'
+    local SENTINEL_VALUE='### ELEPHANT IN CAIRO ###'
     # lists command history, purging duplicates and stripping space at end of lines.
     local RESULT=$(HISTTIMEFORMAT='' history | sed 's/^ *[0-9]*//'| nl -n rz | sed 's/ \+$//' | sort -k2 | tac | uniq -f2 | sort | tac )
     # prepares history for searching.
@@ -94,9 +94,9 @@ function search_for_terms_in_history {
         RESULT=$( echo "$HITS" | nl --number-width=3 --number-separator='  ' | tac )
         # prepend to .bash_history so you can type !1 instead of !3412 to replay.
         echo "$HITS" | sed -r 's/\x1b\[[0-9;]*[Km]//g' > "$TEMP_HISTORY_FILE"
-        echo "$DELIMITER" >> "$TEMP_HISTORY_FILE"
-        if [[ $(grep "$DELIMITER" "$HISTORY_FILE") ]]; then
-            cat "$HISTORY_FILE" | sed "0,/^$DELIMITER$/d" >> "$TEMP_HISTORY_FILE"
+        echo "$SENTINEL_VALUE" >> "$TEMP_HISTORY_FILE"
+        if [[ $(grep "$SENTINEL_VALUE" "$HISTORY_FILE") ]]; then
+            cat "$HISTORY_FILE" | sed "0,/^$SENTINEL_VALUE$/d" >> "$TEMP_HISTORY_FILE"
         else
             cat "$HISTORY_FILE" >> "$TEMP_HISTORY_FILE"
         fi

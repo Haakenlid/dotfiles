@@ -82,7 +82,7 @@ def configure(repl):
     repl.enable_input_validation = True
 
     # Use this colorscheme for the code.
-    repl.use_code_colorscheme('pastie')
+    repl.use_code_colorscheme('monokai')
 
     # Install custom colorscheme named 'my-colorscheme' and use it.
     """

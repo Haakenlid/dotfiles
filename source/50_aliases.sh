@@ -3,7 +3,8 @@
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 # alias TASSEN='ssh universitas.no'
 # alias FUNKY='ssh funkytime.no'
-alias soba='source $HOME/.bashrc'
+alias nor='setxkbmap no' 
+alias eng='setxkbmap us' 
 
 program_exists () {
   # test that program exists

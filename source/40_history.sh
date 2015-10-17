@@ -12,7 +12,8 @@ export HISTFILESIZE=100000               # big big history
 export HISTIGNORE="cd *:df *:exit:fg:bg:file *:ll:ls:mc:top:clear:?q:z *:\$$?*"
 
 # Save and reload the history after each command finishes
-export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+# export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 
 # KEY
 #    -c   Clear the history list. This may be combined with

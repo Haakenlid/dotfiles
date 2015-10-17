@@ -1,0 +1,55 @@
+# This is a keynavrc file. Yours should live in 
+# $HOME/.keynavrc
+#
+# Other special values are:
+#   'clear' on a line by itself (no quotes) will erase all keybindings
+#   (including the defaults)
+#   'daemonize' on a line by itself (no quotes) will make keynav background
+#   after parsing the configfile and having no critical errors.
+# 
+
+# Project page; http://www.semicomplete.com/projects/keynav
+# Use 'daemonize' to background ourselves.
+#daemonize
+
+ctrl+period start
+ctrl+shift+period start, sh "xte 'mousermove 9999 9999'", end
+shift+period sh "xte 'mousermove 9999 9999'", end
+period warp, cursorzoom 300 300
+Return warp, cursorzoom 300 300, click 1
+Escape end
+q end
+
+
+# Zoom to the cursor location with a given height and width
+c cursorzoom 200 200
+
+h cut-left
+j cut-down
+k cut-up
+l cut-right
+shift+h move-left
+shift+j move-down
+shift+k move-up
+shift+l move-right
+
+space warp,click 1,end
+
+semicolon warp,end
+
+1 click 1
+2 click 2
+3 click 3
+
+# Zoom to the current window
+w windowzoom
+
+
+# Handy for holding ctrl while using keynav:
+ctrl+h cut-left
+ctrl+j cut-down
+ctrl+k cut-up
+ctrl+l cut-right
+
+### History
+a history-back

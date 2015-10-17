@@ -1,4 +1,6 @@
-imap jj <Esc>
+let mapleader=" "
+imap jj <esc>
+colorscheme molokai
 
 set autoindent
 set tabstop=4
@@ -12,7 +14,8 @@ set mouse=a
 set backspace=indent,eol,start
 set cursorline
 set laststatus=2 " Always display the statusline in all windows
-set showtabline=2 " Always display the tabline, even if there is only one tab
+" set showtabline=2 " Always display the tabline, even if there is only one tab
+set showtabline=1 
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 hi CursorLine   cterm=NONE ctermbg=235
@@ -27,9 +30,6 @@ set splitbelow " New split goes below
 set splitright " New split goes right
 
 filetype indent plugin on
-
-au FocusLost * :set number
-au FocusGained * :set relativenumber
 syntax on
 
 " Show absolute numbers in insert mode, otherwise relative line numbers.
@@ -75,35 +75,41 @@ endif
 
 
 
-"Powerline Scripts -------------------------
-try
-    python import os, sys
-    python sys.path.append(os.getenv('HOME')+'/.dotfiles/libs/powerline/')
-    python from powerline.vim import setup as powerline_setup
-    python powerline_setup()
-    python del powerline_setup
-catch
-endtry
+" Powerline Scripts -------------------------
+ try
+     python import os, sys
+     python sys.path.append(os.getenv('HOME')+'/.dotfiles/libs/powerline/')
+     python from powerline.vim import setup as powerline_setup
+     python powerline_setup()
+     python del powerline_setup
+ catch
+ endtry
 
 
-" let g:EasyMotion_do_mapping = 0 " Disable default mappings
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+map <Leader> <Plug>(easymotion-prefix)
 
-" Bi-directional find motion
+" Bi-directional find motions
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
-" nmap gt <Plug>(easymotion-s)
-" or
-" `s{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-" nmap s <Plug>(easymotion-s2)
+nmap s <Plug>(easymotion-s)
+" " Gif config
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+"
+" " These `n` & `N` mappings are options. You do not have to map `n` & `N` to
+" EasyMotion.
+" " Without these mappings, `n` & `N` works fine. (These mappings just provide
+" " different highlight method and have some other features )
+" map  n <Plug>(easymotion-next)
+" map  N <Plug>(easymotion-prev)
 
 " Turn on case sensitive feature
-" let g:EasyMotion_smartcase = 1
+let g:EasyMotion_smartcase = 1
 
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
-colorscheme molokai
 
 " NERDTree
 let NERDTreeShowHidden = 1
@@ -141,11 +147,11 @@ Plug 'tpope/vim-sensible'
 Plug 'davidhalter/jedi-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
+Plug 'easymotion/vim-easymotion'
 
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'flazz/vim-colorschemes'
-" Plug 'Lokaltog/vim-easymotion'
 
 " Plug 'tpope/vim-fugitive'
 " Plug 'tpope/vim-vinegar'
@@ -160,3 +166,8 @@ Plug 'majutsushi/tagbar'
 
 call plug#end()
 
+" Reload .vimrc on change
+augroup reload_vimrc " {
+    autocmd!
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+augroup END " }

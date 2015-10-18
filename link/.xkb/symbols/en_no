@@ -1,0 +1,16 @@
+partial partial alphanumeric_keys
+xkb_symbols "basic" {
+    name[Group1] = "Engelsk og Norsk"; 
+    include "us(altgr-intl)"
+    // My custom changes:
+    key <AE11> { [ minus, underscore, endash, emdash ] };
+    key <AD11> { [ bracketleft, braceleft, aring, Aring ] };
+    key <AC10> { [ semicolon, colon, oslash, Oslash ] };
+    key <AC11> { [ apostrophe, quotedbl, ae, AE ] };
+    key <AB08> { [ comma, less, guillemotleft ] };
+    key <AB09> { [ period, greater, guillemotright ] };
+    key <AB09> { [ period, greater, guillemotright ] };
+    key <CAPS> { [ Escape ] };
+    include "level3(ralt_switch)"
+};
+

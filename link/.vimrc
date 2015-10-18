@@ -138,6 +138,8 @@ endif
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -165,9 +167,3 @@ Plug 'easymotion/vim-easymotion'
 " Plug 'terryma/vim-multiple-cursors'
 
 call plug#end()
-
-" Reload .vimrc on change
-augroup reload_vimrc " {
-    autocmd!
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
-augroup END " }

@@ -1,0 +1,44 @@
+# ~/.tmuxinator/funky.yml
+
+name: tassen
+
+# Runs before everything. Use it to start daemons etc.
+# pre: /usr/bin/bash /srv/funkytime/venv/funkytime/bin/activate
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+# pre_window: source /srv/local.universitas.no/pyvenv/local.universitas.not/bin/activate
+pre_window: workon local.universitas.no
+
+windows:
+  - local:
+      layout: main-vertical
+      panes:
+          - vim:
+              - vim
+          - python:  
+              - django-admin shell_plus
+          - bash:
+              - clear;ls */ -d1
+  - server: 
+      layout: even-horizontal
+      panes: 
+          - linode:
+              - ssh universitas.no
+              - workon dev.universitas.no 
+              - clear;ls */ -d1
+          - ulrik: 
+              - ssh haakenl@login.uio.no
+              - cd /uio/kant/div-universitas-desken/
+              - clear;ls */ -d1
+                    
+                
+  - local-bg:                    
+      layout: main-vertical 
+      panes:
+          - bash:
+              - clear;ls */ -d1
+          - runserver:
+              - django-admin runserver_plus 
+          - notebook:
+              - django-admin shell_plus --notebook
+          - gulp:
+              - gulp

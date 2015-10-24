@@ -37,8 +37,8 @@ autocmd vimrc InsertEnter * :set norelativenumber
 autocmd vimrc InsertLeave * :set relativenumber
 
 " Make it obvious where 80 characters is
-set textwidth=80
-set colorcolumn=+1
+" set textwidth=80
+set colorcolumn=80
 
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.

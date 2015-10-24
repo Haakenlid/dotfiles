@@ -3,9 +3,14 @@
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 # alias TASSEN='ssh universitas.no'
 # alias FUNKY='ssh funkytime.no'
-alias eng='xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en_no $DISPLAY >& /dev/null'
-alias nor='setxkbmap -layout no -option caps:escape' 
-#alias eng='setxkbmap us' 
+alias nor=\
+"setxkbmap -layout no -option caps:escape"\
+" && echo 'norwegian keyboard'"
+
+alias eng=\
+"xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved"\
+" $DISPLAY >& /dev/null"\
+" && echo 'english (improved) keyboard'"
 
 program_exists () {
   # test that program exists

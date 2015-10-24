@@ -1,6 +1,6 @@
-partial partial alphanumeric_keys
+partial alphanumeric_keys
 xkb_symbols "basic" {
-    name[Group1] = "Engelsk og Norsk"; 
+    name[Group1] = "Norwgian glyphs"; 
     include "us(altgr-intl)"
     // My custom changes:
     key <AE11> { [ minus, underscore, endash, emdash ] };

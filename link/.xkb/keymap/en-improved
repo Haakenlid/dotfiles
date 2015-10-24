@@ -3,6 +3,6 @@ xkb_keymap {
 	xkb_types     { include "complete"	};
 	xkb_compat    { include "complete"	};
 	xkb_symbols   { include
-    "pc+us(altgr-intl)+inet(evdev)+en_no(basic)"};
+    "pc+us(altgr-intl)+inet(evdev)+norwegian(basic)"};
 	xkb_geometry  { include "pc(pc104)"	};
 };

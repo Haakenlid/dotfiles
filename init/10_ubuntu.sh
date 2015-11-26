@@ -38,22 +38,24 @@ sudo apt-get -qq update
 sudo apt-get -qq dist-upgrade
 
 # Install APT packages.
-packages=(
+apt_packages=(
   git
   htop
-  nmap
-  grc
   vim
   tree
   silversearcher-ag
-  cowsay
+  tmux
 )
 
-packages=($(setdiff "${packages[*]}" "$(dpkg --get-selections | grep -v deinstall | awk '{print $1}')"))
+apt_packages=($(setdiff "${packages[*]}" "$(dpkg --get-selections | grep -v deinstall | awk '{print $1}')"))
 
 if (( ${#packages[@]} > 0 )); then
   e_header "Installing APT packages: ${packages[*]}"
-  for package in "${packages[@]}"; do
+  for package in "${apt_packages[@]}"; do
     sudo apt-get -qq install "$package"
   done
 fi
+
+sudo gem install ghi
+sudo pip3 install ipython
+sudo pip3 install ptpython

@@ -1,7 +1,4 @@
-        
-function chrome() {
-    ((nohup google-chrome $* >& /dev/null) & disown >& /dev/null)
-}
+
 
 function change() {
   needle=$1
@@ -12,12 +9,16 @@ function change() {
     return 1
   fi
   if [[ -z "$extension" ]]; then
-    ag -l "$needle" | xargs -I @ sed -i s/$needle/$replacement/g @
+    # using ´ as separator in sed, since it's highly unlikely to be used in the input.
+    ag -l "$needle" | xargs -I @ sed -i "s#$needle#$replacement#g" @
   else
-    ag -lG="*.$extension" "$needle" | xargs -I @ sed -i s/$needle/$replacement/g @
+    ag -lG="*.$extension" "$needle" | xargs -I @ sed -i "s#$needle#$replacement#g" @
   fi
 }
 
+function chrome() {
+    ( (nohup google-chrome $* >& /dev/null) & disown >& /dev/null)
+}
 
 function tit() {
   # sets terminal window title

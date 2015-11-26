@@ -40,6 +40,8 @@ autocmd vimrc InsertLeave * :set relativenumber
 " set textwidth=80
 set colorcolumn=80
 
+" Run current file from command line with leader R
+:nnoremap <leader>r :!%:p 
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
@@ -113,7 +115,7 @@ map <Leader>k <Plug>(easymotion-k)
 
 " NERDTree
 let NERDTreeShowHidden = 1
-nmap <C-N> :NERDTreeToggle<CR>
+nmap <C-N> :NERDTreeToggle<CR> 
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__']
@@ -150,6 +152,8 @@ Plug 'davidhalter/jedi-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
 Plug 'easymotion/vim-easymotion'
+Plug 'Rykka/riv.vim'
+Plug 'Rykka/InstantRst'
 
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'

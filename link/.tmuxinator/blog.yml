@@ -1,0 +1,11 @@
+# ~/.tmuxinator/blog.yml
+
+name: blog
+root: /srv/nikola-blog/ 
+
+windows:
+  - editor:
+      layout: 6dc5,227x23,0,0{140x23,0,0,0,86x23,141,0,1}
+      panes:
+        - workon blog && vim
+        - workon blog

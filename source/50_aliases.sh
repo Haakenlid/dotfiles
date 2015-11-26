@@ -1,19 +1,24 @@
 # Remote servers
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
+
+# grep in glorious TECHNICOLOR
 alias grep='grep --color=auto'
 
-# Keyboard changes
-function nor() {
+# Better python repl
+alias pp=ptipython
+
+# Keyboard layout changes (only works if you have the keyboard layouts installed)
+function nor() {  # Norwegian
   setxkbmap -layout no -option caps:escape
   echo 'norwegian keyboard'
 }
-function eng() {
+function eng() {  # Like English – but better!
   xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY >& /dev/null
   echo 'english (improved) keyboard'
 }
 
+# test that program exists
 program_exists () {
-  # test that program exists
   type "$1" &> /dev/null ;
 }
 
@@ -25,8 +30,13 @@ if program_exists spotify; then
   alias sp='sptfy play'  # plauy / pause
 fi
 
+# remove ansi color codes. Nice for piping
 alias nocolor='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"'
 
+# make a directory and cd into it
 mcd () {
   mkdir -p $1 && cd $1
 }
+
+# You only live once
+alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay)" && git push --force'

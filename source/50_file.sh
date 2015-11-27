@@ -28,7 +28,7 @@ function ll() {
   awk '
   {if (NR!=1){
     printf "\x1b[0m%s  \x1b[97m%4.4s \x1b[0m%4.4s  \x1b[97m%4.4s  \x1b[0m%s \x1b[97m%s \x1b[0m%s\n",
-    $1,$3,$4,$5,$6,$7,$8}
+    $1,$3,$4,$5,$6,$7,substr($0, index($0,$8))}
   }' | lesser
 }
 

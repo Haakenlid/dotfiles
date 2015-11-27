@@ -19,35 +19,34 @@ export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
 #    -c   Clear the history list. This may be combined with
 #         the other options to replace the history list completely.
 #    -d offset
-#         Delete the history entry at position offset.
-#         offset should be specified as it appears when the history is displayed.
+#         Delete the history entry at position offset. offset should be
+#         specified as it appears when the history is displayed.
 #    -a   Append the new history lines (history lines entered since
 #         the beginning of the current Bash session) to the history file.
 #    -n   Append the history lines not already read from the history file
 #         to the current history list. These are lines appended to the
-#    -r   Read the current history file and append its contents to the history list.
+#    -r   Read the current history file, append its contents to history list.
 #    -w   Write out the current history to the history file.
-#    -p   Perform history substitution on the args and display the result
-#         on the standard output, without storing the results in the history list.
+#    -p   Perform history substitution on the args and display the result on
+#         the standard output, without storing the results in the history list.
 #    -s   The args are added to the end of the history list as a single entry.
 
 # http://ss64.com/bash/history.html
 
-# up and down arrow searches history from input.
-
-# bind '"\e[A": history-search-backward'
-# bind '"\e[B": history-search-forward'
-
 alias timestamp="date -d 'today' +'%Y-%m-%d_%H:%M:%S'"
 
 function cleanhistory() {
+    # Remove duplicate entries and very short entries from the history file
     local HISTORY="$HOME/.bash_history"
     local BACKUP="$HOME/.backup/.bash_history_$(timestamp).backup"
     local NEW_HISTORY=$(cat $HISTORY)
     for REMOVETERM in $@; do
         NEW_HISTORY=$(echo "$NEW_HISTORY" | grep -vi "$REMOVETERM")
     done
-    NEW_HISTORY=$(echo "$NEW_HISTORY"|sed 's/ *$//'|tac|nl -n rz|sort -k2 -k1|uniq -f1|sort -n|cut -f2|grep "^.\{10,200\}$"|uniq -w2|tac )
+    NEW_HISTORY=$( \
+        echo "$NEW_HISTORY"|\
+        sed 's/ *$//'|tac|nl -n rz|sort -k2 -k1|uniq -f1|sort -n|cut -f2|\
+        grep "^.\{10,200\}$"|uniq -w2|tac )
     mkdir -p $HOME/.backup
     cp "$HISTORY" "$BACKUP"
     echo "$NEW_HISTORY" > "$HISTORY"
@@ -66,6 +65,7 @@ function undo_cleanhistory() {
 }
 
 function search_for_terms_in_history {
+    # Grep based search utility for bash history
     local HISTORY_FILE="$HOME/.bash_history"
     local TEMP_HISTORY_FILE="/tmp/.bash_history"
     local MATCH_COLORS=( '01;49;33' '01;49;31' '01;49;32' '01;49;35' '01;49;34' '01;49;36' )
@@ -75,7 +75,9 @@ function search_for_terms_in_history {
     local HITS_LENGTH=0
     local SENTINEL_VALUE='### ELEPHANT IN CAIRO ###'
     # lists command history, purging duplicates and stripping space at end of lines.
-    local RESULT=$(HISTTIMEFORMAT='' history | sed 's/^ *[0-9]*//'| nl -n rz | sed 's/ \+$//' | sort -k2 | tac | uniq -f2 | sort | tac )
+    local RESULT=$(\
+        HISTTIMEFORMAT='' history | sed 's/^ *[0-9]*//'|\
+        nl -n rz | sed 's/ \+$//' | sort -k2 | tac | uniq -f2 | sort | tac )
     # prepares history for searching.
     local HITS=$(echo "$RESULT" | sed 's/\s*[0-9]*\s\+//' | grep -v '^??' )
     for SEARCHTERM in $@; do
@@ -105,7 +107,8 @@ function search_for_terms_in_history {
         # shows same numbers in output
     fi
     # highlight line numbers
-    RESULT=$(echo "$RESULT" | sed 's/\([1-9]\)/!\1/' | GREP_COLOR=$LINENUMBERCOLOR grep -P --color=always '^ *[0-9!]+')
+    RESULT=$(echo "$RESULT" | sed 's/\([1-9]\)/!\1/' |\
+        GREP_COLOR=$LINENUMBERCOLOR grep -P --color=always '^ *[0-9!]+')
     if [ -z $1 ]; then
         echo -e "Search in bash command history."
         echo -e "Usage: ?? [terms to look for]"

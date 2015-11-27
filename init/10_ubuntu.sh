@@ -59,3 +59,4 @@ fi
 sudo gem install ghi
 sudo pip3 install ipython
 sudo pip3 install ptpython
+sudo pip install thefuck

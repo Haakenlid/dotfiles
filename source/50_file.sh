@@ -24,10 +24,14 @@ function LL() {
 }
 
 function ll() {
-LL "$@" | sed "s/^\([dlrwxst-]*\)[ 0-9]\+\(\S...\).* \(\S...\).*\?\(....\) \(....-..-..\) \(..:..\)"\
-"/\x1b[0m\1  \x1b[97m\2 \x1b[0m\3  \x1b[97m\4  \x1b[0m\5 \x1b[97m\6\x1b[0m/"\
-| lesser
+  LL "$@" |\
+  awk '
+  {if (NR!=1){
+    printf "\x1b[0m%s  \x1b[97m%4.4s \x1b[0m%4.4s  \x1b[97m%4.4s  \x1b[0m%s \x1b[97m%s \x1b[0m%s\n",
+    $1,$3,$4,$5,$6,$7,$8}
+  }' | lesser
 }
+
 alias lsd='CLICOLOR_FORCE=1 ll | grep --color=never "^d"'
 alias tree="tree -CF --dirsfirst"
 function tre(){

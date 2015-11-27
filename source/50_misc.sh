@@ -1,5 +1,8 @@
 # Prevent less from clearing the screen while still showing colors.
-export LESS=-XR
+export LESS=-XRsiM
+export PAGER=/bin/less
+export MANPAGER=/bin/less
+export CDPATH=.:$HOME:/srv
 
 # SSH auto-completion based on entries in history.
 complete -W "$(echo $(cat ~/.bash_history | sed -n 's/^ssh \([^ ]*@[^ ]*\).*/\1/p'|sort -u))" ssh sshfs

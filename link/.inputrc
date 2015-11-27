@@ -9,8 +9,17 @@ set keymap vi-command
 set keymap vi-insert
 "jj": vi-movement-mode
 
+# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
+set input-meta on
+set output-meta on
+set convert-meta off
+
 # Make Tab autocomplete regardless of filename case
 set completion-ignore-case on
+# Treat underscore and dash as the same in conpletions
+set completion-map-case on
+
+set expand-tilde on
 
 # List all matches in case multiple possible completions are possible
 set show-all-if-ambiguous on
@@ -27,22 +36,49 @@ set mark-symlinked-directories on
 set match-hidden-files off
 
 # Show all autocomplete results at once
-set page-completions off
+set page-completions on
 
 # If there are more than 200 possible completions for a word, ask to show them all
-set completion-query-items 50
+set completion-query-items 200
 
-# Show extra file information when completing, like `ls -F` does
-set visible-stats on
+# If set to ‘on’, menu completion displays the common prefix of the list of
+# possible completions (which may be empty) before cycling through the list.
+# The default is ‘off’.
+set menu-complete-display-prefix on
 
-# Be more intelligent when autocompleting by also looking at the text after
-# the cursor. For example, when the current line is "cd ~/src/mozil", and
-# the cursor is on the "z", pressing Tab will not autocomplete it to "cd
-# ~/src/mozillail", but to "cd ~/src/mozilla". (This is supported by the
-# Readline used by Bash 4.)
+# If set to ‘on’, Readline will display completions with matches sorted
+# horizontally in alphabetical order, rather than down the screen. The default
+# is ‘off’.
+set print-completions-horizontally on
+
+# The number of screen columns used to display possible matches when
+# performing completion. The value is ignored if it is less than 0 or greater
+# than the terminal screen width. A value of 0 will cause matches to be
+# displayed one per line. The default value is -1.
+set completion-display-width -1
+
+# If set to ‘on’, add a character to the beginning of the prompt indicating
+# the editing mode: emacs (‘@’), vi command (‘:’), or vi insertion (‘+’). The
+# default value is ‘off’.
+set show-mode-in-prompt off
+
+# If set to ‘on’, this alters the default completion behavior when inserting a
+# single match into the line. It’s only active when performing completion in
+# the middle of a word. If enabled, readline does not insert characters from
+# the completion that match characters after point in the word being
+# completed, so portions of the word following the cursor are not duplicated.
+# For instance, if this is enabled, attempting completion when the cursor is
+# after the ‘e’ in ‘Makefile’ will result in ‘Makefile’ rather than
+# ‘Makefilefile’, assuming there is a single possible completion. The default
+# value is ‘off’.
 set skip-completed-text on
 
-# Allow UTF-8 input and output, instead of showing stuff like $'\0123\0456'
-set input-meta on
-set output-meta on
-set convert-meta off
+# If set to ‘on’, a character denoting a file’s type is appended to the
+# filename when listing possible completions. The default is ‘off’.
+set visible-stats on
+
+# If set to ‘on’, Readline displays possible completions using different
+# colors to indicate their file type. The color definitions are taken from the
+# value of the LS_COLORS environment variable. The default is ‘off’.
+set colored-stats on
+

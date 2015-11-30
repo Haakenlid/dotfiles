@@ -56,7 +56,7 @@ if (( ${#packages[@]} > 0 )); then
   done
 fi
 
-sudo gem install ghi
-sudo pip3 install ipython
-sudo pip3 install ptpython
-sudo pip install thefuck
+sudo -H gem install ghi
+sudo -H pip3 install ipython
+sudo -H pip3 install ptpython
+sudo -H pip install thefuck

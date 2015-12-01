@@ -41,7 +41,6 @@ mcd () {
 # You only live once
 alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay)" && git push --force'
 
-# Helpful utility
-if which thefuck > /dev/null ; then
-    eval $(thefuck --alias)
-fi
+# Helpful utility to autocorrect commands
+which thefuck &>/dev/null && eval $(thefuck --alias)
+

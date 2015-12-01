@@ -5,6 +5,7 @@ umask 002
 
 export LS_COLORS='di=33:ln=01;32:pi=40;33:bd=40;33:cd=33;01:ow=40;33:ex=35;01:'
 alias ls="command ls --color"
+alias info="info --vi-keys"
 # alias lesser="less -MF~ +G" # less with page break etc.
 function lesser(){
   lesserin=$(cat) # Input from pipe

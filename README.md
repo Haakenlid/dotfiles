@@ -17,30 +17,30 @@ git clone https:///haakenlid/dotfiles.git ~/.dotfiles
 
 ## What happens when running `dotfiles`?
 * A whole bunch of things will be installed
-* Dotfiles in $HOME folder is backed up
-* The dotfiles in this repo is symlinked to $HOME
+* Dotfiles in `$HOME` folder is backed up
+* The dotfiles in this repo is symlinked to `$HOME`
 * ???
 * profit
 
 ### Some of the programs that gets installed
-* git – it's a distributed version control system!
-* htop – process monitoring with colours and stuff
-* vim – a text editor
-* tree – to inspect directories and files
-* silversearcher-ag – very fast file content search utility
-* ghi – Github command line interface
-* ptpython – improved python shell
-* ipython – also improved python shell
-* ptipython – even more improved python shell!
-* tmux – terminal multiplexer
+* `git` – it's a distributed version control system!
+* `htop` – process monitoring with colours and stuff
+* `vim` – a text editor
+* `tree` – to inspect directories and files
+* `silversearcher-ag` – very fast file content search utility
+* `ghi` – Github command line interface
+* `ptpython` – improved python shell
+* `ipython` – also improved python shell
+* `ptipython` – even more improved python shell!
+* `tmux` – terminal multiplexer
 
 ### My favourite vim plugins as well (using _vim-plug_ as plugin manager)
-* nerdtree
-* vim-surround
-* ctrlp
-* jedi-vim
-* vim-gitgutter
-* vim-easymotion
+* `nerdtree`
+* `vim-surround`
+* `ctrlp`
+* `jedi-vim`
+* `vim-gitgutter`
+* `vim-easymotion`
 * ... and some more ...
 
 ### Bash functions / aliases / scripts
@@ -51,7 +51,7 @@ git clone https:///haakenlid/dotfiles.git ~/.dotfiles
 * `z` – It's like `cd`, but better
 
 ### Tmux and powerline
-* Tmux plus tmuxinator plus powerline
+* `Tmux` plus `tmuxinator` plus `powerline`
 * Makes your terminal look good
 * Tweaked colours, keyboard shortcuts and powerline segments
 

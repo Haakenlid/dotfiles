@@ -58,5 +58,5 @@ fi
 
 sudo -H gem install ghi
 sudo -H pip3 install ipython
-sudo -H pip3 install ptpython
-sudo -H pip install thefuck
+sudo pip3 install ptpython
+sudo pip install thefuck

@@ -1,12 +1,30 @@
+" Keyboard shortcuts
 let mapleader=" "
+
 imap jj <esc>
+map Q @q
+" Ctrl-Q = quit
+map <C-Q> :qa!
+map! <C-Q> <esc>:qa!
+" Ctrl-S = save
+map <C-S> :w!<cr>
+map! <C-S> <esc>:w!<cr>
+
+" Airline settings
+let g:airline_powerline_fonts = 1
+let g:airline_theme='powerlineish'
+
+" Tagbar settings
+nmap <C-T> :Tagbar<cr>
+
+"sane defaults
 colorscheme molokai
 
 set autoindent
 set tabstop=4
 set shiftwidth=4
 set expandtab
-set rnu
+" set rnu
 set nu
 set listchars=tab:>-,extends:>,precedes:<
 set list
@@ -15,7 +33,7 @@ set backspace=indent,eol,start
 set cursorline
 set laststatus=2 " Always display the statusline in all windows
 " set showtabline=2 " Always display the tabline, even if there is only one tab
-set showtabline=1 
+set showtabline=1
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 hi CursorLine   cterm=NONE ctermbg=235
@@ -33,18 +51,13 @@ filetype indent plugin on
 syntax on
 
 " Show absolute numbers in insert mode, otherwise relative line numbers.
-autocmd vimrc InsertEnter * :set norelativenumber
-autocmd vimrc InsertLeave * :set relativenumber
+" autocmd vimrc InsertEnter * :set norelativenumber
+" autocmd vimrc InsertLeave * :set relativenumber
 
 " Make it obvious where 80 characters is
 " set textwidth=80
 set colorcolumn=80
 
-" Run current file from command line with leader R
-:nnoremap <leader>r :!%:p 
-
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
 
 set dictionary="/usr/dict/words"
 
@@ -76,19 +89,8 @@ if ! has('gui_running')
 endif
 
 
-
-" Powerline Scripts -------------------------
- try
-     python import os, sys
-     python sys.path.append(os.getenv('HOME')+'/.dotfiles/libs/powerline/')
-     python from powerline.vim import setup as powerline_setup
-     python powerline_setup()
-     python del powerline_setup
- catch
- endtry
-
-
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Easymotion settings
+let g:EasyMotion_do_mapping = 1 " Disable default mappings
 map <Leader> <Plug>(easymotion-prefix)
 
 " Bi-directional find motions
@@ -98,6 +100,7 @@ nmap s <Plug>(easymotion-s)
 " " Gif config
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
+
 "
 " " These `n` & `N` mappings are options. You do not have to map `n` & `N` to
 " EasyMotion.
@@ -113,9 +116,9 @@ let g:EasyMotion_smartcase = 1
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
 
-" NERDTree
+" NERDTree settings
 let NERDTreeShowHidden = 1
-nmap <C-N> :NERDTreeToggle<CR> 
+nmap <C-N> :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__']
@@ -154,6 +157,7 @@ Plug 'majutsushi/tagbar'
 Plug 'easymotion/vim-easymotion'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
+Plug 'bling/vim-airline'
 
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'

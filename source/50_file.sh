@@ -15,7 +15,7 @@ function lesser(){
   else
     # echo -e "$lesserin" > ~/.lessertmp
     # less -MX +Gg ~/.lessertmp
-    echo -e "$lesserin" | less -MX +G
+    echo -e "$lesserin" | less -MX +Gg
     # rm ~/.lessertmp
   fi
 }
@@ -24,12 +24,16 @@ function LL() {
 }
 
 function ll() {
-  LL "$@" |\
-  awk '
-  {if (NR!=1){
-    printf "\x1b[0m%s  \x1b[97m%4.4s \x1b[0m%4.4s  \x1b[97m%4.4s  \x1b[0m%s \x1b[97m%s \x1b[0m%s\n",
+LL "$@" |\
+    awk '
+BEGIN {
+lsformat = "%s [%4.4s:%4.4s] %4.4s [%s] %s %s\n"
+gsub(/\[/, "\033[0;49;93m", lsformat)
+gsub(/\]/, "\033[0m", lsformat)}
+{if (NR!=1){
+    printf lsformat,
     $1,$3,$4,$5,$6,$7,substr($0, index($0,$8))}
-  }' | lesser
+}' | lesser
 }
 
 alias lsd='CLICOLOR_FORCE=1 ll | grep --color=never "^d"'

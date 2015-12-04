@@ -158,6 +158,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 Plug 'bling/vim-airline'
+Plug 'bling/vim-airline'
+Plug 'christoomey/vim-tmux-navigator'
 
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'

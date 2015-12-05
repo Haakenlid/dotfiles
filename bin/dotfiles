@@ -328,5 +328,5 @@ e_header "Updating vim plugins"
 vim +PlugUpdate +qa
 
 # All done!
-source $HOME/.bashrc
+# source $HOME/.bashrc
 e_header "All done!"

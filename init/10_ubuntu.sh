@@ -43,8 +43,9 @@ apt_packages=(
   htop
   vim
   tree
-  silversearcher-ag
   tmux
+  silversearcher-ag
+  exuberant-ctags
 )
 
 apt_packages=($(\

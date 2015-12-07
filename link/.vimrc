@@ -179,7 +179,7 @@ Plug 'Rykka/InstantRst'
 Plug 'bling/vim-airline'
 Plug 'bling/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'SirVer/ultisnips'
 Plug 'scrooloose/syntastic'
 Plug 'rking/ag.vim'

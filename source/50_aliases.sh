@@ -21,6 +21,10 @@ function eng() {  # Like English – but better!
 program_exists () {
   type "$1" &> /dev/null ;
 }
+# print in nice color
+p () {
+  echo -e "\n    \e[1;33m$@\e[0m"
+}
 
 # Spotify shortcuts
 if program_exists spotify; then

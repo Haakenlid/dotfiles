@@ -62,3 +62,4 @@ fi
 sudo -H gem install ghi
 sudo -H pip3 install ipython
 sudo -H pip3 install ptpython
+sudo -H pip3 install autopep8

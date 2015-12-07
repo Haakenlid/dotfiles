@@ -20,6 +20,7 @@ nmap <C-T> :Tagbar<cr>
 "sane defaults
 colorscheme molokai
 
+set hidden
 set autoindent
 set tabstop=4
 set shiftwidth=4
@@ -88,6 +89,25 @@ if ! has('gui_running')
     augroup END
 endif
 
+" YouCompleteMe settings
+nmap gd :YcmCompleter GoTo<cr>
+nmap gD :YcmCompleter GetDoc<cr>
+nmap gi :YcmCompleter GoToInclude<cr>
+" let g:ycm_goto_buffer_command = 'new-or-existing-tab'
+
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'rst' : 1,
+      \ 'unite' : 1,
+      \ 'text' : 1,
+      \ 'vimwiki' : 1,
+      \ 'pandoc' : 1,
+      \ 'infolog' : 1,
+      \ 'mail' : 1
+      \}
 
 " Easymotion settings
 let g:EasyMotion_do_mapping = 1 " Disable default mappings
@@ -151,7 +171,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-sensible'
-Plug 'davidhalter/jedi-vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'majutsushi/tagbar'
 Plug 'easymotion/vim-easymotion'
@@ -160,7 +179,13 @@ Plug 'Rykka/InstantRst'
 Plug 'bling/vim-airline'
 Plug 'bling/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'SirVer/ultisnips'
+Plug 'scrooloose/syntastic'
+Plug 'rking/ag.vim'
+Plug 'tell-k/vim-autopep8'
 
+" Plug 'davidhalter/jedi-vim'
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'
 " Plug 'flazz/vim-colorschemes'

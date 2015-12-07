@@ -5,7 +5,8 @@ root: /srv/nikola-blog/
 
 windows:
   - editor:
-      layout: 6dc5,227x23,0,0{140x23,0,0,0,86x23,141,0,1}
+      layout: 80f4,227x57,0,0[227x43,0,0,24,227x13,0,44{133x13,0,44,25,93x13,134,44,26}]
       panes:
-        - workon blog && vim
-        - workon blog
+        - workon blog && vim conf.py
+        - workon blog && nikola auto -p 9000
+        - workon blog && sensible-browser http://localhost:9000

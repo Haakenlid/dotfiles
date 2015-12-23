@@ -158,6 +158,7 @@ Plug 'easymotion/vim-easymotion'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 Plug 'bling/vim-airline'
+Plug 'floobits/floobits-neovim'
 
 " Plug 'Shougo/neosnippet.vim'
 " Plug 'Shougo/neosnippet-snippets'

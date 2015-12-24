@@ -20,6 +20,7 @@ nmap <C-T> :Tagbar<cr>
 "sane defaults
 colorscheme molokai
 
+set hidden
 set autoindent
 set tabstop=4
 set shiftwidth=4
@@ -88,6 +89,25 @@ if ! has('gui_running')
     augroup END
 endif
 
+" YouCompleteMe settings
+nmap gd :YcmCompleter GoTo<cr>
+nmap gD :YcmCompleter GetDoc<cr>
+nmap gi :YcmCompleter GoToInclude<cr>
+" let g:ycm_goto_buffer_command = 'new-or-existing-tab'
+
+let g:ycm_filetype_blacklist = {
+      \ 'tagbar' : 1,
+      \ 'qf' : 1,
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'rst' : 1,
+      \ 'unite' : 1,
+      \ 'text' : 1,
+      \ 'vimwiki' : 1,
+      \ 'pandoc' : 1,
+      \ 'infolog' : 1,
+      \ 'mail' : 1
+      \}
 
 " Easymotion settings
 let g:EasyMotion_do_mapping = 1 " Disable default mappings
@@ -143,36 +163,40 @@ endif
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
+Plug 'airblade/vim-gitgutter'
+Plug 'bling/vim-airline'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'floobits/floobits-neovim'
+Plug 'majutsushi/tagbar'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
+Plug 'rking/ag.vim'
+Plug 'Rykka/InstantRst'
+Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
+Plug 'scrooloose/syntastic'
+Plug 'SirVer/ultisnips'
+Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-sensible'
-Plug 'davidhalter/jedi-vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'majutsushi/tagbar'
-Plug 'easymotion/vim-easymotion'
-Plug 'Rykka/riv.vim'
-Plug 'Rykka/InstantRst'
-Plug 'bling/vim-airline'
-Plug 'floobits/floobits-neovim'
+Plug 'tpope/vim-surround'
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 
-" Plug 'Shougo/neosnippet.vim'
-" Plug 'Shougo/neosnippet-snippets'
+" Plug 'chase/vim-ansible-yaml'
+" Plug 'davidhalter/jedi-vim'
 " Plug 'flazz/vim-colorschemes'
-
-" Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-vinegar'
-" Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-eunuch'
-
+" Plug 'mattn/emmet-vim'
 " Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'mattn/emmet-vim'
-" Plug 'chase/vim-ansible-yaml'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet.vim'
 " Plug 'terryma/vim-multiple-cursors'
+" Plug 'tpope/vim-eunuch'
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-vinegar'
 
 call plug#end()

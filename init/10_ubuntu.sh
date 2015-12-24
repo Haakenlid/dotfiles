@@ -22,7 +22,7 @@ EOF
   read -N 1 -t $prompt_delay -p "Update sudoers file? [y/N] " update_sudoers; echo
   if [[ "$update_sudoers" =~ [Yy] ]]; then
     e_header "Updating sudoers"
-    visudo -cf "$sudoers_src" &&
+    /usr/sbin/visudo -cf "$sudoers_src" &&
     sudo cp "$sudoers_src" "$sudoers_dest" &&
     sudo chmod 0440 "$sudoers_dest" &&
     echo "File $sudoers_dest updated." ||
@@ -43,20 +43,24 @@ apt_packages=(
   htop
   vim
   tree
-  silversearcher-ag
   tmux
+  silversearcher-ag
+  exuberant-ctags
 )
 
-apt_packages=($(setdiff "${packages[*]}" "$(dpkg --get-selections | grep -v deinstall | awk '{print $1}')"))
+apt_packages=($(\
+    setdiff "${packages[*]}"\
+    "$(dpkg --get-selections | grep -v deinstall | awk '{print $1}')"\
+    ))
 
 if (( ${#packages[@]} > 0 )); then
   e_header "Installing APT packages: ${packages[*]}"
   for package in "${apt_packages[@]}"; do
-    sudo apt-get -qq install "$package"
+    sudo apt-get -q install "$package"
   done
 fi
 
 sudo -H gem install ghi
 sudo -H pip3 install ipython
-sudo pip3 install ptpython
-sudo pip install thefuck
+sudo -H pip3 install ptpython
+sudo -H pip3 install autopep8

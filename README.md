@@ -5,10 +5,11 @@ scripts and structure are basically the same. Consult
 for further documentation.
 
 ## Installation
-* The `dotfiles` executable will install some applications and modify some system files
+* The `dotfiles` executable will install some applications and modify some
+  system files
 * You might want to read Ben Almans readme before executing this.
-* I've used the dotfiles on Ubuntu and RHEL. They might also work on other distros as long
-as you use `bash`, as well as OSX
+* I've used the dotfiles on Ubuntu and RHEL. They might also work on other
+  distros as long as you use `bash`, as well as OSX
 * Run these commands:
 ```
 git clone https:///haakenlid/dotfiles.git ~/.dotfiles
@@ -44,11 +45,11 @@ git clone https:///haakenlid/dotfiles.git ~/.dotfiles
 * ... and some more ...
 
 ### Bash functions / aliases / scripts
-* `??` – bash_history search thing (I wrote it)
+* `??` – `.bash_history` search thing (I wrote it)
 * `gmail` – check gmail from the shell
 * `YOLO` – Improve your git productivity by 1000%
 * `v` – fuzzy search in vim history to open recently edited file
-* `z` – It's like `cd`, but better
+* `z` – Like `cd`, but better
 
 ### Tmux and powerline
 * `Tmux` plus `tmuxinator` plus `powerline`

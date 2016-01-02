@@ -182,42 +182,41 @@ endif
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
-Plug 'mattn/gist-vim'
-Plug 'mattn/webapi-vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-repeat'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tpope/vim-sensible'
 Plug 'airblade/vim-gitgutter'
-Plug 'majutsushi/tagbar'
-Plug 'easymotion/vim-easymotion'
-Plug 'Rykka/riv.vim'
-Plug 'Rykka/InstantRst'
 Plug 'bling/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
-" Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
-Plug 'SirVer/ultisnips'
-Plug 'scrooloose/syntastic'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'floobits/floobits-neovim'
+Plug 'majutsushi/tagbar'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim'
 Plug 'rking/ag.vim'
+Plug 'Rykka/InstantRst'
+Plug 'Rykka/riv.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'SirVer/ultisnips'
 Plug 'tell-k/vim-autopep8'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 
+" Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
+" Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
-" Plug 'Shougo/neosnippet.vim'
-" Plug 'Shougo/neosnippet-snippets'
 " Plug 'flazz/vim-colorschemes'
-
-" Plug 'tpope/vim-fugitive'
-" Plug 'tpope/vim-vinegar'
-" Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-eunuch'
-
+" Plug 'mattn/emmet-vim'
 " Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'mattn/emmet-vim'
-" Plug 'chase/vim-ansible-yaml'
+" Plug 'Shougo/neosnippet-snippets'
+" Plug 'Shougo/neosnippet.vim'
 " Plug 'terryma/vim-multiple-cursors'
+" Plug 'tpope/vim-eunuch'
+" Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-vinegar'
 
 call plug#end()

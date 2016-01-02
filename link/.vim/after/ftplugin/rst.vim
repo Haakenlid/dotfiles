@@ -1,1 +1,2 @@
-set wm=80 tw=80
+setlocal wrapmargin=80 
+setlocal textwidth=80

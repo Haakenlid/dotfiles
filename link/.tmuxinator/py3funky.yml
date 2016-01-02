@@ -1,0 +1,33 @@
+# ~/.tmuxinator/funky.yml
+
+name: funky
+root: /srv/funkytime_py3/
+
+# Runs before everything. Use it to start daemons etc.
+# pre: /usr/bin/bash /srv/funkytime/venv/funkytime/bin/activate
+# Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
+pre_window: source /srv/funkytime_py3/venv/funky3/bin/activate
+
+windows:
+  - local:
+      layout: main-vertical
+      panes:
+          - vim:
+              - vim
+          - python:  
+              - django-admin shell_plus
+          - bash:
+              - clear
+              - ls */ -d1
+  - local-bg:                    
+      layout: main-vertical 
+      panes:
+          - bash:
+              - clear 
+              - ls */ -d1
+          - runserver:
+              - django-admin runserver_plus 
+          - notebook:
+              - django-admin shell_plus --notebook
+          - gulp:
+              - gulp

@@ -12,18 +12,26 @@ map! <C-S> <esc>:w!<cr>
 
 " Airline settings
 let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
+let g:airline_theme='badwolf'
+let g:airline#extensions#tabline#enabled = 1
+
 
 " Tagbar settings
-nmap <C-T> :Tagbar<cr>
+nmap <C-T> :TagbarOpenAutoClose<cr>
+set tags=tags;,.git/tags;
 
 "sane defaults
 colorscheme molokai
+let previewheight=5
+
+"neovim python programs
+let g:python_host_prog='/usr/bin/python2'
+let g:python3_host_prog='/usr/bin/python3'
 
 set hidden
 set autoindent
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
 " set rnu
 set nu
@@ -34,7 +42,7 @@ set backspace=indent,eol,start
 set cursorline
 set laststatus=2 " Always display the statusline in all windows
 " set showtabline=2 " Always display the tabline, even if there is only one tab
-set showtabline=1
+" set showtabline=1
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
 hi CursorLine   cterm=NONE ctermbg=235
@@ -58,7 +66,6 @@ syntax on
 " Make it obvious where 80 characters is
 " set textwidth=80
 set colorcolumn=80
-
 
 set dictionary="/usr/dict/words"
 
@@ -92,8 +99,13 @@ endif
 " YouCompleteMe settings
 nmap gd :YcmCompleter GoTo<cr>
 nmap gD :YcmCompleter GetDoc<cr>
-nmap gi :YcmCompleter GoToInclude<cr>
-" let g:ycm_goto_buffer_command = 'new-or-existing-tab'
+nmap gi /import<CR>
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_path_to_python_interpreter = "/usr/bin/python"
+let g:ycm_add_preview_to_completeopt = 1
 
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
@@ -136,6 +148,9 @@ let g:EasyMotion_smartcase = 1
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
 
+" RIV settings
+let g:riv_fold_auto_update = 0
+
 " NERDTree settings
 let NERDTreeShowHidden = 1
 nmap <C-N> :NERDTreeToggle<CR>
@@ -144,18 +159,22 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__']
 
 " CTRL-P settings
+nmap gS :CtrlPTag<cr>
+nmap gs :CtrlPBufTag<cr>
+nmap gb :CtrlPBuffer<cr>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
 let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPLastMode'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window_bottom=1
-let g:ctrlp_max_height=8
+let g:ctrlp_max_height=20
 let g:ctrlp_lazy_update=1
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
 let g:ctrlp_clear_cache_on_exit=0
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_extensions = ['tag']
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -lS --ignore=".git" --hidden --nocolor -g ""'
 endif
@@ -177,8 +196,8 @@ Plug 'easymotion/vim-easymotion'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 Plug 'bling/vim-airline'
-Plug 'bling/vim-airline'
 Plug 'christoomey/vim-tmux-navigator'
+" Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'SirVer/ultisnips'
 Plug 'scrooloose/syntastic'

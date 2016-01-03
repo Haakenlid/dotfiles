@@ -1,3 +1,8 @@
+# test that program exists
+program_exists () {
+  type "$1" &> /dev/null ;
+}
+
 # Remote servers
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 
@@ -6,6 +11,9 @@ alias grep='grep --color=auto'
 
 # Better python repl
 alias pp=ptipython
+
+# NEOVIM
+program_exists /usr/bin/nvim && alias vim=/usr/bin/nvim
 
 # Keyboard layout changes (only works if you have the keyboard layouts installed)
 function nor() {  # Norwegian
@@ -17,10 +25,6 @@ function eng() {  # Like English – but better!
   echo 'english (improved) keyboard'
 }
 
-# test that program exists
-program_exists () {
-  type "$1" &> /dev/null ;
-}
 # print in nice color
 p () {
   echo -e "\n    \e[1;33m$@\e[0m"
@@ -44,7 +48,4 @@ mcd () {
 
 # You only live once
 alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay)" && git push --force'
-
-# Helpful utility to autocorrect commands
-which thefuck &>/dev/null && eval $(thefuck --alias)
 

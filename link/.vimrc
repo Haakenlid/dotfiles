@@ -208,6 +208,8 @@ let g:ctrlp_extensions = ['tag']
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -lS --ignore=".git" --hidden --nocolor -g ""'
 endif
+" Emmet config
+let g:user_emmet_leader_key='<C-E>'
 
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
@@ -233,12 +235,12 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
+Plug 'mattn/emmet-vim'
 
 " Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'flazz/vim-colorschemes'
-" Plug 'mattn/emmet-vim'
 " Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 " Plug 'Shougo/neosnippet-snippets'

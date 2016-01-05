@@ -208,8 +208,22 @@ let g:ctrlp_extensions = ['tag']
 if executable('ag')
   let g:ctrlp_user_command = 'ag %s -lS --ignore=".git" --hidden --nocolor -g ""'
 endif
-" Emmet config
-let g:user_emmet_leader_key='<C-E>'
+
+""" Emmet config
+let g:user_emmet_leader_key='<C-e>'
+let g:user_emmet_next_key='<M-j>'
+let g:user_emmet_prev_key='<M-k>'
+
+
+""" Ultisnips config
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<C-j>"
+let g:UltiSnipsJumpForwardTrigger="<C-j>"
+let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+
+" If you want :UltiSnipsEdit to split your window.
+" let g:UltiSnipsEditSplit="vertical"
 
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
@@ -229,6 +243,7 @@ Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'

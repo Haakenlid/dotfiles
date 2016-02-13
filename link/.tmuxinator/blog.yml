@@ -10,3 +10,8 @@ windows:
         - workon blog && vim conf.py
         - workon blog && nikola auto -p 9000
         - workon blog && sensible-browser http://localhost:9000
+  - notebooks:
+      layout: even-vertical
+      panes:
+        - workon blog && cd notebooks; ipython notebook
+        - workon blog 

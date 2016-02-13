@@ -1,12 +1,12 @@
 # ~/.tmuxinator/funky.yml
 
 name: funky
-root: /srv/funkytime/source
+root: /srv/funkytime_py3/
 
 # Runs before everything. Use it to start daemons etc.
 # pre: /usr/bin/bash /srv/funkytime/venv/funkytime/bin/activate
 # Runs in each window and pane before window/pane specific commands. Useful for setting up interpreter versions.
-pre_window: source /srv/funkytime/venv/funkytime/bin/activate
+pre_window: source /srv/funkytime_py3/venv/funky3/bin/activate
 
 windows:
   - local:
@@ -19,18 +19,6 @@ windows:
           - bash:
               - clear
               - ls */ -d1
-  - server: 
-      layout: even-horizontal
-      panes: 
-          - dev.funkytime.no:
-              - ssh funkytime.no
-              - workon dev.funkytime.no 
-              - clear
-          - nginx: 
-              - ssh funkytime.no
-              - workon dev.funkytime.no 
-              - cd /etc/nginx/sites-enabled/ 
-              - clear
   - local-bg:                    
       layout: main-vertical 
       panes:

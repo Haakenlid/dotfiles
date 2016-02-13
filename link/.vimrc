@@ -1,5 +1,7 @@
 " Keyboard shortcuts
 let mapleader=" "
+syntax on
+filetype plugin indent on
 
 imap jj <esc>
 map Q @q
@@ -9,6 +11,12 @@ map! <C-Q> <esc>:qa!
 " Ctrl-S = save
 map <C-S> :w!<cr>
 map! <C-S> <esc>:w!<cr>
+
+nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr> 
+
+" Replace word under cursor
+nnoremap <leader>r :%s/\<<C-r>=expand('<cword>')<CR>\>/
+nnoremap <leader>v :e ~/.vimrc<CR>
 
 " Airline settings
 let g:airline_powerline_fonts = 1
@@ -55,9 +63,6 @@ augroup END
 set splitbelow " New split goes below
 set splitright " New split goes right
 
-filetype indent plugin on
-syntax on
-
 " Show absolute numbers in insert mode, otherwise relative line numbers.
 " autocmd vimrc InsertEnter * :set norelativenumber
 " autocmd vimrc InsertLeave * :set relativenumber
@@ -76,15 +81,6 @@ function! <SID>StripTrailingWhitespaces()
 endfun
 
 autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-
-function! Tab_Or_Complete()
-    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
-        return "\<C-N>"
-    else
-        return "\<Tab>"
-    endif
-endfunction
-inoremap <Tab> <C-R>=Tab_Or_Complete()<CR>
 
 if ! has('gui_running')
     " set ttimeoutlen=10
@@ -105,6 +101,8 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_path_to_python_interpreter = "/usr/bin/python"
 let g:ycm_add_preview_to_completeopt = 1
+" let g:ycm_min_num_identifier_candidate_chars = 2 
+
 
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
@@ -127,8 +125,7 @@ map <Leader> <Plug>(easymotion-prefix)
 " Bi-directional find motions
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
-nmap s <Plug>(easymotion-s)
-" " Gif config
+nmap gt <Plug>(easymotion-s)
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
@@ -180,18 +177,22 @@ function! s:DimInactiveWindows()
     call setwinvar(i, '&colorcolumn', l:range)
   endfor
 endfunction
-augroup DimInactiveWindows
-  au!
-  au WinEnter * call s:DimInactiveWindows()
-  au WinEnter * set cursorline
-  au WinLeave * set nocursorline
-augroup END
+" augroup DimInactiveWindows
+"   au!
+"   au WinEnter * call s:DimInactiveWindows()
+"   au WinEnter * set cursorline
+"   au WinLeave * set nocursorline
+" augroup END
 
+" JSX settings
+let g:jsx_ext_required = 0 " Allow JSX in normal JS files
+let g:syntastic_javascript_checkers = ['eslint']
 
 " CTRL-P settings
 nmap gS :CtrlPTag<cr>
 nmap gs :CtrlPBufTag<cr>
 nmap gb :CtrlPBuffer<cr>
+nmap gm :CtrlPMRUFiles<cr>
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPLastMode'
@@ -214,22 +215,39 @@ let g:user_emmet_leader_key='<C-e>'
 let g:user_emmet_next_key='<M-j>'
 let g:user_emmet_prev_key='<M-k>'
 
-
 """ Ultisnips config
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<C-j>"
-let g:UltiSnipsJumpForwardTrigger="<C-j>"
-let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+let g:UltiSnipsListSnippets="<M-s>"
+" let g:UltiSnipsJumpForwardTrigger="<C-j>"
+" let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+let g:UltiSnipsExpandTrigger="<nop>"
+let g:UltiSnipsUsePythonVersion=2
+
+" let g:ulti_expand_or_jump_res = 0
+function! <SID>ExpandSnippetOrReturn()
+  let snippet = UltiSnips#ExpandSnippetOrJump()
+  if g:ulti_expand_or_jump_res > 0
+    return snippet
+  else
+    return "\<CR>"
+  endif
+endfunction
+inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "\<CR>"
+
+" let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+" let g:UltiSnipsSnippetDirectories=[]
 
 " If you want :UltiSnipsEdit to split your window.
 " let g:UltiSnipsEditSplit="vertical"
+"
 
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
@@ -243,27 +261,30 @@ Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
 Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
 Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'mattn/emmet-vim'
+Plug 'lambdatoast/elm.vim'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'mickaobrien/vim-stackoverflow'
+Plug 'mxw/vim-jsx'
 
+" Plug 'honza/vim-snippets'
 " Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'flazz/vim-colorschemes'
 " Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'Shougo/neosnippet-snippets'
-" Plug 'Shougo/neosnippet.vim'
 " Plug 'terryma/vim-multiple-cursors'
 " Plug 'tpope/vim-eunuch'
-" Plug 'tpope/vim-fugitive'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
 
 call plug#end()
+

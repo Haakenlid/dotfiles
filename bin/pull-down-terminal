@@ -1,0 +1,50 @@
+#!/bin/bash
+# Bind this script to a keyboard shortcut to add pull-down behaviour to
+# Gnome terminal similar to guake or tilda
+
+# It seems to work with gnome-terminal or xfce4-terminal
+# I haven't tested any other terminal emulators
+TERMINAL_EMULATOR=gnome-terminal
+
+main() {
+  if terminal_is_running; then
+    win_id=$(get_terminal_window)
+    if [[ $(xdotool getactivewindow) == $win_id ]]; then
+      # if terminal window is active, mimize
+      xdotool getactivewindow windowminimize
+    else
+      # if terminal window is inactive, bring in focus
+      xdotool windowactivate $win_id
+    fi
+  else
+    # no running terminal emulator
+    # open new terminal at top of the screen
+    $TERMINAL_EMULATOR --geometry 80x1+0+0 &
+    win_id=$(get_terminal_window)
+    # set initial size to 100% x 45%
+    xdotool windowsize $win_id $(absolute_window_size 100 45)
+    xdotool windowactivate $win_id
+  fi
+}
+
+terminal_is_running() {
+  # Is gnome-terminal already running?
+  ps aux | grep -v grep | grep $TERMINAL_EMULATOR || false
+}
+
+get_terminal_window() {
+  # get id of open terminal window. Will wait for window to open if neccessary
+  xdotool search --onlyvisible --sync --limit 1 --class $TERMINAL_EMULATOR
+}
+
+absolute_window_size() {
+  # convert relative window size to absolute pixel size, based on screen res
+  width_percent=$1
+  height_percent=$2
+  IFS=x
+  screen_dimensions=$(xrandr | grep connected | grep -o '[1-9]\+x[0-9]\+')
+  set $screen_dimensions
+  echo $(($width_percent * $1 / 100)) $(($height_percent * $2 / 100))
+}
+
+main

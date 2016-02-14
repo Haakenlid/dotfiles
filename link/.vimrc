@@ -2,6 +2,14 @@
 let mapleader=" "
 syntax on
 filetype plugin indent on
+let g:neomake_javascript_enabled_makers = ['eslint']
+autocmd! BufWritePost * Neomake
+
+let g:lt_location_list_toggle_map = '<leader>l'
+let g:lt_quickfix_list_toggle_map = '<leader>q'
+let g:lt_height = 3
+autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
+
 
 imap jj <esc>
 map Q @q
@@ -186,7 +194,6 @@ endfunction
 
 " JSX settings
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
-let g:syntastic_javascript_checkers = ['eslint']
 
 " CTRL-P settings
 nmap gS :CtrlPTag<cr>
@@ -259,7 +266,8 @@ Plug 'rking/ag.vim'
 Plug 'Rykka/InstantRst'
 Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'benekastah/neomake'
 Plug 'SirVer/ultisnips'
 Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
@@ -268,14 +276,15 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
+Plug 'Valloric/ListToggle'
 Plug 'mattn/emmet-vim'
 Plug 'lambdatoast/elm.vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'mickaobrien/vim-stackoverflow'
 Plug 'mxw/vim-jsx'
+Plug 'pangloss/vim-javascript'
 
 " Plug 'honza/vim-snippets'
-" Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'flazz/vim-colorschemes'

@@ -251,6 +251,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'mattn/emmet-vim'
+Plug 'mickaobrien/vim-stackoverflow'
 
 " Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer', 'branch': 'dev'}
 " Plug 'chase/vim-ansible-yaml'

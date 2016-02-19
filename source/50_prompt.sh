@@ -9,9 +9,9 @@
 # 32  42  green     36  46  cyan
 # 33  43  yellow    37  47  white
 
-export LC_ALL=en_GB.UTF-8
-export LANG=en_GB.UTF-8
-export LANGUAGE=en_GB.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
 
 
 if [[ ! "${prompt_colors[@]}" ]]; then
@@ -140,5 +140,6 @@ function prompt_command() {
   PS1="$PS1 \[\e[0m\]\$ "
   # 12:49:29 ⌛ 2014-08-04 / 127 $
 }
+
 
 export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"

@@ -56,7 +56,7 @@ apt_packages=($(\
 if (( ${#packages[@]} > 0 )); then
   e_header "Installing APT packages: ${packages[*]}"
   for package in "${apt_packages[@]}"; do
-    sudo apt-get -q install "$package"
+    sudo apt-get install "$package"
   done
 fi
 

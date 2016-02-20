@@ -35,7 +35,7 @@ fi
 # Update APT.
 e_header "Updating APT"
 sudo apt-get -qq update
-sudo apt-get -qq dist-upgrade
+sudo apt-get -q dist-upgrade
 
 # Install APT packages.
 apt_packages=(
@@ -47,6 +47,7 @@ apt_packages=(
   silversearcher-ag
   exuberant-ctags
   xdotool
+  python3-pip
 )
 
 apt_packages=($(\
@@ -61,7 +62,8 @@ if (( ${#packages[@]} > 0 )); then
   done
 fi
 
-sudo -H gem install ghi
-sudo -H pip3 install ipython
-sudo -H pip3 install ptpython
-sudo -H pip3 install autopep8
+GEMS="ghi tmuxinator"
+EGGS="ipython ptpython autopep8"
+
+for GEM in $GEMS; do sudo -H gem install --conservative $GEM ; done
+for EGG in $EGGS; do sudo -H pip3 install -q $EGG; done

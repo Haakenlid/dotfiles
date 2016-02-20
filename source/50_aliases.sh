@@ -10,7 +10,7 @@ alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; ba
 alias grep='grep --color=auto'
 
 # Better python repl
-alias pp=ptipython
+alias pp="python3 $(which ptipython)"
 
 # NEOVIM
 program_exists /usr/bin/nvim && alias vim=/usr/bin/nvim
@@ -23,6 +23,10 @@ function nor() {  # Norwegian
 function eng() {  # Like English – but better!
   xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY >& /dev/null
   echo 'english (improved) keyboard'
+}
+function chromeng() {  # Like English – but better!
+  xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-chromebook $DISPLAY >& /dev/null
+  echo 'english (improved) keyboard for chromebook'
 }
 
 # print in nice color

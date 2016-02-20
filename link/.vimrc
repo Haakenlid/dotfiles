@@ -279,6 +279,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'Valloric/ListToggle'
 Plug 'mattn/emmet-vim'
+Plug 'mickaobrien/vim-stackoverflow'
 Plug 'lambdatoast/elm.vim'
 Plug 'hynek/vim-python-pep8-indent'
 Plug 'mickaobrien/vim-stackoverflow'

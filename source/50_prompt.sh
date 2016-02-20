@@ -141,4 +141,5 @@ function prompt_command() {
   # 12:49:29 ⌛ 2014-08-04 / 127 $
 }
 
+
 export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"

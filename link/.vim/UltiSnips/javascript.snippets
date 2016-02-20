@@ -1,8 +1,211 @@
+#
+#  React and javascript snippets
+#
+
+global !p
+from snippet_helpers import *
+endglobal
+
+snippet cs "React.addons.classSet" b
+var cx = React.addons.classSet;
+endsnippet
+
+snippet cdm "component did mount" b
+componentDidMount: function() {
+	${1}
+},$0
+endsnippet
+
+snippet cdup "component did update" b
+componentDidUpdate: function(prevProps, prevState) {
+	${1}
+},$0
+endsnippet
+
+snippet cwm "component will mount" b
+componentWillMount: function() {
+	${1}
+},$0
+endsnippet
+
+snippet cwr "component will receive props" b
+componentWillReceiveProps: function(nextProps) {
+	${1}
+},$0
+endsnippet
+
+snippet cwun "component will unmount" b
+componentWillUnmount: function() {
+	${1}
+},$0
+endsnippet
+
+snippet cwu "component will update" b
+componentWillUpdate: function(nextProps, nextState) {
+	${1}
+},$0
+endsnippet
+
+snippet cx
+cx({
+	${1}: ${2}
+});
+endsnippet
+
+snippet fup
+forceUpdate(${1:callback});
+endsnippet
+
+snippet gdp "get default props" b
+getDefaultProps: function() {
+	return {
+		${1}
+	};
+},$0
+endsnippet
+
+snippet gis "get initial state" b
+getInitialState: function() {
+	return {
+		${1}: ${2}
+	};
+},$0
+endsnippet
+
+snippet ism "is mounted"
+isMounted()
+endsnippet
+
+snippet jsx "define jsx dom" b
+/**
+ * @jsx React.DOM
+ */
+
+var React = require('react');
+}
+var ${2:ClassName} = React.createClass({
+
+	render: function() {
+		return (
+			${VISUAL}$4
+		);
+	}
+
+});
+$0
+${3:module.exports = $2;}
+endsnippet
+
+snippet pt "propTypes" b
+propTypes: {
+	${1}: React.PropTypes.${2:string}
+},
+endsnippet
+
+snippet rcc "create class/component" b
+var ${1:ClassName} = React.createClass({
+
+	render: function() {
+		return (
+			${VISUAL}$2
+		);
+	}
+});
+$0
+endsnippet
+
+snippet ren
+render: function() {
+	return (
+		${1:<div />}
+	);
+}$0
+endsnippet
+
+snippet sst "set state" b
+this.setState({
+	${1}: ${2}
+});$0
+endsnippet
+
+snippet scu "should component update"
+shouldComponentUpdate: function(nextProps, nextState) {
+	${1}
+},$0
+endsnippet
+
+snippet props "get property" i
+this.props.${1}
+endsnippet
+
+snippet state "get state" i
+this.state.${1}
+endsnippet
+
+snippet trp
+this.transferPropsTo(${VISUAL}$0);
+endsnippet
+
+snippet cc "createClass" b
+export default class ${1:`!p snip.rv = path_to_component_name(path,
+pascal_case_basename)`} extends React.Component {
+	render() {
+		return (
+			$0
+		);
+	}
+}
+endsnippet
+
+snippet con "constructor()" b
+constructor(props) {
+	super(props);
+	$0
+}
+endsnippet
+
+snippet Pt "PropTypes" w
+PropTypes.$1`!p snip.rv=complete(t[1], ['array', 'bool', 'func', 'number', 'object', 'string', 'node', 'element', 'instanceOf', 'oneOf([])', 'oneOfType([])', 'arrayOf()', 'objectOf()', 'shape({})', 'any'])`,$0
+endsnippet
+
+snippet scu "shouldComponentUpdate" b
+shouldComponentUpdate(nextProps, nextState) {
+	return ${1:true};
+}
+endsnippet
+
+snippet <> "<Component>" b
+<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}>
+	${0:${VISUAL}}
+</$1>
+endsnippet
+
+snippet < "<Component />" b
+<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} ${0}/>
+endsnippet
+
+# DOM
+
+snippet div "<div>" b
+<div$1>
+	${0:${VISUAL}}
+</div>
+endsnippet
+
+# Diffux-CI
+snippet dd "diffux.define" b
+diffux.define('${1:<`!p snip.rv = path_to_component_name(path, pascal_case_basename)`>}', function() {
+	return Utils.renderAttachedAndGetNode(
+		${0:${VISUAL}}
+	);
+}, { viewports: [${2:'small', 'medium'}] });
+endsnippet
 priority -50
 
 ###########################################################################
 #                            TextMate Snippets                            #
 ###########################################################################
+
 snippet get "Get Elements"
 getElement${1/(T)|.*/(?1:s)/}By${1:T}${1/(T)|(I)|.*/(?1:agName)(?2:d)/}('$2')
 endsnippet
@@ -152,14 +355,3 @@ snippet cw "console.warn" b
 console.warn(${1:"${2:value}"});
 endsnippet
 
-# AMD (Asynchronous Module Definition) snippets
-
-snippet def "define an AMD module"
-define(${1:optional_name, }[${2:'jquery'}], ${3:callback});
-endsnippet
-
-snippet req "require an AMD module"
-require([${1:'dependencies'}], ${2:callback});
-endsnippet
-
-# vim:ft=snippets:

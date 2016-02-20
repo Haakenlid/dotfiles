@@ -133,7 +133,7 @@ map <Leader> <Plug>(easymotion-prefix)
 " Bi-directional find motions
 " Jump to anywhere you want with minimal keystrokes, with just one key binding.
 " `s{char}{label}`
-nmap gt <Plug>(easymotion-s)
+nmap <leader>s <Plug>(easymotion-s)
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 
@@ -275,6 +275,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sleuth'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'Valloric/ListToggle'
 Plug 'mattn/emmet-vim'

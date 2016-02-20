@@ -6,7 +6,9 @@ pre_window: source ~/projects/snapterest/addpath
 
 windows:
   - editor:
-      layout: main-vertical
+      layout: e711,227x57,0,0[227x43,0,0,12,227x13,0,44{113x13,0,44,13,113x13,114,44,14}]
       panes:
         - vim
-        - ls
+        - npm run dev
+        - cd snapkite-engine; npm start
+

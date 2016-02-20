@@ -46,6 +46,7 @@ apt_packages=(
   tmux
   silversearcher-ag
   exuberant-ctags
+  xdotool
 )
 
 apt_packages=($(\

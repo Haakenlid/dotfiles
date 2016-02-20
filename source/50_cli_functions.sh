@@ -17,7 +17,7 @@ function change() {
 }
 
 function chrome() {
-    ( (nohup google-chrome $* >& /dev/null) & disown >& /dev/null)
+    ( (LANGUAGE=no nohup google-chrome $* >& /dev/null) & disown >& /dev/null)
 }
 
 function tit() {

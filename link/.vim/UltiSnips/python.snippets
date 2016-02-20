@@ -1,0 +1,1136 @@
+priority -50
+###########################################################################
+#                            TEXTMATE SNIPPETS                            #
+###########################################################################
+
+#! header
+snippet #! "Shebang header for python scripts" A
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+$0
+endsnippet
+
+snippet ifmain "ifmain" b
+if __name__ == `!p snip.rv = get_quoting_style(snip)`__main__`!p snip.rv = get_quoting_style(snip)`:
+	${1:${VISUAL:main()}}
+endsnippet
+
+snippet logger "import and getlogger __name__" b
+import logging
+logger = logging.getLogger(__name__)
+endsnippet
+
+snippet with "with" b
+with ${1:expr}`!p snip.rv = " as " if t[2] else ""`${2:var}:
+	${3:${VISUAL:pass}}
+${0}
+endsnippet
+
+snippet for "for loop" b
+for ${1:item} in ${2:iterable}:
+	${3:${VISUAL:pass}}
+endsnippet
+
+##########
+# COMMON #
+##########
+
+# The smart def and smart class snippets use a global option called
+# "g:ultisnips_python_style" which, if set to "doxygen" will use doxygen
+# style comments in docstrings.
+
+global !p
+
+NORMAL  = 0x1
+DOXYGEN = 0x2
+SPHINX  = 0x3
+GOOGLE  = 0x4
+NUMPY   = 0x5
+JEDI    = 0x6
+
+SINGLE_QUOTES = "'"
+DOUBLE_QUOTES = '"'
+
+
+class Arg(object):
+	def __init__(self, arg):
+		self.arg = arg
+		self.name = arg.split('=')[0].strip()
+
+	def __str__(self):
+		return self.name
+
+	def __unicode__(self):
+		return self.name
+
+	def is_kwarg(self):
+		return '=' in self.arg
+
+
+def get_args(arglist):
+	args = [Arg(arg) for arg in arglist.split(',') if arg]
+	args = [arg for arg in args if arg.name != 'self']
+
+	return args
+
+
+def get_quoting_style(snip):
+	style = snip.opt("g:ultisnips_python_quoting_style", "double")
+	if style == 'single':
+		return SINGLE_QUOTES
+	return DOUBLE_QUOTES
+
+def triple_quotes(snip):
+	style = snip.opt("g:ultisnips_python_triple_quoting_style")
+	if not style:
+		return get_quoting_style(snip) * 3
+	return (SINGLE_QUOTES if style == 'single' else DOUBLE_QUOTES) * 3
+
+def triple_quotes_handle_trailing(snip, quoting_style):
+	"""
+	Generate triple quoted strings and handle any trailing quote char,
+	which might be there from some autoclose/autopair plugin,
+	i.e. when expanding ``"|"``.
+	"""
+	if not snip.c:
+		# Do this only once, otherwise the following error would happen:
+		# RuntimeError: The snippets content did not converge: …
+		_, col = vim.current.window.cursor
+		line = vim.current.line
+
+		# Handle already existing quote chars after the trigger.
+		_ret = quoting_style * 3
+		while True:
+			try:
+				nextc = line[col]
+			except IndexError:
+				break
+			if nextc == quoting_style and len(_ret):
+				_ret = _ret[1:]
+				col = col+1
+			else:
+				break
+		snip.rv = _ret
+	else:
+		snip.rv = snip.c
+
+def get_style(snip):
+	style = snip.opt("g:ultisnips_python_style", "normal")
+
+	if    style == "doxygen": return DOXYGEN
+	elif  style == "sphinx": return SPHINX
+	elif  style == "google": return GOOGLE
+	elif  style == "numpy": return NUMPY
+	elif  style == "jedi": return JEDI
+	else: return NORMAL
+
+
+def format_arg(arg, style):
+	if style == DOXYGEN:
+		return "@param %s TODO" % arg
+	elif style == SPHINX:
+		return ":param %s: TODO" % arg
+	elif style == NORMAL:
+		return ":%s: TODO" % arg
+	elif style == GOOGLE:
+		return "%s (TODO): TODO" % arg
+	elif style == JEDI:
+		return ":type %s: TODO" % arg
+	elif style == NUMPY:
+		return "%s : TODO" % arg
+
+
+def format_return(style):
+	if style == DOXYGEN:
+		return "@return: TODO"
+	elif style in (NORMAL, SPHINX, JEDI):
+		return ":returns: TODO"
+	elif style == GOOGLE:
+		return "Returns: TODO"
+
+
+def write_docstring_args(args, snip):
+	if not args:
+		snip.rv += ' {0}'.format(triple_quotes(snip))
+		return
+
+	snip.rv += '\n' + snip.mkline('', indent='')
+
+	style = get_style(snip)
+
+	if style == GOOGLE:
+		write_google_docstring_args(args, snip)
+	elif style == NUMPY:
+		write_numpy_docstring_args(args, snip)
+	else:
+		for arg in args:
+			snip += format_arg(arg, style)
+
+
+def write_google_docstring_args(args, snip):
+	kwargs = [arg for arg in args if arg.is_kwarg()]
+	args = [arg for arg in args if not arg.is_kwarg()]
+
+	if args:
+		snip += "Args:"
+		snip.shift()
+		for arg in args:
+			snip += format_arg(arg, GOOGLE)
+		snip.unshift()
+		snip.rv += '\n' + snip.mkline('', indent='')
+
+	if kwargs:
+		snip += "Kwargs:"
+		snip.shift()
+		for kwarg in kwargs:
+			snip += format_arg(kwarg, GOOGLE)
+		snip.unshift()
+		snip.rv += '\n' + snip.mkline('', indent='')
+
+
+def write_numpy_docstring_args(args, snip):
+	if args:
+		snip += "Parameters"
+		snip += "----------"
+
+	kwargs = [arg for arg in args if arg.is_kwarg()]
+	args = [arg for arg in args if not arg.is_kwarg()]
+
+	if args:
+		for arg in args:
+			snip += format_arg(arg, NUMPY)
+	if kwargs:
+		for kwarg in kwargs:
+			snip += format_arg(kwarg, NUMPY) + ', optional'
+	snip.rv += '\n' + snip.mkline('', indent='')
+
+
+def write_init_body(args, parents, snip):
+	parents = [p.strip() for p in parents.split(",")]
+	parents = [p for p in parents if p != 'object']
+
+	for p in parents:
+		snip += p + ".__init__(self)"
+
+	if parents:
+		snip.rv += '\n' + snip.mkline('', indent='')
+
+	for arg in args:
+		snip += "self._%s = %s" % (arg, arg)
+
+
+def write_slots_args(args, snip):
+	args = ['"_%s"' % arg for arg in args]
+	snip += '__slots__ = (%s,)' % ', '.join(args)
+
+
+def write_function_docstring(t, snip):
+	"""
+	Writes a function docstring with the current style.
+
+	:param t: The values of the placeholders
+	:param snip: UltiSnips.TextObjects.SnippetUtil object instance
+	"""
+	snip.rv = ""
+	snip >> 1
+
+	args = get_args(t[2])
+	if args:
+		write_docstring_args(args, snip)
+
+	style = get_style(snip)
+
+	if style == NUMPY:
+		snip += 'Returns'
+		snip += '-------'
+		snip += 'TODO'
+	else:
+		snip += format_return(style)
+	snip.rv += '\n' + snip.mkline('', indent='')
+	snip += triple_quotes(snip)
+
+endglobal
+
+########################################
+# Class & Special Method Name Snippets #
+########################################
+
+snippet class "class with docstrings" b
+class ${1:MyClass}(${2:object}):
+
+	`!p snip.rv = triple_quotes(snip)`${3:Docstring for $1. }`!p snip.rv = triple_quotes(snip)`
+
+	def __init__(self$4):
+		`!p snip.rv = triple_quotes(snip)`${5:TODO: to be defined1.}`!p
+snip.rv = ""
+snip >> 2
+
+args = get_args(t[4])
+
+write_docstring_args(args, snip)
+if args:
+	snip.rv += '\n' + snip.mkline('', indent='')
+	snip += '{0}'.format(triple_quotes(snip))
+
+write_init_body(args, t[2], snip)
+`
+		$0
+endsnippet
+
+
+snippet slotclass "class with slots and docstrings" b
+class ${1:MyClass}(${2:object}):
+
+	`!p snip.rv = triple_quotes(snip)`${3:Docstring for $1. }`!p snip.rv = triple_quotes(snip)`
+`!p
+snip >> 1
+args = get_args(t[4])
+write_slots_args(args, snip)
+`
+
+	def __init__(self$4):
+		`!p snip.rv = triple_quotes(snip)`${5:TODO: to be defined.}`!p
+snip.rv = ""
+snip >> 2
+
+args = get_args(t[4])
+
+write_docstring_args(args, snip)
+if args:
+	snip.rv += '\n' + snip.mkline('', indent='')
+	snip += triple_quotes(snip)
+
+write_init_body(args, t[2], snip)
+`
+		$0
+endsnippet
+
+
+snippet contain "methods for emulating a container type" b
+def __len__(self):
+	${1:pass}
+
+def __getitem__(self, key):
+	${2:pass}
+
+def __setitem__(self, key, value):
+	${3:pass}
+
+def __delitem__(self, key):
+	${4:pass}
+
+def __iter__(self):
+	${5:pass}
+
+def __reversed__(self):
+	${6:pass}
+
+def __contains__(self, item):
+	${7:pass}
+endsnippet
+
+
+snippet context "context manager methods" b
+def __enter__(self):
+	${1:pass}
+
+def __exit__(self, exc_type, exc_value, traceback):
+	${2:pass}
+endsnippet
+
+
+snippet attr "methods for customizing attribute access" b
+def __getattr__(self, name):
+	${1:pass}
+
+def __setattr__(self, name, value):
+	${2:pass}
+
+def __delattr__(self, name):
+	${3:pass}
+endsnippet
+
+
+snippet desc "methods implementing descriptors" b
+def __get__(self, instance, owner):
+	${1:pass}
+
+def __set__(self, instance, value):
+	${2:pass}
+
+def __delete__(self, instance):
+	${3:pass}
+endsnippet
+
+
+snippet cmp "methods implementing rich comparison"
+def __eq__(self, other):
+	${1:pass}
+
+def __ne__(self, other):
+	${2:pass}
+
+def __lt__(self, other):
+	${3:pass}
+
+def __le__(self, other):
+	${4:pass}
+
+def __gt__(self, other):
+	${5:pass}
+
+def __ge__(self, other):
+	${6:pass}
+
+def __cmp__(self, other):
+	${7:pass}
+endsnippet
+
+
+snippet repr "methods implementing string representation"
+def __repr__(self):
+	${1:pass}
+
+def __str__(self):
+	${2:pass}
+
+def __unicode__(self):
+	${3:pass}
+endsnippet
+
+
+# note: reflected operands and augmented arithmeitc assignements have been
+# intentionally ommited to reduce verbosity.
+snippet numeric "methods for emulating a numeric type" b
+def __add__(self, other):
+	${1:pass}
+
+def __sub__(self, other):
+	${2:pass}
+
+def __mul__(self, other):
+	${3:pass}
+
+def __div__(self, other):
+	${4:pass}
+
+def __truediv__(self, other):
+	${5:pass}
+
+def __floordiv__(self, other):
+	${6:pass}
+
+
+def __mod__(self, other):
+	${7:pass}
+
+def __divmod__(self, other):
+	${8:pass}
+
+def __pow__(self, other):
+	${9:pass}
+
+
+def __lshift__(self, other):
+	${10:pass}
+
+def __rshift__(self, other):
+	${11:pass}
+
+def __and__(self, other):
+	${12:pass}
+
+def __xor__(self, other):
+	${13:pass}
+
+def __or__(self, other):
+	${14:pass}
+
+
+def __neg__(self):
+	${15:pass}
+
+def __pos__(self):
+	${16:pass}
+
+def __abs__(self):
+	${17:pass}
+
+def __invert__(self):
+	${18:pass}
+
+
+def __complex__(self):
+	${19:pass}
+
+def __int__(self):
+	${20:pass}
+
+def __long__(self):
+	${21:pass}
+
+def __float__(self):
+	${22:pass}
+
+
+def __oct__(self):
+	${22:pass}
+
+def __hex__(self):
+	${23:pass}
+
+
+def __index__(self):
+	${24:pass}
+
+def __coerce__(self, other):
+	${25:pass}
+endsnippet
+
+snippet def "function with docstrings" b
+def ${1:function}(`!p
+if snip.indent:
+	snip.rv = 'self' + (", " if len(t[2]) else "")`${2:arg1}):
+	`!p snip.rv = triple_quotes(snip)`${4:TODO: Docstring for $1.}`!p
+write_function_docstring(t, snip) `
+	${5:${VISUAL:pass}}
+endsnippet
+
+
+snippet defc "class method with docstrings" b
+@classmethod
+def ${1:function}(`!p
+if snip.indent:
+	snip.rv = 'cls' + (", " if len(t[2]) else "")`${2:arg1}):
+	`!p snip.rv = triple_quotes(snip)`${4:TODO: Docstring for $1.}`!p
+write_function_docstring(t, snip) `
+	${5:${VISUAL:pass}}
+endsnippet
+
+
+snippet defs "static method with docstrings" b
+@staticmethod
+def ${1:function}(${2:arg1}):
+	`!p snip.rv = triple_quotes(snip)`${4:TODO: Docstring for $1.}`!p
+write_function_docstring(t, snip) `
+	${5:${VISUAL:pass}}
+endsnippet
+
+
+# doesn't expand when there is a word in front
+snippet /(^|(?<=\W))\./ "self." r
+self.
+endsnippet
+
+snippet from "from module import name" b
+from ${1:module} import ${2:Stuff}
+endsnippet
+
+
+##############
+# PROPERTIES #
+##############
+snippet roprop "Read Only Property" b
+@property
+def ${1:name}(self):
+	${2:return self._$1}$0
+endsnippet
+
+snippet rwprop "Read write property" b
+def ${1:name}():
+	`!p snip.rv = triple_quotes(snip) if t[2] else ''
+`${2:TODO: Docstring for $1.}`!p
+if t[2]:
+	snip >> 1
+
+	style = get_style(snip)
+	snip.rv += '\n' + snip.mkline('', indent='')
+	snip += format_return(style)
+	snip.rv += '\n' + snip.mkline('', indent='')
+	snip += triple_quotes(snip)
+else:
+	snip.rv = ""`
+	def fget(self):
+		return self._$1$0
+
+	def fset(self, value):
+		self._$1 = value
+	return locals()
+
+$1 = property(**$1(), doc=$1.__doc__)
+endsnippet
+
+
+####################
+# If / Else / Elif #
+####################
+snippet if "If" b
+if ${1:condition}:
+	${2:${VISUAL:pass}}
+endsnippet
+
+snippet ife "If / Else" b
+if ${1:condition}:
+	${2:${VISUAL:pass}}
+else:
+	${3:pass}
+endsnippet
+
+snippet ifee "If / Elif / Else" b
+if ${1:condition}:
+	${2:${VISUAL:pass}}
+elif ${3:condition}:
+	${4:pass}
+else:
+	${5:pass}
+endsnippet
+
+
+##########################
+# Try / Except / Finally #
+##########################
+snippet try "Try / Except" b
+try:
+	${1:${VISUAL:pass}}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+endsnippet
+
+snippet trye "Try / Except / Else" b
+try:
+	${1:${VISUAL:pass}}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+else:
+	${5:pass}
+endsnippet
+
+snippet tryf "Try / Except / Finally" b
+try:
+	${1:${VISUAL:pass}}
+except ${2:Exception} as ${3:e}:
+	${4:raise $3}
+finally:
+	${5:pass}
+endsnippet
+
+snippet tryef "Try / Except / Else / Finally" b
+try:
+	${1:${VISUAL:pass}}
+except${2: ${3:Exception} as ${4:e}}:
+	${5:raise}
+else:
+	${6:pass}
+finally:
+	${7:pass}
+endsnippet
+
+
+#####################
+# Assertions & Tests #
+#####################
+
+snippet ipy "Embed IPython shell" b
+import IPython; IPython.embed()
+endsnippet
+
+snippet ipdb "Set IPDB breakpoint" b
+import ipdb; ipdb.set_trace()
+endsnippet
+
+snippet pudb "Set PUDB breakpoint" b
+import pudb; pudb.set_trace()
+endsnippet
+
+snippet " "triple quoted string (double quotes)" b
+"""
+${1:${VISUAL:doc}}
+`!p triple_quotes_handle_trailing(snip, '"')`
+endsnippet
+
+snippet ' "triple quoted string (single quotes)" b
+"""
+${1:${VISUAL:doc}}
+`!p triple_quotes_handle_trailing(snip, "'")`
+endsnippet
+
+snippet doc "doc block (triple quotes)"
+`!p snip.rv = triple_quotes(snip)`
+${1:${VISUAL:doc}}
+`!p snip.rv = triple_quotes(snip)`
+endsnippet
+
+
+snippet form "Form" b
+class ${1:FORMNAME}(forms.Form):
+
+	${2:# TODO: Define form fields here}
+endsnippet
+
+snippet modelform "ModelForm" b
+class ${1:MODELNAME}Form(forms.ModelForm):
+
+	class Meta:
+		model = $1
+endsnippet
+
+snippet fbool "BooleanField" b
+${1:FIELDNAME} = forms.BooleanField($2)
+endsnippet
+
+snippet fchar "CharField" b
+${1:FIELDNAME} = forms.CharField($2)
+endsnippet
+
+snippet fchoice "ChoiceField" b
+${1:FIELDNAME} = forms.ChoiceField($2)
+endsnippet
+
+snippet fcombo "ComboField" b
+${1:FIELDNAME} = forms.ComboField($2)
+endsnippet
+
+snippet fdate "DateField" b
+${1:FIELDNAME} = forms.DateField($2)
+endsnippet
+
+snippet fdatetime "DateTimeField" b
+${1:FIELDNAME} = forms.DateTimeField($2)
+endsnippet
+
+snippet fdecimal "DecimalField" b
+${1:FIELDNAME} = forms.DecimalField($2)
+endsnippet
+
+snippet fmail "EmailField" b
+${1:FIELDNAME} = forms.EmailField($2)
+endsnippet
+
+snippet ffile "FileField" b
+${1:FIELDNAME} = forms.FileField($2)
+endsnippet
+
+snippet ffilepath "FilePathField" b
+${1:FIELDNAME} = forms.FilePathField($2)
+endsnippet
+
+snippet ffloat "FloatField" b
+${1:FIELDNAME} = forms.FloatField($2)
+endsnippet
+
+snippet fip "IPAddressField" b
+${1:FIELDNAME} = forms.IPAddressField($2)
+endsnippet
+
+snippet fimg "ImageField" b
+${1:FIELDNAME} = forms.ImageField($2)
+endsnippet
+
+snippet fint "IntegerField" b
+${1:FIELDNAME} = forms.IntegerField($2)
+endsnippet
+
+snippet fmochoice "ModelChoiceField" b
+${1:FIELDNAME} = forms.ModelChoiceField($2)
+endsnippet
+
+snippet fmomuchoice "ModelMultipleChoiceField" b
+${1:FIELDNAME} = forms.ModelMultipleChoiceField($2)
+endsnippet
+
+snippet fmuval "MultiValueField" b
+${1:FIELDNAME} = forms.MultiValueField($2)
+endsnippet
+
+snippet fmuchoice "MultipleChoiceField" b
+${1:FIELDNAME} = forms.MultipleChoiceField($2)
+endsnippet
+
+snippet fnullbool "NullBooleanField" b
+${1:FIELDNAME} = forms.NullBooleanField($2)
+endsnippet
+
+snippet freg "RegexField" b
+${1:FIELDNAME} = forms.RegexField($2)
+endsnippet
+
+snippet fslug "SlugField" b
+${1:FIELDNAME} = forms.SlugField($2)
+endsnippet
+
+snippet fsdatetime "SplitDateTimeField" b
+${1:FIELDNAME} = forms.SplitDateTimeField($2)
+endsnippet
+
+snippet ftime "TimeField" b
+${1:FIELDNAME} = forms.TimeField($2)
+endsnippet
+
+snippet ftchoice "TypedChoiceField" b
+${1:FIELDNAME} = forms.TypedChoiceField($2)
+endsnippet
+
+snippet ftmuchoice "TypedMultipleChoiceField" b
+${1:FIELDNAME} = forms.TypedMultipleChoiceField($2)
+endsnippet
+
+snippet furl "URLField" b
+${1:FIELDNAME} = forms.URLField($2)
+endsnippet
+
+# MODELS SNIPPETS
+
+snippet model "Model" b
+class ${1:MODELNAME}(models.Model):
+
+	"""${2:Doctring for $1}"""
+
+	class Meta:
+		verbose_name = _("$1")
+		verbose_name_plural = _("$1s")
+
+	def __str__(self):
+		return super($1, self).__str__()
+
+endsnippet
+
+snippet modelfull "Model" b
+class ${1:MODELNAME}(models.Model):
+
+	"""${2:Doctring for $1}"""
+
+	class Meta:
+		verbose_name = _("$1")
+		verbose_name_plural = _("$1s")
+
+	def __str__(self):
+		return super($1, self).__str__()
+
+	def save(self):
+		return super($1, self).save()
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('')
+
+	${3:# TODO: Define custom methods here}
+
+endsnippet
+
+snippet mauto "AutoField" b
+${1:FIELDNAME} = models.AutoField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mbigint "BigIntegerField" b
+${1:FIELDNAME} = models.BigIntegerField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mbool "BooleanField" b
+${1:FIELDNAME} = models.BooleanField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mchar "CharField" b
+${1:FIELDNAME} = models.CharField(
+	max_length=${3:50},
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mcoseint "CommaSeparatedIntegerField" b
+${1:FIELDNAME} = models.CommaSeparatedIntegerField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mdate "DateField" b
+${1:FIELDNAME} = models.DateField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mdatetime "DateTimeField" b
+${1:FIELDNAME} = models.DateTimeField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mdecimal "DecimalField" b
+${1:FIELDNAME} = models.DecimalField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet memail "EmailField" b
+${1:FIELDNAME} = models.EmailField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mfile "FileField" b
+${1:FIELDNAME} = models.FileField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mfilepath "FilePathField" b
+${1:FIELDNAME} = models.FilePathField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mfloat "FloatField" b
+${1:FIELDNAME} = models.FloatField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet fk "ForeignKey" b
+${1:FIELDNAME} = models.ForeignKey(
+	$2,
+	related_name='$1',
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mip "IPAddressField" b
+${1:FIELDNAME} = models.IPAddressField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mimg "ImageField" b
+${1:FIELDNAME} = models.ImageField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mint "IntegerField" b
+${1:FIELDNAME} = models.IntegerField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet m2m "ManyToManyField" b
+${1:FIELDNAME} = models.ManyToManyField(
+	$2,
+	related_name='$1',
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mnullbool "NullBooleanField" b
+${1:FIELDNAME} = models.NullBooleanField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet o2o "OneToOneField" b
+${1:FIELDNAME} = models.OneToOneField(
+	$2,
+	related_name='$1',
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mphone "PhoneNumberField" b
+${1:FIELDNAME} = models.PhoneNumberField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mposint "PositiveIntegerField" b
+${1:FIELDNAME} = models.PositiveIntegerField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mpossmallint "PositiveSmallIntegerField" b
+${1:FIELDNAME} = models.PositiveSmallIntegerField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mslug "SlugField" b
+${1:FIELDNAME} = models.SlugField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet msmallint "SmallIntegerField" b
+${1:FIELDNAME} = models.SmallIntegerField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mtext "TextField" b
+${1:FIELDNAME} = models.TextField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mtime "TimeField" b
+${1:FIELDNAME} = models.TimeField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet murl "URLField" b
+${1:FIELDNAME} = models.URLField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet musstate "USStateField" b
+${1:FIELDNAME} = models.USStateField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+snippet mxml "XMLField" b
+${1:FIELDNAME} = models.XMLField(
+	verbose_name=_('$1'),
+	help_text=_('$1'),
+)
+endsnippet
+
+# VIEWS SNIPPETS
+
+snippet adminview "Model Admin View" b
+@admin.register(${1:MODELNAME})
+class ${2:$1Admin}(admin.ModelAdmin):
+	"""
+	Admin View for $1
+	"""
+	list_display = ('${2}',)
+	list_filter = ('${3}',)
+	inlines = [
+		${4}Inline,
+	]
+	raw_id_fields = ('${5}',)
+	readonly_fields = ('${6}',)
+	search_fields = ['${7}']
+endsnippet
+
+snippet createview "Generic Create View" b
+class ${1:MODEL_NAME}CreateView(CreateView):
+	model = ${1:MODEL_NAME}
+	template_name = "${2:TEMPLATE_NAME}"
+endsnippet
+
+snippet deleteview "Generic Delete View" b
+class ${1:MODEL_NAME}DeleteView(DeleteView):
+	model = ${1:MODEL_NAME}
+	template_name = "${2:TEMPLATE_NAME}"
+endsnippet
+
+snippet detailview "Generic Detail View" b
+class ${1:MODEL_NAME}DetailView(DetailView):
+	model = ${1:MODEL_NAME}
+	template_name = "${2:TEMPLATE_NAME}"
+endsnippet
+
+snippet listview "Generic List View" b
+class ${1:MODEL_NAME}ListView(ListView):
+	model = ${1:MODEL_NAME}
+	template_name = "${2:TEMPLATE_NAME}"
+endsnippet
+
+snippet stackedinline "Stacked Inline" b
+class ${1:ModelName}Inline(admin.StackedInline):
+	model = ${2:$1}
+	min_num = ${3:3}
+	max_num = ${4:20}
+	extra = ${5:1}
+	raw_id_fields = (${6},)
+endsnippet
+
+snippet tabularinline "Tabular Inline" b
+class ${1:ModelName}Inline(admin.TabularInline):
+	model = ${2:$1}
+	min_num = ${3:3}
+	max_num = ${4:20}
+	extra = ${5:1}
+	raw_id_fields = (${6},)
+endsnippet
+
+snippet _serializer "API ModelSerializer" b
+class ${1:CLASS_NAME}Serializer(serializers.ModelSerializer):
+
+	"""ModelSerializer for $1"""
+
+	class Meta:
+		model = $1
+endsnippet
+
+snippet _viewset "API ModelViewSet" b
+class ${1:CLASS_NAME}ViewSet(viewsets.ModelViewSet):
+
+	"""
+	API endpoint that allows $1 to be viewed or updated.
+	"""
+
+	queryset = $1.objects.all()
+	serializer_class = $1Serializer
+endsnippet
+
+snippet _router "API router" b
+router.register(r'${1/.+/\L$0s\E/}', ${1:CLASS_NAME}ViewSet)
+endsnippet
+
+snippet _templateview "Generic Template View" b
+class ${1:CLASS_NAME}(TemplateView):
+	template_name = "${2:TEMPLATE_NAME}"
+endsnippet
+
+snippet updateview "Generic Update View" b
+class ${1:MODEL_NAME}UpdateView(UpdateView):
+	model = ${1:MODEL_NAME}
+	template_name = "${2:TEMPLATE_NAME}"
+endsnippet
+
+snippet dispatch "Dispatch View method" b
+def dispatch(self, request, *args, **kwargs):
+	return super(${1:CLASS_NAME}, self).dispatch(request, *args, **kwargs)
+endsnippet
+
+snippet context "get_context_data view method" b
+def get_context_data(self, **kwargs):
+	kwargs['extra_context'] = ${1:'New Value'}
+	return super(${2:CLASS_NAME}, self).get_context_data(**kwargs)
+endsnippet
+
+

@@ -11,6 +11,14 @@ let g:lt_quickfix_list_toggle_map = '<leader>q'
 let g:lt_height = 3
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+set modeline
+set modelines=5
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd,text 
+        \ | call pencil#init()
+        \ | call lexical#init()
+augroup END
 
 
 imap jj <esc>
@@ -23,6 +31,7 @@ map <C-S> :w!<cr>
 map! <C-S> <esc>:w!<cr>
 
 nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr>
+let g:lexical#spell_key='<leader>z'
 
 " Replace word under cursor
 nnoremap <leader>r :%s/\<<C-r>=expand('<cword>')<CR>\>/
@@ -285,6 +294,8 @@ Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'reedes/vim-pencil'
+Plug 'reedes/vim-lexical'
 
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'

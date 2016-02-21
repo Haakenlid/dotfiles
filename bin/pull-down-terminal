@@ -2,11 +2,17 @@
 # Bind this script to a keyboard shortcut to add pull-down behaviour to
 # Gnome terminal similar to guake or tilda
 
-# List of emulators to use in order of preference
-EMULATORS="gnome-terminal xfce4-terminal uxterm"
-
 # identifier to use when searching for an active dropdown
 DROPDOWN_CLASS="DROPDOWNTERMINAL"
+
+# Use the first available emulator in this list 
+EMULATORS="gnome-terminal xfce4-terminal uxterm"
+get_emulator(){
+  for EMU in $EMULATORS; do
+    which $EMU &> /dev/null && echo $EMU && return
+  done
+  echo "Emulator not found" >&2 ; exit 1
+}
 
 main() {
   win_id=$(get_terminal_window)
@@ -34,15 +40,8 @@ main() {
   fi
 }
 
-get_emulator(){
-  # get the first available terminal emulator
-  for emu in $EMULATORS; do
-    which $emu &> /dev/null && echo $emu && return
-  done
-}
-
 get_terminal_window() {
-  # get id of open terminal window. Will wait for window to open if neccessary
+  # get id of open terminal window.
   xdotool search --limit 1 --class "$DROPDOWN_CLASS"
 }
 
@@ -50,10 +49,10 @@ absolute_window_size() {
   # convert relative window size to absolute pixel size, based on screen res
   width_percent=$1
   height_percent=$2
-  IFS=x
   screen_dimensions=$(xrandr | grep connected | grep -o '[1-9]\+x[0-9]\+')
+  IFS=x
   set $screen_dimensions
   echo $(($width_percent * $1 / 100)) $(($height_percent * $2 / 100))
 }
 
-main
+[[ $0 != '-bash' ]] && main

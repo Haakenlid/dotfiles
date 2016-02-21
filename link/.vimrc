@@ -4,11 +4,13 @@ syntax on
 filetype plugin indent on
 let g:neomake_javascript_enabled_makers = ['eslint']
 autocmd! BufWritePost * Neomake
+let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 let g:lt_height = 3
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 
 
 imap jj <esc>

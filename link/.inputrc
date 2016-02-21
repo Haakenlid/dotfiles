@@ -1,4 +1,4 @@
-set editing-mode vi
+# set editing-mode vi
 
 # COMMAND MODE
 set keymap vi-command
@@ -61,7 +61,7 @@ set completion-display-width -1
 
 # If set to ‘on’, add a character to the beginning of the prompt indicating
 # the editing mode. The default value is ‘off’. Not available in bash 4.3
-set show-mode-in-prompt on
+# set show-mode-in-prompt on
 set vi-ins-mode-string $
 # yellow text
 set vi-cmd-mode-string \1\e[0;49;93m\2$

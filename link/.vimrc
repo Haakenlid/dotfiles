@@ -20,7 +20,7 @@ map! <C-Q> <esc>:qa!
 map <C-S> :w!<cr>
 map! <C-S> <esc>:w!<cr>
 
-nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr> 
+nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr>
 
 " Replace word under cursor
 nnoremap <leader>r :%s/\<<C-r>=expand('<cword>')<CR>\>/
@@ -109,7 +109,7 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_path_to_python_interpreter = "/usr/bin/python"
 let g:ycm_add_preview_to_completeopt = 1
-" let g:ycm_min_num_identifier_candidate_chars = 2 
+" let g:ycm_min_num_identifier_candidate_chars = 2
 
 
 let g:ycm_filetype_blacklist = {
@@ -253,45 +253,44 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
 Plug 'airblade/vim-gitgutter'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'floobits/floobits-neovim'
+Plug 'hynek/vim-python-pep8-indent'
+Plug 'lambdatoast/elm.vim'
 Plug 'majutsushi/tagbar'
+Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim'
+Plug 'mickaobrien/vim-stackoverflow'
+Plug 'mxw/vim-jsx'
+Plug 'pangloss/vim-javascript'
 Plug 'rking/ag.vim'
 Plug 'Rykka/InstantRst'
 Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
-" Plug 'scrooloose/syntastic'
-Plug 'benekastah/neomake'
 Plug 'SirVer/ultisnips'
 Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
+Plug 'tpope/vim-surround'
 Plug 'Valloric/ListToggle'
-Plug 'mattn/emmet-vim'
-Plug 'mickaobrien/vim-stackoverflow'
-Plug 'lambdatoast/elm.vim'
-Plug 'hynek/vim-python-pep8-indent'
-Plug 'mickaobrien/vim-stackoverflow'
-Plug 'mxw/vim-jsx'
-Plug 'pangloss/vim-javascript'
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-" Plug 'honza/vim-snippets'
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'flazz/vim-colorschemes'
+" Plug 'honza/vim-snippets'
 " Plug 'nathanaelkane/vim-indent-guides'
 " Plug 'pangloss/vim-javascript', {'for': 'javascript'}
+" Plug 'scrooloose/syntastic'
 " Plug 'terryma/vim-multiple-cursors'
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-unimpaired'

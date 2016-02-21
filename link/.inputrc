@@ -32,13 +32,15 @@ set mark-symlinked-directories on
 "\e[B": history-search-forward
 "\e[A": history-search-backward
 
-# Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+# Do not autocomplete hidden files unless the pattern explicitly begins with a
+# dot
 set match-hidden-files off
 
 # Show all autocomplete results at once
 set page-completions on
 
-# If there are more than 200 possible completions for a word, ask to show them all
+# If there are more than 200 possible completions for a word, ask to show them
+# all
 set completion-query-items 200
 
 # If set to ‘on’, menu completion displays the common prefix of the list of
@@ -51,34 +53,35 @@ set menu-complete-display-prefix on
 # is ‘off’.
 set print-completions-horizontally on
 
-# The number of screen columns used to display possible matches when
-# performing completion. The value is ignored if it is less than 0 or greater
-# than the terminal screen width. A value of 0 will cause matches to be
-# displayed one per line. The default value is -1.
+# The number of screen columns used to display possible matches when performing
+# completion. The value is ignored if it is less than 0 or greater than the
+# terminal screen width. A value of 0 will cause matches to be displayed one
+# per line. The default value is -1.
 set completion-display-width -1
 
 # If set to ‘on’, add a character to the beginning of the prompt indicating
-# the editing mode: emacs (‘@’), vi command (‘:’), or vi insertion (‘+’). The
-# default value is ‘off’.
-set show-mode-in-prompt off
+# the editing mode. The default value is ‘off’. Not available in bash 4.3
+set show-mode-in-prompt on
+set vi-ins-mode-string $
+# yellow text
+set vi-cmd-mode-string \1\e[0;49;93m\2$
 
 # If set to ‘on’, this alters the default completion behavior when inserting a
 # single match into the line. It’s only active when performing completion in
 # the middle of a word. If enabled, readline does not insert characters from
-# the completion that match characters after point in the word being
-# completed, so portions of the word following the cursor are not duplicated.
-# For instance, if this is enabled, attempting completion when the cursor is
-# after the ‘e’ in ‘Makefile’ will result in ‘Makefile’ rather than
-# ‘Makefilefile’, assuming there is a single possible completion. The default
-# value is ‘off’.
+# the completion that match characters after point in the word being completed,
+# so portions of the word following the cursor are not duplicated.  For
+# instance, if this is enabled, attempting completion when the cursor is after
+# the ‘e’ in ‘Makefile’ will result in ‘Makefile’ rather than ‘Makefilefile’,
+# assuming there is a single possible completion. The default value is ‘off’.
 set skip-completed-text on
 
 # If set to ‘on’, a character denoting a file’s type is appended to the
 # filename when listing possible completions. The default is ‘off’.
 set visible-stats on
 
-# If set to ‘on’, Readline displays possible completions using different
-# colors to indicate their file type. The color definitions are taken from the
-# value of the LS_COLORS environment variable. The default is ‘off’.
+# If set to ‘on’, Readline displays possible completions using different colors
+# to indicate their file type. The color definitions are taken from the value
+# of the LS_COLORS environment variable. The default is ‘off’.
 set colored-stats on
 

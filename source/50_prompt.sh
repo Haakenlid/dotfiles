@@ -137,7 +137,8 @@ function prompt_command() {
   # 12:49:29 ⌛ 2014-08-04
   PS1="$PS1$(prompt_exitcode "$exit_code")"
   # 12:49:29 ⌛ 2014-08-04 / 127
-  PS1="$PS1 \[\e[0m\]\$ "
+  PS1="$PS1 \[\e[0m\]$ "
+  # PS1="$PS1 \[\e[0m\]\m " for bash 4.4
   # 12:49:29 ⌛ 2014-08-04 / 127 $
 }
 

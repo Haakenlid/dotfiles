@@ -46,6 +46,7 @@ apt_packages=(
   tmux
   silversearcher-ag
   exuberant-ctags
+  CMake
   xdotool
   python3-pip
 )

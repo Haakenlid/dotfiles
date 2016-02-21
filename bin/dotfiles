@@ -332,6 +332,7 @@ EOF
 read -N 1 -t $prompt_delay -p "Install vim plugins? [y/N] " plugins; echo
 if [[ "$plugins" =~ [Yy] ]]; then
     e_header "Updating vim plugins"
+    vim +PlugUgrade +qa
     vim +PlugUpdate +qa
 else
     echo "Skipping."

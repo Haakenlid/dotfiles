@@ -30,7 +30,9 @@ main() {
     # no running terminal emulator
     TERMINAL_EMULATOR=$(get_emulator)
     # start new terminal emulator window
-    $TERMINAL_EMULATOR &
+    # start tmux or attach to existing session
+    # $TERMINAL_EMULATOR --hold -e "$HOME/.dotfiles/bin/connect_to_tmux.sh" &
+    $TERMINAL_EMULATOR & 
     # resize and set window class for the emulator
     xdotool search \
       --onlyvisible --sync --limit 1 --class "$TERMINAL_EMULATOR"\

@@ -8,9 +8,10 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
-let g:lt_height = 3
+" let g:lt_height = 5
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
-autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd! BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd! BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
 set modelines=5
 augroup pencil
@@ -296,6 +297,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-lexical'
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'

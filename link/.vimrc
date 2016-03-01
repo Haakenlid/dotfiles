@@ -16,7 +16,7 @@ set modeline
 set modelines=5
 augroup pencil
   autocmd!
-  autocmd FileType markdown,mkd,text 
+  autocmd FileType markdown,mkd,text
         \ | call pencil#init()
         \ | call lexical#init()
 augroup END
@@ -292,7 +292,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'Valloric/ListToggle'
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'reedes/vim-pencil'

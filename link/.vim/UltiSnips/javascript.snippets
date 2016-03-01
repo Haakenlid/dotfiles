@@ -76,24 +76,22 @@ snippet ism "is mounted"
 isMounted()
 endsnippet
 
+snippet import "import es6" bA
+import ${1:package} from '${2:$1}'
+endsnippet
+
 snippet jsx "define jsx dom" b
-/**
- * @jsx React.DOM
- */
+import React from 'react'
 
-var React = require('react');
-}
-var ${2:ClassName} = React.createClass({
-
-	render: function() {
+var ${1:ClassName} = React.createClass({
+	$3
+	render() {
 		return (
-			${VISUAL}$4
-		);
+			${VISUAL}$2
+		)
 	}
-
-});
-$0
-${3:module.exports = $2;}
+})
+export default $1 
 endsnippet
 
 snippet pt "propTypes" b

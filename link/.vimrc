@@ -1,4 +1,4 @@
-" Keyboard shortcuts
+"Keyboard shortcuts
 let mapleader=" "
 syntax on
 filetype plugin indent on
@@ -8,21 +8,45 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
+
+nmap zn :GitGutterNextHunk<cr>
+nmap zN :GitGutterPrevHunk<cr>
+
+" Don't use swap file.
+set nobackup
+set nowritebackup
+set noswapfile
+
+" Python
+"
+let g:autopep8_disable_show_diff=1
+let g:autopep8_max_line_length=79
+autocmd FileType python nmap <buffer> <M-8> :call Autopep8()<CR>
+autocmd FileType python BracelessEnable +indent 
+
 " let g:lt_height = 5
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
 autocmd! BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd! BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
 set modelines=5
-augroup pencil
-  autocmd!
-  autocmd FileType markdown,mkd,text 
-        \ | call pencil#init()
-        \ | call lexical#init()
-augroup END
+
+" let g:airline_section_x = 'pencil: %{PencilMode()}'
+" augroup pencil
+"   autocmd!
+"   autocmd FileType markdown,mkd,text 
+"         \ | call pencil#init()
+"         \ | call lexical#init()
+" augroup END
 
 
-imap jj <esc>
+map! jj <esc>
+imap DD <esc>dd
+imap AA <esc>A
+imap II <esc>I
+imap OO <esc>O
+imap <c-cr> <esc>o
+imap <c-u> <esc>ui
 map Q @q
 " Ctrl-Q = quit
 map <C-Q> :qa!
@@ -30,13 +54,20 @@ map! <C-Q> <esc>:qa!
 " Ctrl-S = save
 map <C-S> :w!<cr>
 map! <C-S> <esc>:w!<cr>
+" clear search pattern
+map <leader>/ :let @/=""<cr>
 
-nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr>
-let g:lexical#spell_key='<leader>z'
+" nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr>let g:lexical#spell_key='<leader>z'
 
 " Replace word under cursor
-nnoremap <leader>r :%s/\<<C-r>=expand('<cword>')<CR>\>/
-nnoremap <leader>v :e ~/.vimrc<CR>
+nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
+
+" leader p => previous buffer
+map <leader>p :bp<CR>
+
+" open vimrc with leader V 
+map <leader>v :e $MYVIMRC<CR>
+au BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
 " Airline settings
 let g:airline_powerline_fonts = 1
@@ -44,7 +75,7 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
 
 " Tagbar settings
-nmap <C-T> :TagbarOpenAutoClose<cr>
+map <leader>t :TagbarOpenAutoClose<cr>
 set tags=tags;,.git/tags;
 
 "sane defaults
@@ -102,8 +133,9 @@ endfun
 
 autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
+
 if ! has('gui_running')
-    " set ttimeoutlen=10
+    " this makes insert mode commands such as jj possible  
     augroup FastEscape
         autocmd!
         au InsertEnter * set timeoutlen=300
@@ -114,7 +146,8 @@ endif
 " YouCompleteMe settings
 nmap gd :YcmCompleter GoTo<cr>
 nmap gD :YcmCompleter GetDoc<cr>
-nmap gi /import<CR>
+nmap gi /import<CR>:let @/ = ""<CR>
+
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
@@ -128,10 +161,8 @@ let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
       \ 'qf' : 1,
       \ 'notes' : 1,
-      \ 'markdown' : 1,
       \ 'rst' : 1,
       \ 'unite' : 1,
-      \ 'text' : 1,
       \ 'vimwiki' : 1,
       \ 'pandoc' : 1,
       \ 'infolog' : 1,
@@ -169,7 +200,7 @@ let g:riv_fold_auto_update = 0
 
 " NERDTree settings
 let NERDTreeShowHidden = 1
-nmap <C-N> :NERDTreeToggle<CR>
+map <leader>n :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__']
@@ -270,7 +301,6 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'floobits/floobits-neovim'
-Plug 'hynek/vim-python-pep8-indent'
 Plug 'lambdatoast/elm.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
@@ -284,21 +314,23 @@ Plug 'Rykka/InstantRst'
 Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
-Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-sleuth'
+" Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'Valloric/ListToggle'
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py --clang-completer' }
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'reedes/vim-pencil'
+" Plug 'reedes/vim-pencil'
 Plug 'reedes/vim-lexical'
 Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'tell-k/vim-autopep8'
+Plug 'tweekmonster/braceless.vim'
 
+" Plug 'hynek/vim-python-pep8-indent'
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'flazz/vim-colorschemes'

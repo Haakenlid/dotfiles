@@ -1,9 +1,8 @@
 # Editing
-export EDITOR='vim'
-export LESSEDIT='vim %f'
-export GIT_EDITOR='vim'
-export VISUAL='vim'
-alias q='subl'
+export EDITOR="nvim"
+export LESSEDIT="$EDITOR %f"
+export GIT_EDITOR="$EDITOR"
+export VISUAL="$EDITOR"
 
-set -o vi # vim keybindings in bash
+set -o vi # vi keybindings in bash
 

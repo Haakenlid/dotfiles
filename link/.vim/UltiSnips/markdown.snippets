@@ -1,53 +1,66 @@
 priority -50
+global !p
+from datetime import datetime
+import re
+def timestamp():
+	return datetime.strftime(datetime.now(), '%Y-%m-%dT%H:%M:%S')
+
+def slugify(text):
+	return re.sub(r'\W+', '-', text.lower())
+
+endglobal
+
 
 ###########################
 # Sections and Paragraphs #
 ###########################
-snippet sec "Section" b
-# ${1:Section Name} #
+# date: "2015-05-01T22:12:03.284Z"
+snippet meta "Meta" b
+---
+title: ${1:Title}
+date: "`!p snip.rv=timestamp()`"
+layout: post
+readNext: "/my-second-post/"
+path: "/`!p snip.rv=slugify(t[1])`/"
+---
 $0
 endsnippet
 
-snippet ssec "Sub Section" b
-## ${1:Section Name} ##
+snippet .h1 "Header 1" bA
+${1:Header level 1}
+${1/./=/g}
 $0
 endsnippet
 
-snippet sssec "SubSub Section" b
-### ${1:Section Name} ###
+snippet .h2 "Header 2" bA
+${1:Header level 2}
+${1/./-/g}
 $0
 endsnippet
 
-snippet par "Paragraph" b
-#### ${1:Paragraph Name} ####
+snippet .bq "Block quote" bA
+> $1
 $0
 endsnippet
 
-snippet spar "Paragraph" b
-##### ${1:Paragraph Name} #####
-$0
-endsnippet
-
-################
-# Common stuff #
-################
-snippet link "Link to something"
-[${1:${VISUAL:Text}}](${3:http://${2:www.url.com}})$0
-endsnippet
-
-snippet img "Image"
-![${1:pic alt}](${2:path}${3/.+/ "/}${3:opt title}${3/.+/"/})$0
-endsnippet
-
-snippet ilc "Inline Code" i
-\`$1\`$0
-endsnippet
-
-snippet cbl "Codeblock" b
+snippet ` "Codeblock" bA
 \`\`\`
 $1
 \`\`\`
 $0
 endsnippet
+
+snippet .a "Link to something" iA
+[${1:${VISUAL:Text}}](http://${2:www.url.com})$0
+endsnippet
+
+snippet .im "Image" iA
+![${1:pic alt}](${2:http://image.jpg}${3/.+/ "/}${3:$1}${3/.+/"/})$0
+endsnippet
+
+snippet pre "Inline Code" i
+\`$1\`$0
+endsnippet
+
 
 # vim:ft=snippets:

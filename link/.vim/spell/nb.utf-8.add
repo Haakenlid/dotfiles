@@ -1,19 +1,5 @@
-#jango/!
-#ython/!
-#ython/!
-etc/!
-no/!
-aller.no /!
-dagbladet.no /!
-aller.no/!
-dagbladet.no/!
-#tc./!
-python/!
-django/!
 django
 python
-etc
-etc./!
 etc.
 aller.no
 dagbladet.no
@@ -25,3 +11,7 @@ undervisningsaktivitet
 NSO
 kunnskapsdepartementets
 februar
+vim
+set
+spl
+nb

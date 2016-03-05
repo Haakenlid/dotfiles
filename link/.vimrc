@@ -39,12 +39,13 @@ set modelines=5
 "         \ | call lexical#init()
 " augroup END
 
-
 map! jj <esc>
-imap DD <esc>dd
-imap AA <esc>A
-imap II <esc>I
-imap OO <esc>O
+" imap DD <esc>dd
+" imap AA <esc>A
+" imap II <esc>I
+" imap OO <esc>O
+" imap CC <esc>C
+
 imap <c-cr> <esc>o
 imap <c-u> <esc>ui
 map Q @q
@@ -56,8 +57,6 @@ map <C-S> :w!<cr>
 map! <C-S> <esc>:w!<cr>
 " clear search pattern
 map <leader>/ :let @/=""<cr>
-
-" nmap <leader>o ?[[{(]<cr>v%:s/\n//g<cr>let g:lexical#spell_key='<leader>z'
 
 " Replace word under cursor
 nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>

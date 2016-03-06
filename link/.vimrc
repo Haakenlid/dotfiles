@@ -58,6 +58,10 @@ map! <C-S> <esc>:w!<cr>
 " clear search pattern
 map <leader>/ :let @/=""<cr>
 
+" random color scheme
+map <leader>R :colorscheme random<CR>
+
+
 " Replace word under cursor
 nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
 
@@ -294,6 +298,7 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
+Plug 'guns/xterm-color-table.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'

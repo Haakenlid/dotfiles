@@ -242,10 +242,10 @@ endfunction
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " CTRL-P settings
-nmap gS :CtrlPTag<cr>
-nmap gs :CtrlPBufTag<cr>
+nmap gt :CtrlPTag<cr>
 nmap gb :CtrlPBuffer<cr>
 nmap gm :CtrlPMRUFiles<cr>
+
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPLastMode'

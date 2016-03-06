@@ -144,9 +144,9 @@ if &t_Co > 255
    hi Macro           ctermfg=193
    hi SpecialKey      ctermfg=81
 
-   hi MatchParen      ctermbg=none ctermfg=190  cterm=underline
-   hi ModeMsg         ctermfg=229
-   hi MoreMsg         ctermfg=229
+   hi MatchParen      ctermfg=15 ctermbg=89   cterm=bold
+   hi ModeMsg         ctermfg=229 
+   hi MoreMsg         ctermfg=229 
    hi Operator        ctermfg=161
 
    " complete menu

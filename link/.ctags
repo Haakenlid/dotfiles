@@ -1,0 +1,15 @@
+--exclude=.git
+--exclude=log
+--exclude=tmp
+--exclude=node_modules
+--tag-relative
+--exclude=bower_components
+
+--langdef=js
+--langmap=js:.js.jsx
+
+--regex-js=/^\s*const\s+([A-Z]\S+)/\1/component/
+--regex-js=/^\s*const\s+([a-z]\S+)/\1/const/
+
+--regex-js=/\s(\w+) *=.*createClass/\1/class/
+--regex-js=/class +(\w+) /\1/class/

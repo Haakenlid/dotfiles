@@ -21,20 +21,19 @@ set noswapfile
 "
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
-autocmd FileType python nmap <buffer> <M-8> :call Autopep8()<CR>
-autocmd FileType python BracelessEnable +indent 
+autocmd FileType python BracelessEnable +indent
 
 " let g:lt_height = 5
 autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
-autocmd! BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd! BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
+autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
 set modelines=5
 
 " let g:airline_section_x = 'pencil: %{PencilMode()}'
 " augroup pencil
 "   autocmd!
-"   autocmd FileType markdown,mkd,text 
+"   autocmd FileType markdown,mkd,text
 "         \ | call pencil#init()
 "         \ | call lexical#init()
 " augroup END
@@ -68,9 +67,9 @@ nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
 " leader p => previous buffer
 map <leader>p :bp<CR>
 
-" open vimrc with leader V 
+" open vimrc with leader V
 map <leader>v :e $MYVIMRC<CR>
-au BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
+autocmd BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
 " Airline settings
 let g:airline_powerline_fonts = 1
@@ -109,10 +108,6 @@ set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusl
 hi CursorLine   cterm=NONE ctermbg=235
 hi CursorLineNr cterm=bold ctermfg=Yellow ctermbg=235
 
-augroup vimrc
-  autocmd!
-augroup END
-
 " Splits
 set splitbelow " New split goes below
 set splitright " New split goes right
@@ -134,11 +129,12 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-autocmd FileType c,cpp,java,php,ruby,python autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-
+autocmd FileType c,cpp,java,php,ruby,python autocmd
+      \ BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+nmap <leader>S :call <SID>StripTrailingWhitespaces()<cr>
 
 if ! has('gui_running')
-    " this makes insert mode commands such as jj possible  
+    " this makes insert mode commands such as jj possible
     augroup FastEscape
         autocmd!
         au InsertEnter * set timeoutlen=300
@@ -231,22 +227,17 @@ function! s:DimInactiveWindows()
     call setwinvar(i, '&colorcolumn', l:range)
   endfor
 endfunction
-" augroup DimInactiveWindows
-"   au!
-"   au WinEnter * call s:DimInactiveWindows()
-"   au WinEnter * set cursorline
-"   au WinLeave * set nocursorline
-" augroup END
 
 " JSX settings
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " CTRL-P settings
-nmap gt :CtrlPTag<cr>
-nmap gb :CtrlPBuffer<cr>
-nmap gm :CtrlPMRUFiles<cr>
+nmap gT :CtrlPTag<cr>
+nmap gB :CtrlPBuffer<cr>
+nmap gM :CtrlPMRUFiles<cr>
 
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*,*/\.git/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
+
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlPLastMode'
 let g:ctrlp_working_path_mode = 'ra'
@@ -298,14 +289,16 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
-Plug 'guns/xterm-color-table.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
-Plug 'floobits/floobits-neovim'
-Plug 'lambdatoast/elm.vim'
+" Plug 'floobits/floobits-neovim'
+" Plug 'Glench/Vim-Jinja2-Syntax'
+" Plug 'gorodinskiy/vim-coloresque'
+Plug 'guns/xterm-color-table.vim'
+" Plug 'lambdatoast/elm.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
@@ -313,27 +306,25 @@ Plug 'mattn/webapi-vim'
 Plug 'mickaobrien/vim-stackoverflow'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
+Plug 'reedes/vim-lexical'
+" Plug 'reedes/vim-pencil'
 Plug 'rking/ag.vim'
-Plug 'Rykka/InstantRst'
-Plug 'Rykka/riv.vim'
+" Plug 'Rykka/InstantRst'
+" Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
+Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 " Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
+Plug 'tweekmonster/braceless.vim'
 Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'reedes/vim-pencil'
-Plug 'reedes/vim-lexical'
-Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'tell-k/vim-autopep8'
-Plug 'tweekmonster/braceless.vim'
-
 " Plug 'hynek/vim-python-pep8-indent'
 " Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
@@ -346,6 +337,4 @@ Plug 'tweekmonster/braceless.vim'
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
-
 call plug#end()
-

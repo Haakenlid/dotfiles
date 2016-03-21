@@ -1,0 +1,58 @@
+[general]
+pythonfile=~/.offlineimap.py
+ui = ttyui
+accounts = Gmail
+fsync = False
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+status_backend = sqlite
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/Mail/haakenlid@gmail.com
+nametrans = lambda folder: {'drafts':  '[Gmail]/Drafts',
+                            'sent':    '[Gmail]/Sent Mail',
+                            'important':    '[Gmail]/Important',
+                            'spam':    '[Gmail]/Spam',
+                            'starred': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                            }.get(folder, folder)
+sep = /
+
+[Repository Gmail-Remote]
+maxconnections = 2
+type = Gmail
+remoteuser = haakenlid@gmail.com 
+remotepass = bjfeaiatuespdcia
+/bin/bash: bjfeaiatuespdcia: command not found
+realdelete = no
+nametrans = lambda folder: {'[Gmail]/Drafts':    'drafts',
+                            '[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'starred',
+                            '[Gmail]/Important':   'important',
+                            '[Gmail]/Spam':   'spam',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                            }.get(folder, folder)
+folderfilter = lambda folder: folder not in ['[Gmail]/All Mail',
+                                             '[Gmail]/Important',
+                                             '[Gmail]/Starred',
+                                             '[Gmail]/flagged',
+                                             'flagged',
+                                             'ML/Logback',
+                                             'Perso/Projects/JTheque/GitHub',
+                                             'Perso/Projects/Wordpress',
+                                             'Phd/Assistanat/Algo',
+                                             ]
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[mbnames]
+enabled = yes
+filename = ~/.mutt/mailboxes
+header = "mailboxes "
+peritem = "+%(accountname)s/%(foldername)s"
+sep = " "
+footer = "\n"

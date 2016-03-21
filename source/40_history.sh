@@ -39,7 +39,7 @@ function cleanhistory() {
     # Remove duplicate entries and very short entries from the history file
     local HISTORY="$HOME/.bash_history"
     local BACKUP="$HOME/.backup/.bash_history_$(timestamp).backup"
-    local NEW_HISTORY=$(cat $HISTORY)
+    local NEW_HISTORY=$(strings $HISTORY)
     for REMOVETERM in $@; do
         NEW_HISTORY=$(echo "$NEW_HISTORY" | grep -vi "$REMOVETERM")
     done
@@ -76,7 +76,7 @@ function search_for_terms_in_history {
     local SENTINEL_VALUE='### ELEPHANT IN CAIRO ###'
     # lists command history, purging duplicates and stripping space at end of lines.
     local RESULT=$(\
-        HISTTIMEFORMAT='' history | sed 's/^ *[0-9]*//'|\
+        HISTTIMEFORMAT='' history | strings | sed 's/^ *[0-9]*//'|\
         nl -n rz | sed 's/ \+$//' | sort -k2 | tac | uniq -f2 | sort | tac )
     # prepares history for searching.
     local HITS=$(echo "$RESULT" | sed 's/\s*[0-9]*\s\+//' | grep -v '^??' )

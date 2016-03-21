@@ -4,6 +4,12 @@
 
 global !p
 from snippet_helpers import *
+def expand_proptypes(props):
+	if not props:
+		return ''
+	pattern = '{}: React.PropTypes.any'
+	props = (prop.strip() for prop in props.split(','))
+	return ',\n  '.join(pattern.format(prop) for prop in props)
 endglobal
 
 snippet cs "React.addons.classSet" b
@@ -83,14 +89,15 @@ endsnippet
 snippet jsx "define jsx dom" b
 import React from 'react'
 
-var ${1:ClassName} = React.createClass({
-	$3
-	render() {
-		return (
-			${VISUAL}$2
-		)
-	}
-})
+const ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} = ({ $2 }) => (
+	<${4:div}>
+		${VISUAL}$5
+	</$4>
+)
+$1.propTypes = {
+	`!p snip.rv = expand_proptypes(t[2])`
+}
+$0
 export default $1 
 endsnippet
 

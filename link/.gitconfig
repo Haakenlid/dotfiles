@@ -66,4 +66,4 @@
 [url "https://"]
 	insteadOf = git://
 [mergetool "fugitive"]
-	cmd = "printf \"\\033]2;nvim\\033\\\\\"; nvim -f -c \"Gdiff\" \"$MERGED\""
+	cmd = "printf \"\\033]2;nvim\\033\\\\\"; nvim -f -c \"Gvdiff\" \"$MERGED\""

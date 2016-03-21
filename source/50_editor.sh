@@ -1,5 +1,5 @@
 # Editing
-export EDITOR="/usr/bin/nvim"
+export EDITOR="vim"
 export LESSEDIT="$EDITOR %f"
 export GIT_EDITOR="$EDITOR"
 export VISUAL="$EDITOR"

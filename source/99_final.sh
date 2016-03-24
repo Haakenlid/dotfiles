@@ -1,4 +1,5 @@
 # Remove duplicates in PATH and PYTHONPATH
+PATH="$PATH:$HOME/.npm-packages/bin/"
 PATH=$(echo $PATH | sed s/:/\\n/g | sort --unique | tr '\n' ':')
 PYTHONPATH=$(echo $PYTHONPATH | sed s/:/\\n/g | sort --unique | tr '\n' ':')
 

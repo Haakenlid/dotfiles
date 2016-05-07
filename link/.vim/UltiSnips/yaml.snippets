@@ -1,3 +1,5 @@
+# Ultisnips snippet for getting the current tmux layout. 
+# Use it in tmuxinator config files.
 snippet layout: "tmux layout" iA
 layout: ${1:`tmux lsw -F '#{window_active} #{window_layout}'|awk '/^1/{print $2}'`}
 endsnippet

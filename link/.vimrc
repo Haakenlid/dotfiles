@@ -3,6 +3,7 @@ let mapleader=" "
 syntax on
 filetype plugin indent on
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_python_enabled_makers = ['flake8']
 autocmd! BufWritePost * Neomake
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
@@ -233,8 +234,8 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " CTRL-P settings
 nmap gT :CtrlPTag<cr>
-nmap gB :CtrlPBuffer<cr>
-nmap gM :CtrlPMRUFiles<cr>
+nmap gb :CtrlPBuffer<cr>
+nmap gm :CtrlPMRUFiles<cr>
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
 

@@ -1,0 +1,15 @@
+#!/bin/bash
+# toggle state of touchpad
+
+tpid=$(xinput list | grep -i touchpad | sed 's/.*id\=\([0-9]\+\).*/\1/g')
+[[ -n $touchpad ]] && echo 'touchpad id not found' >&2 && exit 1
+status=$(xinput list-props ${tpid} | grep Device\ Enabled | sed -e 's/.*\:[ \t]\+//g')
+#echo $tpid $status
+if [[ $status == 0 ]]; then
+  xinput enable ${tpid} 
+  echo 'touchpad on'
+else
+  xinput disable ${tpid}
+  xdotool mousemove 10000 10000
+  echo 'touchpad off'
+fi

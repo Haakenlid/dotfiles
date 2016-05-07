@@ -129,8 +129,8 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-autocmd FileType c,cpp,java,php,ruby,python,javascript,javascript.jsx autocmd
-      \ BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()    
+
 nmap <leader>S :call <SID>StripTrailingWhitespaces()<cr>
 
 if ! has('gui_running')

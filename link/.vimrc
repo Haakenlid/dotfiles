@@ -2,9 +2,15 @@
 let mapleader=" "
 syntax on
 filetype plugin indent on
+let g:neomake_python_mypy_maker = {
+      \ 'exe': 'mypy',
+      \ 'args': ['-s'],
+      \ 'errorformat': '%f:%l:%m'
+      \ }
+let g:neomake_python_enabled_makers = ['flake8', 'mypy']
 let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_python_enabled_makers = ['flake8']
-autocmd! BufWritePost * Neomake
+autocmd BufreadPost,BufWritePost * Neomake
+let g:neomake_open_list = 2 " open location list
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 let g:lt_location_list_toggle_map = '<leader>l'
@@ -119,7 +125,7 @@ set splitright " New split goes right
 
 " Make it obvious where 80 characters is
 " set textwidth=80
-set colorcolumn=80
+set colorcolumn=-1
 
 set dictionary="/usr/dict/words"
 
@@ -130,7 +136,7 @@ function! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()    
+autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
 nmap <leader>S :call <SID>StripTrailingWhitespaces()<cr>
 

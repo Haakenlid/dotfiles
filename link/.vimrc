@@ -16,8 +16,8 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 
-nmap zn :GitGutterNextHunk<cr>
-nmap zN :GitGutterPrevHunk<cr>
+nmap zn :GitGutterNextHunk<CR>
+nmap zN :GitGutterPrevHunk<CR>
 
 " Don't use swap file.
 set nobackup
@@ -31,7 +31,7 @@ let g:autopep8_max_line_length=79
 autocmd FileType python BracelessEnable +indent
 
 " let g:lt_height = 5
-autocmd FileType qf nmap <buffer> <cr> <cr>:lcl<cr>
+autocmd FileType qf nmap <buffer> <CR> <CR>:lcl<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
@@ -52,17 +52,23 @@ map! jj <esc>
 " imap OO <esc>O
 " imap CC <esc>C
 
-imap <c-cr> <esc>o
+imap <c-CR> <esc>o
 imap <c-u> <esc>ui
 map Q @q
 " Ctrl-Q = quit
 map <C-Q> :qa!
 map! <C-Q> <esc>:qa!
 " Ctrl-S = save
-map <C-S> :w!<cr>
-map! <C-S> <esc>:w!<cr>
+"
+fun! <SID>Writefile()
+  call <SID>StripTrailingWhitespaces()
+  w!
+endfun
+
+map <silent> <C-S> :call <SID>Writefile()<CR>
+map <silent> <C-S> <esc>:call <SID>Writefile()<CR>
 " clear search pattern
-map <leader>/ :let @/=""<cr>
+map <silent> <leader>/ :let @/=""<CR>
 
 " random color scheme
 map <leader>R :colorscheme random<CR>
@@ -84,7 +90,7 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
 
 " Tagbar settings
-map <leader>t :TagbarOpenAutoClose<cr>
+map <leader>t :TagbarOpenAutoClose<CR>
 set tags=tags;,.git/tags;
 
 "sane defaults
@@ -138,7 +144,7 @@ endfun
 
 autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 
-nmap <leader>S :call <SID>StripTrailingWhitespaces()<cr>
+nmap <leader>S :call <SID>StripTrailingWhitespaces()<CR>
 
 if ! has('gui_running')
     " this makes insert mode commands such as jj possible
@@ -150,8 +156,8 @@ if ! has('gui_running')
 endif
 
 " YouCompleteMe settings
-nmap gd :YcmCompleter GoTo<cr>
-nmap gD :YcmCompleter GetDoc<cr>
+nmap gd :YcmCompleter GoTo<CR>
+nmap gD :YcmCompleter GetDoc<CR>
 nmap gi /import<CR>:let @/ = ""<CR>
 
 let g:ycm_autoclose_preview_window_after_insertion = 1
@@ -239,9 +245,9 @@ endfunction
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " CTRL-P settings
-nmap gT :CtrlPTag<cr>
-nmap gb :CtrlPBuffer<cr>
-nmap gm :CtrlPMRUFiles<cr>
+nmap gT :CtrlPTag<CR>
+nmap gb :CtrlPBuffer<CR>
+nmap gm :CtrlPMRUFiles<CR>
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
 

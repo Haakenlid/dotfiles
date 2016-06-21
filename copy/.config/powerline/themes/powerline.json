@@ -9,7 +9,7 @@
   "segment_data": {
     "tmux_date": {
       "args": {
-        "format": "%F ⌚ %T"
+        "format": "%F ⧗ %T"
       }
     }
   }

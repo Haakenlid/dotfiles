@@ -17,14 +17,17 @@ program_exists /usr/bin/nvim && alias vim=/usr/bin/nvim
 
 # Keyboard layout changes (only works if you have the keyboard layouts installed)
 function nor() {  # Norwegian
+  [ $DISPLAY ] || return
   setxkbmap -layout no -option caps:escape
   echo 'norwegian keyboard'
 }
 function eng() {  # Like English – but better!
+  [ $DISPLAY ] || return
   xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY >& /dev/null
   echo 'english (improved) keyboard'
 }
 function chromeng() {  # Like English – but better!
+  [ $DISPLAY ] || return
   xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-chromebook $DISPLAY >& /dev/null
   echo 'english (improved) keyboard for chromebook'
 }

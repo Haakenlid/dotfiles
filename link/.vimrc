@@ -66,7 +66,7 @@ fun! <SID>Writefile()
 endfun
 
 map <silent> <C-S> :call <SID>Writefile()<CR>
-map <silent> <C-S> <esc>:call <SID>Writefile()<CR>
+imap <silent> <C-S> <esc>:call <SID>Writefile()<CR>
 " clear search pattern
 map <silent> <leader>/ :let @/=""<CR>
 

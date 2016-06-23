@@ -105,7 +105,8 @@ function prompt_svn() {
 
 function prompt_command() {
   local exit_code=$?
-
+  local hourglass="⧗"
+  #alternatives ⧖⌛
   # If the first command in the stack is prompt_command, no command was run.
   this_command=$(fc -ln -0)
   # this_command=$(history | tail -n1)
@@ -133,13 +134,13 @@ function prompt_command() {
   # ⓔ venv /  master / user@host:/working/directiory/
   PS1="$PS1\n"  # line break
   #
-  PS1="$PS1$c0$(date +"%H$c1:$c0%M$c1:$c0%S$c3 ⌛ $c0%Y$c1-$c0%m$c1-$c0%d")"
-  # 12:49:29 ⌛ 2014-08-04
+  PS1="$PS1$c0$(date +"%H$c1:$c0%M$c1:$c0%S$c3 $hourglass $c0%Y$c1-$c0%m$c1-$c0%d")"
+  # 12:49:29 ⧗ 2014-08-04
   PS1="$PS1$(prompt_exitcode "$exit_code")"
-  # 12:49:29 ⌛ 2014-08-04 / 127
+  # 12:49:29 ⧗ 2014-08-04 / 127
   PS1="$PS1 \[\e[0m\]$ "
   # PS1="$PS1 \[\e[0m\]\m " for bash 4.4
-  # 12:49:29 ⌛ 2014-08-04 / 127 $
+  # 12:49:29 ⧗ 2014-08-04 / 127 $
 }
 
 

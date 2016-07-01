@@ -1,8 +1,13 @@
 # Remove duplicates in PATH and PYTHONPATH
+
+function uniqpath() {
+  printf $(printf ":$@:" | awk -v RS=: -v ORS=: 'NF && !a[$0]++')
+}
+
 export GOPATH="$HOME/.go"
 PATH="$PATH:$HOME/.npm-packages/bin/:$GOPATH"
-PATH=$(echo $PATH | sed s/:/\\n/g | sort --unique | tr '\n' ':')
-PYTHONPATH=$(echo $PYTHONPATH | sed s/:/\\n/g | sort --unique | tr '\n' ':')
+PATH=$(uniqpath $PATH)
+PYTHONPATH=$(uniqpath $PYTHONPATH)
 
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion

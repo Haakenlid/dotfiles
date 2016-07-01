@@ -1,5 +1,3 @@
-
-
 function change() {
   needle=$1
   replacement=$2

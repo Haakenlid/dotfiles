@@ -4,8 +4,9 @@ Configuration example for ``ptpython``.
 Copy this file to ~/.ptpython/config.py
 """
 from __future__ import unicode_literals
+from prompt_toolkit.filters import ViInsertMode
+from prompt_toolkit.key_binding.input_processor import KeyPress
 from prompt_toolkit.keys import Keys
-from prompt_toolkit.key_binding.vi_state import ViState, InputMode
 from pygments.token import Token
 from ptpython.layout import CompletionVisualisation
 
@@ -23,7 +24,7 @@ def configure(repl):
     # Show function signature (bool).
     repl.show_signature = True
     # Show docstring (bool).
-    repl.show_docstring = False
+    repl.show_docstring = True
     # inserts a newline instead of executing the code.
     repl.show_meta_enter_message = True
     # Show completions. (NONE, POP_UP, MULTI_COLUMN or TOOLBAR)
@@ -33,7 +34,7 @@ def configure(repl):
     repl.completion_menu_scroll_offset = 0
 
     # Show line numbers (when the input contains multiple lines.)
-    repl.show_line_numbers = True
+    repl.show_line_numbers = False
     # Show status bar.
     repl.show_status_bar = True
     # When the sidebar is visible, also show the help text.
@@ -43,7 +44,7 @@ def configure(repl):
     # Line wrapping. (Instead of horizontal scrolling.)
     repl.wrap_lines = True
     # Mouse support.
-    repl.enable_mouse_support = True
+    repl.enable_mouse_support = False
     # Complete while typing. (Don't require tab before the
     # completion menu is shown.)
     repl.complete_while_typing = True
@@ -64,7 +65,7 @@ def configure(repl):
 
     # Enable auto suggestions. (Pressing right arrow will complete the input,
     # based on the history.)
-    repl.enable_auto_suggest = False
+    repl.enable_auto_suggest = True
 
     # Enable open-in-editor. Pressing C-X C-E in emacs mode or 'v' in
     # Vi navigation mode will open the input in the current editor.
@@ -92,18 +93,25 @@ def configure(repl):
 
     # Add custom key binding for PDB.
     @repl.add_key_binding(Keys.ControlB)
-    def _(event):
+    def ctrlb(event):
         ' Pressing Control-B will insert "pdb.set_trace()" '
-        event.cli.current_buffer.insert_text('\nimport ipdb; ipdb.set_trace()\n')
+        event.cli.current_buffer.insert_text('\nimport ipdb;'
+                                             'ipdb.set_trace()\n')
 
-    # Typing ControlE twice should also execute the current command.
-    # (Alternative for Meta-Enter.)
-    @repl.add_key_binding(Keys.ControlE, Keys.ControlE)
-    def _(event):
-        b = event.current_buffer
-        if b.accept_action.is_returnable:
-            b.accept_action.validate_and_handle(event.cli, b)
+    # # Typing ControlE twice should also execute the current command.
+    # # (Alternative for Meta-Enter.)
+    # @repl.add_key_binding(Keys.ControlE, Keys.ControlE)
+    # def ctrle_ctrle(event):
+    #     b = event.current_buffer
+    #     if b.accept_action.is_returnable:
+    #         b.accept_action.validate_and_handle(event.cli, b)
 
+    # Typing 'jj' in Vi Insert mode, should send escape. (Go back to navigation
+    # mode.)
+    @repl.add_key_binding('j', 'j', filter=ViInsertMode())
+    def j_j(event):
+        " Map 'jj' to Escape. "
+        event.cli.input_processor.feed(KeyPress(Keys.Escape))
 
     """
     # Custom key binding for some simple autocorrection while typing.

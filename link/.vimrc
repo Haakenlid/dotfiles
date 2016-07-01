@@ -8,6 +8,7 @@ let g:neomake_python_mypy_maker = {
       \ 'errorformat': '%f:%l:%m'
       \ }
 let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+let g:neomake_sh_enabled_makers = []
 let g:neomake_javascript_enabled_makers = ['eslint']
 autocmd BufreadPost,BufWritePost * Neomake
 let g:neomake_open_list = 2 " open location list
@@ -17,7 +18,7 @@ let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 
 nmap zn :GitGutterNextHunk<CR>
-nmap zN :GitGutterPrevHunk<CR>
+nmap zp :GitGutterPrevHunk<CR>
 
 " Don't use swap file.
 set nobackup
@@ -25,7 +26,6 @@ set nowritebackup
 set noswapfile
 
 " Python
-"
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
 autocmd FileType python BracelessEnable +indent
@@ -308,10 +308,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 " Plug 'floobits/floobits-neovim'
-" Plug 'Glench/Vim-Jinja2-Syntax'
-" Plug 'gorodinskiy/vim-coloresque'
 Plug 'guns/xterm-color-table.vim'
-" Plug 'lambdatoast/elm.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/gist-vim'
@@ -322,8 +319,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
 " Plug 'reedes/vim-pencil'
 Plug 'rking/ag.vim'
-" Plug 'Rykka/InstantRst'
-" Plug 'Rykka/riv.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
 Plug 'tell-k/vim-autopep8'
@@ -339,14 +334,8 @@ Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " Plug 'hynek/vim-python-pep8-indent'
-" Plug 'chase/vim-ansible-yaml'
 " Plug 'davidhalter/jedi-vim'
-" Plug 'flazz/vim-colorschemes'
 " Plug 'honza/vim-snippets'
-" Plug 'nathanaelkane/vim-indent-guides'
-" Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-" Plug 'scrooloose/syntastic'
-" Plug 'terryma/vim-multiple-cursors'
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'

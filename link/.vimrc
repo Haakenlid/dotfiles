@@ -7,7 +7,8 @@ let g:neomake_python_mypy_maker = {
       \ 'args': ['-s'],
       \ 'errorformat': '%f:%l:%m'
       \ }
-let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+" let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_sh_enabled_makers = []
 let g:neomake_javascript_enabled_makers = ['eslint']
 autocmd BufreadPost,BufWritePost * Neomake

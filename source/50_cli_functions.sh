@@ -50,58 +50,58 @@ function unity-restart(){
 
 #Show gmail inbox headers
 function gmail(){
-    if [[ $1 ]]; then
-      case $1 in
-        "-r")
-          unset GOOGLE_USER GOOGLE_PASSWORD
-          echo Your username and password have been cleared.
-          return 0
-          ;;
-        *)
-          echo "Display a summary of unread gmail. Enter 'gmail -r' to reset username and password."
-          return 1
+  if [[ $1 ]]; then
+    case $1 in
+      "-r")
+        unset GOOGLE_USER GOOGLE_PASSWORD
+        echo Your username and password have been cleared.
+        return 0
         ;;
-      esac
-    fi
+      *)
+        echo "Display a summary of unread gmail. Enter 'gmail -r' to reset username and password."
+        return 1
+      ;;
+    esac
+  fi
 
-    if [[ -z $GOOGLE_USER ]]; then
-      read -p 'username:  ' GOOGLE_USER
-    fi
+  if [[ -z $GOOGLE_USER ]]; then
+    read -p 'username:  ' GOOGLE_USER
+  fi
 
-    if [[ -z $GOOGLE_PASSWORD ]]; then
-      read -p 'password:  ' GOOGLE_PASSWORD # to hide password input use "read -s -p"
-    fi
+  if [[ -z $GOOGLE_PASSWORD ]]; then
+    read -p 'password:  ' GOOGLE_PASSWORD # to hide password input use "read -s -p"
+  fi
 
-    if [[ ! $GOOGLE_USER =~ @ ]]; then
-      local LOGIN="$GOOGLE_USER"@gmail.com:"$GOOGLE_PASSWORD"
-    else
-      local LOGIN="$GOOGLE_USER":"$GOOGLE_PASSWORD"
-    fi
-    echo -e "\nFetching new mail for $GOOGLE_USER\n"
+  if [[ ! $GOOGLE_USER =~ @ ]]; then
+    local LOGIN="$GOOGLE_USER"@gmail.com:"$GOOGLE_PASSWORD"
+  else
+    local LOGIN="$GOOGLE_USER":"$GOOGLE_PASSWORD"
+  fi
+  echo -e "\nFetching new mail for $GOOGLE_USER\n"
 
-    OUTPUT=$(curl -u $LOGIN --silent "https://mail.google.com/mail/feed/atom")
+  OUTPUT=$(curl -u $LOGIN --silent "https://mail.google.com/mail/feed/atom")
 
-    LOGIN_FAILED=$(echo $OUTPUT | grep -i '<TITLE>Unauthorized</TITLE>')
-    if [[ $LOGIN_FAILED ]]; then
-      echo "ERROR: Login failed. Please check your username and password."
-      unset GOOGLE_USER GOOGLE_PASSWORD
-      return 1
-    fi
+  LOGIN_FAILED=$(echo $OUTPUT | grep -i '<TITLE>Unauthorized</TITLE>')
+  if [[ $LOGIN_FAILED ]]; then
+    echo "ERROR: Login failed. Please check your username and password."
+    unset GOOGLE_USER GOOGLE_PASSWORD
+    return 1
+  fi
 
-    OUTPUT=$(
-      echo "$OUTPUT" \
-      | awk '
-          BEGIN {
-            FS="[<>]"                                        # FS = Field separator
-            RS="(</entry>)?<entry>"                          # RS = Record separator
-          }
-          NR!=1{
-            print "\033[0;93m" $27 "   \033[0;32m(" $31 ")"  # $27 = Name $31 = Email
-            print "\033[1;37m" $3                            # $3 = Subject
-            print "\033[0;96m" $7  " [...] \033[0m"          # $7 = Body extract
-          }
-      '
-    )
+  OUTPUT=$(
+    echo "$OUTPUT" \
+    | awk '
+        BEGIN {
+          FS="[<>]"                                        # FS = Field separator
+          RS="(</entry>)?<entry>"                          # RS = Record separator
+        }
+        NR!=1{
+          print "\033[0;93m" $27 "   \033[0;32m(" $31 ")"  # $27 = Name $31 = Email
+          print "\033[1;37m" $3                            # $3 = Subject
+          print "\033[0;96m" $7  " [...] \033[0m"          # $7 = Body extract
+        }
+    '
+  )
 
   if [[ -z $OUTPUT ]]; then
     echo 'No new email'
@@ -126,11 +126,5 @@ function colormap(){
       echo #Newline
     done
   done
-}
-
-
-function wp(){
-  COLUMNS=`tput cols`
-  dig +short txt ${1}.wp.dg.cx | sed -e 's/" "//g' -e 's/^"//g' -e 's/"$//g' -e 's/ http:/\n\nhttp:/' | fmt -w $COLUMNS
 }
 

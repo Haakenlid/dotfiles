@@ -6,6 +6,26 @@ program_exists () {
 # Remote servers
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 
+# Clipboard shortcuts using xclip
+clip() {
+  if [ -t 0 ]; then # no stdin
+    xclip -selection clipboard -o # pipe from clipboard
+  else
+    xclip -selection c # pipe to clipboard
+  fi
+}
+
+killchrome(){
+  local PROCS=$(ps ax -o sess,pgrp,pid,cmd | awk '$4 ~ /\/chrome$/ { printf "%d ", $3 }')
+  if [[ $PROCS == '' ]]; then
+    echo "no chromeos processes found"
+  else
+    echo "kill chromeos processes: $PROCS"
+    kill $PROCS > /dev/null
+  fi
+}
+
+
 # grep in glorious TECHNICOLOR
 alias grep='grep --color=auto'
 

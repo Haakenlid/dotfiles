@@ -70,38 +70,6 @@ function prompt_git() {
   echo "$c3 $c0$output$c1$END"
 }
 
-# hg status.
-function prompt_hg() {
-  prompt_getcolors
-  local summary output bookmark flags
-  summary="$(hg summary 2>/dev/null)"
-  [[ $? != 0 ]] && return;
-  output="$(echo "$summary" | awk '/branch:/ {print $2}')"
-  bookmark="$(echo "$summary" | awk '/bookmarks:/ {print $2}')"
-  flags="$(
-    echo "$summary" | awk 'BEGIN {r="";a=""} \
-      /(modified)/     {r= "+"}\
-      /(unknown)/      {a= "?"}\
-      END {print r a}'
-  )"
-  output="$output:$bookmark"
-  if [[ "$flags" ]]; then
-    output="$output$c1:$c0$flags"
-  fi
-  echo "$c1[$c0$output$c1]$c9"
-}
-
-# SVN info.
-function prompt_svn() {
-  prompt_getcolors
-  local info="$(svn info . 2> /dev/null)"
-  local last current
-  if [[ "$info" ]]; then
-    last="$(echo "$info" | awk '/Last Changed Rev:/ {print $4}')"
-    current="$(echo "$info" | awk '/Revision:/ {print $2}')"
-    echo "$c1[$c0$last$c1:$c0$current$c1]$c9"
-  fi
-}
 
 function prompt_command() {
   local exit_code=$?
@@ -142,6 +110,5 @@ function prompt_command() {
   # PS1="$PS1 \[\e[0m\]\m " for bash 4.4
   # 12:49:29 ⧗ 2014-08-04 / 127 $
 }
-
 
 export PROMPT_COMMAND="prompt_command; $PROMPT_COMMAND"

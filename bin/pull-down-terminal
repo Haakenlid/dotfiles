@@ -51,7 +51,7 @@ absolute_window_size() {
   # convert relative window size to absolute pixel size, based on screen res
   width_percent=$1
   height_percent=$2
-  screen_dimensions=$(xrandr | grep connected | grep -o '[1-9]\+x[0-9]\+')
+  screen_dimensions=$(xrandr | grep connected | grep -o '[0-9]\+x[0-9]\+')
   IFS=x
   set $screen_dimensions
   echo $(($width_percent * $1 / 100)) $(($height_percent * $2 / 100))

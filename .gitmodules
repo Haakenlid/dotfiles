@@ -3,4 +3,4 @@
 	url = https://github.com/rupa/z.git
 [submodule "libs/powerline"]
 	path = libs/powerline
-	url = https://github.com/haakenlid/powerline
+	url = https://github.com/powerline/powerline

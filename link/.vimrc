@@ -20,6 +20,7 @@ let g:lt_quickfix_list_toggle_map = '<leader>q'
 
 nmap zn :GitGutterNextHunk<CR>
 nmap zp :GitGutterPrevHunk<CR>
+let g:elm_format_autosave = 1
 
 " Don't use swap file.
 set nobackup
@@ -334,6 +335,7 @@ Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'elmcast/elm-vim'
 " Plug 'hynek/vim-python-pep8-indent'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'honza/vim-snippets'

@@ -2,6 +2,15 @@
 let mapleader=" "
 syntax on
 filetype plugin indent on
+
+let g:vdebug_options = {
+      \ 'port': 9000,
+      \ 'server': '',
+      \ 'ide_key': '',
+      \ 'debug_file': '/home/haakenlid/vdebug.log',
+      \ 'debug_file_level': 2,
+      \ }
+
 let g:neomake_python_mypy_maker = {
       \ 'exe': 'mypy',
       \ 'args': ['-s'],
@@ -336,6 +345,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'elmcast/elm-vim'
+Plug 'joonty/vdebug'
 " Plug 'hynek/vim-python-pep8-indent'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'honza/vim-snippets'

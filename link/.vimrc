@@ -36,6 +36,12 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" Splain syntax highlight
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
+      \ . '> trans<' . synIDattr(synID(line("."),col("."),0),"name")
+      \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)), "name") 
+      \ . ">"<CR>
+
 " Python
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
@@ -345,7 +351,7 @@ Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'elmcast/elm-vim'
-Plug 'joonty/vdebug'
+" Plug 'joonty/vdebug'
 " Plug 'hynek/vim-python-pep8-indent'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'honza/vim-snippets'

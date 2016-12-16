@@ -2,7 +2,7 @@
 
 sudo add-apt-repository ppa:neovim-ppa/unstable
 sudo apt update
-sudo apt install neovim
+sudo apt install neovim python-pip python3-pip
 sudo pip3 install neovim
 sudo pip2 install neovim
 

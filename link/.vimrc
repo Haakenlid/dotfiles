@@ -26,6 +26,10 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" Printing
+set printoptions+=formfeed:y 
+set printoptions+=header:0 
+
 " Python
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
@@ -37,6 +41,12 @@ autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
 set modelines=5
+
+" Dynamic quickfix height
+au FileType qf call AdjustWindowHeight(3, 10)
+function! AdjustWindowHeight(minheight, maxheight)
+  exe max([min([line("$") + 1, a:maxheight]), a:minheight]) . "wincmd _"
+endfunction
 
 " let g:airline_section_x = 'pencil: %{PencilMode()}'
 " augroup pencil

@@ -3,6 +3,9 @@ program_exists () {
   type "$1" &> /dev/null ;
 }
 
+# open
+alias open=xdg-open
+
 # Remote servers
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 
@@ -69,10 +72,20 @@ fi
 alias nocolor='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"'
 
 # make a directory and cd into it
-mcd () {
+function mcd () {
   mkdir -p $1 && cd $1
 }
 
 # You only live once
 alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay)" && git push --force'
 
+# Start a program and disown
+function run(){
+  if which $1 > /dev/null; then
+    echo "running and disowning $1"
+    (nohup $@ &> /dev/null & disown)
+  else
+    echo "no such command $1" 1>&2
+    return 1
+  fi
+}

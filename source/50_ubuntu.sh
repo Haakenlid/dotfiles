@@ -2,9 +2,9 @@
 [[ "$(cat /etc/issue 2> /dev/null)" =~ Ubuntu ]] || return 1
 
 # Package management
-alias update="sudo apt-get -q update && sudo apt-get upgrade"
-alias install="sudo apt-get install"
-alias remove="sudo apt-get remove"
+alias update="sudo apt -q update && sudo apt upgrade"
+alias install="sudo apt install"
+alias remove="sudo apt remove"
 alias search="apt-cache search"
 alias show="apt-cache show"
 

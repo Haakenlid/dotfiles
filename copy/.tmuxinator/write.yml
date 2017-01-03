@@ -1,0 +1,14 @@
+# ~/.tmuxinator/write.yml
+
+name: write
+root: ~/projects/write
+pre: ssh-add
+
+windows:
+  - editor:
+      layout: even-horizontal 
+      panes:
+        - nvim
+        - gitwatch:
+          - git pull
+          - ./gitwatch.sh -b master -r origin -s 2 .

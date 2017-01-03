@@ -4,12 +4,23 @@
 tpid=$(xinput list | grep -i touchpad | sed 's/.*id\=\([0-9]\+\).*/\1/g')
 [[ -n $touchpad ]] && echo 'touchpad id not found' >&2 && exit 1
 status=$(xinput list-props ${tpid} | grep Device\ Enabled | sed -e 's/.*\:[ \t]\+//g')
-#echo $tpid $status
-if [[ $status == 0 ]]; then
-  xinput enable ${tpid} 
+#echo $tpid $status00
+TMP=/tmp/.mouselocation
+DISTANCE=10000
+if [[ $status == 0 ]] ; then
+  X=0
+  Y=0
+  source $TMP
+  # for some reason this must be done twice.
+  xdotool mousemove $X $Y mousemove_relative 1 1
+  xdotool mousemove $X $Y mousemove_relative 1 1
+  xinput enable ${tpid}
   echo 'touchpad on'
+  sleep 0.1
+  xinput set-prop ${tpid} 'Synaptics Off' 0
 else
+  xdotool getmouselocation --shell > $TMP
+  xdotool mousemove $DISTANCE $DISTANCE
   xinput disable ${tpid}
-  xdotool mousemove 10000 10000
   echo 'touchpad off'
 fi

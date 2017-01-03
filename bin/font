@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#Change fontsize in xfce4-terminal
+
+BASESIZE=10
+CONFIG_FILE="$HOME/.config/xfce4/terminal/terminalrc"
+SIZE=$(awk '/^FontName/ { print $NF; exit }' $CONFIG_FILE)
+
+ARGS=$(echo $1 | fold -w1)
+
+for A in $ARGS
+  do case $A in
+    +)
+      SIZE=$(($SIZE + 1))
+      ;;
+    -)
+      SIZE=$(($SIZE - 1))
+      ;;
+    *)
+      SIZE=$BASESIZE
+      ;;
+  esac
+done
+
+regex="s/^\(FontName.\+\) .\+/\1 ${SIZE}/"
+sed -i "$regex" $CONFIG_FILE

@@ -70,3 +70,7 @@ Desktop.ini
 *.sublime-project
 *.sublime-workspace
 
+# Python virtual environmet activate #
+######################################
+activate
+

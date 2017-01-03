@@ -2,6 +2,15 @@
 let mapleader=" "
 syntax on
 filetype plugin indent on
+
+let g:vdebug_options = {
+      \ 'port': 9000,
+      \ 'server': '',
+      \ 'ide_key': '',
+      \ 'debug_file': '/home/haakenlid/vdebug.log',
+      \ 'debug_file_level': 2,
+      \ }
+
 let g:neomake_python_mypy_maker = {
       \ 'exe': 'mypy',
       \ 'args': ['-s'],
@@ -20,6 +29,7 @@ let g:lt_quickfix_list_toggle_map = '<leader>q'
 
 nmap zn :GitGutterNextHunk<CR>
 nmap zp :GitGutterPrevHunk<CR>
+let g:elm_format_autosave = 1
 
 " Don't use swap file.
 set nobackup
@@ -27,8 +37,13 @@ set nowritebackup
 set noswapfile
 
 " Printing
-set printoptions+=formfeed:y 
-set printoptions+=header:0 
+set printoptions+=formfeed:y
+set printoptions+=header:0
+" Splain syntax highlight
+map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
+      \ . '> trans<' . synIDattr(synID(line("."),col("."),0),"name")
+      \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)), "name")
+      \ . ">"<CR>
 
 " Python
 let g:autopep8_disable_show_diff=1
@@ -175,7 +190,7 @@ let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_path_to_python_interpreter = "/usr/bin/python"
+let g:ycm_python_binary_path = "python"
 let g:ycm_add_preview_to_completeopt = 1
 " let g:ycm_min_num_identifier_candidate_chars = 2
 
@@ -344,6 +359,8 @@ Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'elmcast/elm-vim'
+" Plug 'joonty/vdebug'
 " Plug 'hynek/vim-python-pep8-indent'
 " Plug 'davidhalter/jedi-vim'
 " Plug 'honza/vim-snippets'

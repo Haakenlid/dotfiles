@@ -41,14 +41,12 @@ sudo apt-get -q dist-upgrade
 apt_packages=(
   git
   htop
-  vim
   tree
   tmux
   silversearcher-ag
   exuberant-ctags
   CMake
   xdotool
-  python3-pip
 )
 
 apt_packages=($(\

@@ -1,4 +1,4 @@
-# This is a keynavrc file. Yours should live in 
+# This is a keynavrc file. Yours should live in
 # $HOME/.keynavrc
 #
 # Other special values are:
@@ -6,11 +6,11 @@
 #   (including the defaults)
 #   'daemonize' on a line by itself (no quotes) will make keynav background
 #   after parsing the configfile and having no critical errors.
-# 
+#
 
 # Project page; http://www.semicomplete.com/projects/keynav
 # Use 'daemonize' to background ourselves.
-#daemonize
+daemonize
 
 ctrl+period start
 ctrl+shift+period start, sh "xte 'mousermove 9999 9999'", end

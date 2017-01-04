@@ -1,26 +1,61 @@
 #!/bin/bash
 # toggle state of touchpad
 
-tpid=$(xinput list | grep -i touchpad | sed 's/.*id\=\([0-9]\+\).*/\1/g')
-[[ -n $touchpad ]] && echo 'touchpad id not found' >&2 && exit 1
-status=$(xinput list-props ${tpid} | grep Device\ Enabled | sed -e 's/.*\:[ \t]\+//g')
-#echo $tpid $status00
-TMP=/tmp/.mouselocation
-DISTANCE=10000
-if [[ $status == 0 ]] ; then
-  X=0
-  Y=0
-  source $TMP
-  # for some reason this must be done twice.
-  xdotool mousemove $X $Y mousemove_relative 1 1
-  xdotool mousemove $X $Y mousemove_relative 1 1
-  xinput enable ${tpid}
+SAVED_LOCATION=/tmp/.mouselocation
+TP_PID=$(xinput list | grep -i 'touchpad' | sed 's/.*id\=\([0-9]\+\).*/\1/g')
+
+[[ $TP_PID = '' ]] && echo 'touchpad id not found' >&2 && exit 1
+
+function main(){
+  echo main
+  [[ $1 = 'on' ]] && turn_on && return
+  [[ $1 = 'off' ]] && turn_off && return
+
+  STATUS=$(xinput list-props $TP_PID | grep Device\ Enabled | sed -e 's/.*\:[ \t]\+//g')
+
+  [[ $STATUS = '0' ]] && turn_on && return
+  [[ $STATUS = '1' ]] && turn_off && return
+}
+
+function save_location() {
+  [[ -e $SAVED_LOCATION ]] && return
+  xdotool getmouselocation --shell > $SAVED_LOCATION
+}
+
+function wiggle_cursor() {
+  DELAY=0.01
+  D=10
+  for run in {1..5}; do
+    xdotool mousemove_relative -- +0 +$D sleep $DELAY
+    xdotool mousemove_relative -- -$D -0 sleep $DELAY
+    xdotool mousemove_relative -- -0 -$D sleep $DELAY
+    xdotool mousemove_relative -- +$D +0 sleep $DELAY
+  done
+}
+
+function restore_location() {
+  if [ -e $SAVED_LOCATION ]; then
+    source $SAVED_LOCATION
+    rm $SAVED_LOCATION
+    xdotool mousemove $X $Y mousemove_relative 1 1
+    xdotool mousemove $X $Y mousemove_relative 1 1
+  fi
+}
+
+function turn_on() {
+  restore_location
+  wiggle_cursor
+  xinput enable $TP_PID
   echo 'touchpad on'
   sleep 0.1
-  xinput set-prop ${tpid} 'Synaptics Off' 0
-else
-  xdotool getmouselocation --shell > $TMP
-  xdotool mousemove $DISTANCE $DISTANCE
-  xinput disable ${tpid}
+  xinput set-prop $TP_PID 'Synaptics Off' 0
+}
+
+function turn_off() {
+  save_location
+  xdotool mousemove 10000 10000
+  xinput disable $TP_PID
   echo 'touchpad off'
-fi
+}
+
+main $1

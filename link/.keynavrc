@@ -12,9 +12,9 @@
 # Use 'daemonize' to background ourselves.
 daemonize
 
-ctrl+period start
-ctrl+shift+period start, sh "xte 'mousermove 9999 9999'", end
-shift+period sh "xte 'mousermove 9999 9999'", end
+ctrl+period start, sh "touchpad off"
+ctrl+shift+period start, sh "touchpad", end
+shift+period sh "xdotool mousemove 9999 9999", end, cut-right
 period warp, cursorzoom 300 300
 Return warp, cursorzoom 300 300, click 1
 Escape end
@@ -33,7 +33,7 @@ shift+j move-down
 shift+k move-up
 shift+l move-right
 
-space warp,click 1,end
+space warp, click 1, sh "xdotool mousemove 9999 9999", end
 
 semicolon warp,end
 
@@ -46,10 +46,10 @@ w windowzoom
 
 
 # Handy for holding ctrl while using keynav:
-ctrl+h cut-left
-ctrl+j cut-down
-ctrl+k cut-up
-ctrl+l cut-right
+ctrl+h cut-left, cut-left
+ctrl+j cut-down, cut-down
+ctrl+k cut-up, cut-up
+ctrl+l cut-right, cut-right
 
 ### History
 a history-back

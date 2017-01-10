@@ -10,16 +10,18 @@
 
 # Project page; http://www.semicomplete.com/projects/keynav
 # Use 'daemonize' to background ourselves.
+clear
 daemonize
 
-ctrl+period start, sh "touchpad off"
-ctrl+shift+period start, sh "touchpad", end
-shift+period sh "xdotool mousemove 9999 9999", end, cut-right
-period warp, cursorzoom 300 300
+ctrl+semicolon start, sh "$HOME/.dotfiles/bin/touchpad off"
+ctrl+alt+semicolon start, sh "$HOME/.dotfiles/bin/touchpad", end
+semicolon warp, cursorzoom 300 300
+space warp, click 1, sh "xdotool mousemove 9999 9999", end
+semicolon warp, click 1, sh "xdotool mousemove 9999 9999", end
 Return warp, cursorzoom 300 300, click 1
-Escape end
-q end
 
+q end
+Escape end
 
 # Zoom to the cursor location with a given height and width
 c cursorzoom 200 200
@@ -33,17 +35,12 @@ shift+j move-down
 shift+k move-up
 shift+l move-right
 
-space warp, click 1, sh "xdotool mousemove 9999 9999", end
-
-semicolon warp,end
-
 1 click 1
 2 click 2
 3 click 3
 
 # Zoom to the current window
 w windowzoom
-
 
 # Handy for holding ctrl while using keynav:
 ctrl+h cut-left, cut-left

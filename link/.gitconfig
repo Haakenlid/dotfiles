@@ -69,3 +69,5 @@
 	cmd = "printf \"\\033]2;nvim\\033\\\\\"; nvim -f -c \"Gvdiff\" \"$MERGED\""
 [github]
 	user = haakenlid
+[status]
+	submoduleSummary = true

@@ -2,9 +2,11 @@
 
 #Change fontsize in xfce4-terminal
 
-BASESIZE=10
+BASESIZE=9
 CONFIG_FILE="$HOME/.config/xfce4/terminal/terminalrc"
 SIZE=$(awk '/^FontName/ { print $NF; exit }' $CONFIG_FILE)
+WIN=$(xdotool getactivewindow)
+eval $(xdotool getwindowgeometry --shell $WIN)
 
 ARGS=$(echo $1 | fold -w1)
 
@@ -22,5 +24,12 @@ for A in $ARGS
   esac
 done
 
+if [ $1 -eq $1 ] 2>/dev/null; then
+  SIZE=$1
+fi
+
 regex="s/^\(FontName.\+\) .\+/\1 ${SIZE}/"
 sed -i "$regex" $CONFIG_FILE
+sleep 0.2
+echo fontsize: $SIZE
+xdotool windowsize $WIN $WIDTH $HEIGHT

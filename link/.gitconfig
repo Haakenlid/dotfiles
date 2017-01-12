@@ -71,3 +71,5 @@
 	user = haakenlid
 [status]
 	submoduleSummary = true
+[diff]
+	submodule = log

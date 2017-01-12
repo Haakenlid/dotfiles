@@ -28,7 +28,7 @@ if [ $1 -eq $1 ] 2>/dev/null; then
   SIZE=$1
 fi
 
-regex="s/^\(FontName.\+\) .\+/\1 ${SIZE}/"
+regex="s/^\(FontName.\+\) [0-9]\+/\1 ${SIZE}/"
 sed -i "$regex" $CONFIG_FILE
 sleep 0.2
 echo fontsize: $SIZE

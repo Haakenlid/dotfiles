@@ -3,6 +3,18 @@ let mapleader=" "
 syntax on
 filetype plugin indent on
 
+if &term =~ "xterm\\|rxvt"
+  " use an orange cursor in insert mode
+  let &t_SI = "\<Esc>]12;orange\x7"
+  " use a red cursor otherwise
+  let &t_EI = "\<Esc>]12;red\x7"
+  silent !echo -ne "\033]12;red\007"
+  " reset cursor when vim exits
+  autocmd VimLeave * silent !echo -ne "\033]112\007"
+  " use \003]12;gray\007 for gnome-terminal
+endif
+
+
 let g:vdebug_options = {
       \ 'port': 9000,
       \ 'server': '',
@@ -40,6 +52,8 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 nmap zn :GitGutterNextHunk<CR>
 nmap zp :GitGutterPrevHunk<CR>
 let g:elm_format_autosave = 0
@@ -134,7 +148,7 @@ map <leader>t :TagbarOpenAutoClose<CR>
 set tags=tags;,.git/tags;
 
 "sane defaults
-colorscheme molokai
+colorscheme hken
 let previewheight=5
 
 "neovim python programs
@@ -342,12 +356,12 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-easy-align'
 Plug 'airblade/vim-gitgutter'
 Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
-" Plug 'floobits/floobits-neovim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
@@ -357,7 +371,6 @@ Plug 'mickaobrien/vim-stackoverflow'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
-" Plug 'reedes/vim-pencil'
 Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
@@ -366,7 +379,6 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
-" Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'tweekmonster/braceless.vim'
 Plug 'Valloric/ListToggle'

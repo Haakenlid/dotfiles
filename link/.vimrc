@@ -11,6 +11,19 @@ let g:vdebug_options = {
       \ 'debug_file_level': 2,
       \ }
 
+" define elm-make maker
+let g:neomake_elm_elmmake_maker = {
+  \ 'exe': 'elm-make',
+  \ 'buffer_output': 1,
+  \ 'errorformat':
+    \ '%E%.%#--\ %m\ -%# %f' . ',' .
+    \ '%C%l\\|' . ',' .
+    \ '%C%.%#'
+\ }
+
+" enable elm-make on elm
+let g:neomake_elm_enabled_makers = [ 'elmmake' ]
+
 let g:neomake_python_mypy_maker = {
       \ 'exe': 'mypy',
       \ 'args': ['-s'],
@@ -29,7 +42,8 @@ let g:lt_quickfix_list_toggle_map = '<leader>q'
 
 nmap zn :GitGutterNextHunk<CR>
 nmap zp :GitGutterPrevHunk<CR>
-let g:elm_format_autosave = 1
+let g:elm_format_autosave = 0
+autocmd FileType elm nmap <f8> :ElmFormat<CR>
 
 " Don't use swap file.
 set nobackup

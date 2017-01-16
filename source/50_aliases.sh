@@ -77,7 +77,7 @@ function mcd () {
 }
 
 # You only live once
-alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay)" && git push --force'
+alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay -W80)" && git push --force'
 
 # Start a program and disown
 function run(){

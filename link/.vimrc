@@ -3,6 +3,19 @@ let mapleader=" "
 syntax on
 filetype plugin indent on
 
+" Fix ctrp highlight
+let g:ctrlp_buffer_func = { 'enter': 'BrightHighlightOn', 'exit':  'BrightHighlightOff', }
+let python_highlight_all = 1
+
+fun! BrightHighlightOn()
+  hi CursorLine ctermfg=15 cterm=bold
+endfun
+
+fun! BrightHighlightOff()
+  hi CursorLine ctermfg=none cterm=none
+endfun
+
+
 if &term =~ "xterm\\|rxvt"
   " use an orange cursor in insert mode
   let &t_SI = "\<Esc>]12;orange\x7"
@@ -15,6 +28,10 @@ if &term =~ "xterm\\|rxvt"
 endif
 
 
+autocmd BufWritePost *.elm ElmMake
+map <leader>h :ElmErrorDetail<CR>
+
+
 let g:vdebug_options = {
       \ 'port': 9000,
       \ 'server': '',
@@ -22,19 +39,6 @@ let g:vdebug_options = {
       \ 'debug_file': '/home/haakenlid/vdebug.log',
       \ 'debug_file_level': 2,
       \ }
-
-" define elm-make maker
-let g:neomake_elm_elmmake_maker = {
-  \ 'exe': 'elm-make',
-  \ 'buffer_output': 1,
-  \ 'errorformat':
-    \ '%E%.%#--\ %m\ -%# %f' . ',' .
-    \ '%C%l\\|' . ',' .
-    \ '%C%.%#'
-\ }
-
-" enable elm-make on elm
-let g:neomake_elm_enabled_makers = [ 'elmmake' ]
 
 let g:neomake_python_mypy_maker = {
       \ 'exe': 'mypy',
@@ -172,9 +176,6 @@ set laststatus=2 " Always display the statusline in all windows
 " set showtabline=1
 set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
-hi CursorLine   cterm=NONE ctermbg=235
-hi CursorLineNr cterm=bold ctermfg=Yellow ctermbg=235
-
 " Splits
 set splitbelow " New split goes below
 set splitright " New split goes right
@@ -269,7 +270,7 @@ let NERDTreeShowHidden = 1
 map <leader>n :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__']
+let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
 
 " Inactive splits background color hack
 " Dim inactive windows using 'colorcolumn' setting
@@ -299,7 +300,7 @@ endfunction
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 " CTRL-P settings
-nmap gT :CtrlPTag<CR>
+nmap gt :CtrlPTag<CR>
 nmap gb :CtrlPBuffer<CR>
 nmap gm :CtrlPMRUFiles<CR>
 

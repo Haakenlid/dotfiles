@@ -35,9 +35,9 @@ shift+j move-down
 shift+k move-up
 shift+l move-right
 
-1 click 1
-2 click 2
-3 click 3
+1 warp, click 1
+2 warp, click 2
+3 warp, click 3
 
 # Zoom to the current window
 w windowzoom

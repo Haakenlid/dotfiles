@@ -5,7 +5,7 @@
 # identifier to use when searching for an active dropdown
 DROPDOWN_CLASS="DROPDOWNTERMINAL"
 
-# Use the first available emulator in this list 
+# Use the first available emulator in this list
 EMULATORS="gnome-terminal xfce4-terminal uxterm"
 get_emulator(){
   for EMU in $EMULATORS; do
@@ -16,13 +16,13 @@ get_emulator(){
 
 main() {
   win_id=$(get_terminal_window)
-  if [[ -n $win_id ]]; then 
+  if [[ -n $win_id ]]; then
     if [[ $(xdotool getactivewindow) == $win_id ]]; then
-      # if terminal window is active, unmap  
-      xdotool getactivewindow windowunmap 
+      # if terminal window is active, unmap
+      xdotool getactivewindow windowunmap
     else
       # if terminal window is inactive, map and bring in focus
-      xdotool windowmap $win_id 
+      xdotool windowmap $win_id
       xdotool set_desktop_for_window $win_id $(xdotool get_desktop)
       xdotool windowactivate $win_id
     fi
@@ -32,13 +32,15 @@ main() {
     # start new terminal emulator window
     # start tmux or attach to existing session
     # $TERMINAL_EMULATOR --hold -e "$HOME/.dotfiles/bin/connect_to_tmux.sh" &
-    $TERMINAL_EMULATOR & 
+    $TERMINAL_EMULATOR &
     # resize and set window class for the emulator
     xdotool search \
       --onlyvisible --sync --limit 1 --class "$TERMINAL_EMULATOR"\
       windowsize $(absolute_window_size 100 45) \
       windowactivate \
-      set_window --class $DROPDOWN_CLASS
+      set_window --class $DROPDOWN_CLASS 
+    xdotool getactivewindow type --delay 0 'connect_to_tmux.sh'
+    xdotool getactivewindow key Return
   fi
 }
 

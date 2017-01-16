@@ -1,0 +1,8 @@
+#!/bin/bash
+
+[[ $1 =~ ^(10|[1-9])$ ]] && VAL=$1 || VAL=8
+
+VAL=$(python <<< "print($VAL/10.0)")
+displayID=$(xrandr -q | awk '/ connected/ { print $1 }')
+xrandr --output ${displayID} --brightness ${VAL}
+echo "Brightness: $VAL"

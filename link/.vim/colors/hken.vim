@@ -13,13 +13,17 @@ hi clear
 " Support for 256-color terminal
 "
 hi Normal             ctermfg=254   ctermbg=232
-hi Comment            ctermfg=244
-hi CursorLine                       ctermbg=234   cterm=none
-hi CursorLineNr       ctermfg=015   ctermbg=none  cterm=none
+hi Comment            ctermfg=241                 cterm=italic
+" hi CursorLine                       ctermbg=234   cterm=reverse
+hi CursorLine                       ctermbg=233   cterm=none
+hi CursorLineNr       ctermfg=015   ctermbg=none  cterm=bold
 hi LineNr             ctermfg=244   ctermbg=233
 hi Search             ctermfg=none  ctermbg=none  cterm=reverse
+" Brackets and parenthesis
+hi Delimiter          ctermfg=243                 cterm=none
 " Matchin parenthesis
-hi MatchParen         ctermfg=011    ctermbg=241  cterm=underline
+hi MatchParen         ctermfg=155   ctermbg=none  cterm=bold
+hi Operator           ctermfg=39
 
 " Doesn't do anything in xfce-4 terminal
 " hi Cursor             ctermfg=16    ctermbg=24
@@ -32,7 +36,6 @@ hi Conditional        ctermfg=161                 cterm=bold
 hi Constant           ctermfg=135                 cterm=bold
 hi Debug              ctermfg=225                 cterm=bold
 hi Define             ctermfg=81
-hi Delimiter          ctermfg=241
 
 hi DiffAdd                          ctermbg=24
 hi DiffChange         ctermfg=181   ctermbg=239
@@ -58,7 +61,6 @@ hi SpecialKey         ctermfg=81
 
 hi ModeMsg            ctermfg=229
 hi MoreMsg            ctermfg=229
-hi Operator           ctermfg=161
 
 " complete menu
 hi Pmenu              ctermfg=81    ctermbg=16

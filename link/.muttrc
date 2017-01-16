@@ -125,5 +125,3 @@ macro index M "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
 
 source ~/.dotfiles/link/dot_muttrc-256color
 # source ~/.dotfiles/link/mutt-colors-solarized-dark-256.muttrc
-
-

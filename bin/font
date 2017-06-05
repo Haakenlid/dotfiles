@@ -13,10 +13,10 @@ ARGS=$(echo $1 | fold -w1)
 for A in $ARGS
   do case $A in
     +)
-      SIZE=$(($SIZE + 1))
+      SIZE=$((SIZE + 1))
       ;;
     -)
-      SIZE=$(($SIZE - 1))
+      SIZE=$((SIZE - 1))
       ;;
     *)
       SIZE=$BASESIZE
@@ -24,7 +24,7 @@ for A in $ARGS
   esac
 done
 
-if [ $1 -eq $1 ] 2>/dev/null; then
+if (($1 > 1)) 2>/dev/null; then
   SIZE=$1
 fi
 

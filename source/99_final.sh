@@ -5,7 +5,7 @@ function uniqpath() {
 }
 
 export GOPATH="$HOME/.go"
-PATH="$PATH:$HOME/.npm-packages/bin/:$GOPATH"
+PATH="$PATH:$HOME/.local/bin:$HOME/.npm-packages/bin/:$GOPATH"
 PATH=$(uniqpath $PATH)
 PYTHONPATH=$(uniqpath $PYTHONPATH)
 

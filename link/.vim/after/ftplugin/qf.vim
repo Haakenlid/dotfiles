@@ -1,1 +1,0 @@
-hl CursorLine cterm=bold

@@ -1,4 +1,4 @@
-"Keyboard shortcuts
+"keyboard shortcuts
 let mapleader=" "
 syntax on
 filetype plugin indent on
@@ -28,7 +28,9 @@ if &term =~ "xterm\\|rxvt"
 endif
 
 
+autocmd BufWritePost * Neomake
 autocmd BufWritePost *.elm ElmMake
+
 map <leader>h :ElmErrorDetail<CR>
 
 
@@ -42,14 +44,12 @@ let g:vdebug_options = {
 
 let g:neomake_python_mypy_maker = {
       \ 'exe': 'mypy',
-      \ 'args': ['-s'],
+      \ 'args': ['--ignore-missing-imports'],
       \ 'errorformat': '%f:%l:%m'
       \ }
-" let g:neomake_python_enabled_makers = ['flake8', 'mypy']
-let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+" let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_sh_enabled_makers = []
-let g:neomake_javascript_enabled_makers = ['eslint']
-autocmd BufreadPost,BufWritePost * Neomake
 let g:neomake_open_list = 2 " open location list
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
@@ -61,7 +61,12 @@ nmap ga <Plug>(EasyAlign)
 nmap zn :GitGutterNextHunk<CR>
 nmap zp :GitGutterPrevHunk<CR>
 let g:elm_format_autosave = 0
-autocmd FileType elm nmap <f8> :ElmFormat<CR>
+let g:elm_setup_keybindings = 0
+nmap <leader>h :ElmErrorDetail<CR>
+autocmd FileType elm map <F8> :ElmFormat<CR>
+autocmd FileType python noremap <buffer> <F8> :lcl <bar> call Autopep8()<CR>
+
+" let g:ycm_semantic_triggers = { 'elm' : ['.'] }
 
 " Don't use swap file.
 set nobackup
@@ -80,7 +85,7 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
 " Python
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
-autocmd FileType python BracelessEnable +indent
+autocmd FileType python BracelessEnable +indent +highlight
 
 " let g:lt_height = 5
 autocmd FileType qf nmap <buffer> <CR> <CR>:lcl<CR>
@@ -118,6 +123,7 @@ map <C-Q> :qa!
 map! <C-Q> <esc>:qa!
 " Ctrl-S = save
 "
+
 fun! <SID>Writefile()
   call <SID>StripTrailingWhitespaces()
   w!
@@ -139,8 +145,19 @@ nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
 map <leader>p :bp<CR>
 
 " open vimrc with leader V
-map <leader>v :e $MYVIMRC<CR>
+map <leader>v :call SwitchToWriteableBufferAndExec('e $MYVIMRC')<CR>
 autocmd BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
+
+" javascript linting with prettier
+autocmd BufWritePre *.js Neoformat
+
+
+autocmd FileType javascript,javascript.jsx set formatprg=prettier\ --stdin
+      \\ --semi\ false\ --single-quote\ --trailing-comma\ es5
+let g:neoformat_try_formatprg = 1
+
+
+
 
 " Airline settings
 let g:airline_powerline_fonts = 1
@@ -191,9 +208,14 @@ set colorcolumn=-1
 set dictionary="/usr/dict/words"
 
 function! <SID>StripTrailingWhitespaces()
+    " save search pattern 
+    let search = @/
+    " save cursor position
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
+    " reset cursor position and search
+    let @/ = search
     call cursor(l, c)
 endfun
 
@@ -299,18 +321,36 @@ endfunction
 " JSX settings
 let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
-" CTRL-P settings
-nmap gt :CtrlPTag<CR>
-nmap gb :CtrlPBuffer<CR>
-nmap gm :CtrlPMRUFiles<CR>
-
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
 
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_cmd = 'CtrlPLastMode'
+" CtrlP
+" Use this function to prevent CtrlP opening files inside non-writeable 
+" buffers, e.g. NERDTree
+function! SwitchToWriteableBufferAndExec(command)
+    let c = 0
+    let wincount = winnr('$')
+    " Don't open it here if current buffer is not writable (e.g. NERDTree)
+    while !empty(getbufvar(+expand("<abuf>"), "&buftype")) && c < wincount
+        exec 'wincmd w'
+        let c = c + 1
+    endwhile
+    exec a:command
+endfunction
+
+" CTRL-P settings
+nnoremap <C-p> :call SwitchToWriteableBufferAndExec('CtrlPLastMode')<CR>
+nnoremap gb :call SwitchToWriteableBufferAndExec('CtrlPBuffer')<CR>
+nnoremap gT :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
+nnoremap gm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
+
+" Disable default mapping since we are overriding it with our command
+let g:ctrlp_map = ''
+
+" let g:ctrlp_cmd = 'CtrlPLastMode'
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_match_window_bottom=1
 let g:ctrlp_max_height=20
+" let g:ctrlp_reuse_window='nerdtree'
 let g:ctrlp_lazy_update=1
 let g:ctrlp_match_window_reversed=0
 let g:ctrlp_mruf_max=500
@@ -353,10 +393,14 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " If you want :UltiSnipsEdit to split your window.
 " let g:UltiSnipsEditSplit="vertical"
 "
-
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
+
+     
+    
+
 call plug#begin('~/.vim/plugged')
+Plug 'sbdchd/neoformat'
 Plug 'junegunn/vim-easy-align'
 Plug 'airblade/vim-gitgutter'
 Plug 'benekastah/neomake'
@@ -379,7 +423,7 @@ Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tweekmonster/braceless.vim'
 Plug 'Valloric/ListToggle'

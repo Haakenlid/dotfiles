@@ -3,6 +3,9 @@ program_exists () {
   type "$1" &> /dev/null ;
 }
 
+# tassen run
+alias tassen="$HOME/projects/tassen/tassen/run"
+
 # open
 alias open=xdg-open
 

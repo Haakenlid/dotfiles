@@ -15,6 +15,17 @@ def _convert_camel_case(string):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', string)
     return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
 
+# http://stackoverflow.com/a/1176023/18986
+
+
+def camel_case(basename):
+    words = basename.replace('_', ' ').title().split()
+    pascal = ''.join(words)
+    if pascal != '':
+        return pascal[0].lower() + pascal[1:]
+    else:
+        return ''
+
 
 def _clean_basename(basename):
     return re.sub('(_spec|-test|-diffux)$', '', basename or 'ModuleName')

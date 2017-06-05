@@ -38,9 +38,9 @@ main() {
       --onlyvisible --sync --limit 1 --class "$TERMINAL_EMULATOR"\
       windowsize $(absolute_window_size 100 45) \
       windowactivate \
-      set_window --class $DROPDOWN_CLASS 
-    xdotool getactivewindow type --delay 0 'connect_to_tmux.sh'
-    xdotool getactivewindow key Return
+      set_window --class $DROPDOWN_CLASS
+    xdotool getactivewindow type --delay 0 'connect_to_tmux.sh;clear'
+    xdotool key Return
   fi
 }
 

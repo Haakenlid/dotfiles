@@ -2,6 +2,7 @@
 program_exists () {
   type "$1" &> /dev/null ;
 }
+alias whois='whois -h whois.geektools.com'
 
 # tassen run
 alias tassen="$HOME/projects/tassen/tassen/run"

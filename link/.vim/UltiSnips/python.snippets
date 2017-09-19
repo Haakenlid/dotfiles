@@ -20,6 +20,10 @@ import logging
 logger = logging.getLogger(__name__)
 endsnippet
 
+snippet trans "import ugettext_lazy as _" b
+from django.utils.translation import ugettext_lazy as _
+endsnippet
+
 snippet with "with" b
 with ${1:expr}`!p snip.rv = " as " if t[2] else ""`${2:var}:
 	${3:${VISUAL:pass}}

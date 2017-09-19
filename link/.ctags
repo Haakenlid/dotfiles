@@ -8,8 +8,8 @@
 --langdef=js
 --langmap=js:.js.jsx
 
---regex-js=/^\s*const\s+([A-Z]\S+)/\1/component/
---regex-js=/^\s*const\s+([a-z]\S+)/\1/const/
+--regex-js=/^(export)?\s*const\s+([A-Z]\S+)/\2/component/
+--regex-js=/^(export)?\s*const\s+([a-z]\S+)/\2/const/
 
 --regex-js=/\s(\w+) *=.*createClass/\1/class/
 --regex-js=/class +(\w+) /\1/class/

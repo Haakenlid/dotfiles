@@ -63,8 +63,10 @@ nmap zp :GitGutterPrevHunk<CR>
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
 nmap <leader>h :ElmErrorDetail<CR>
-autocmd FileType elm map <F8> :ElmFormat<CR>
-autocmd FileType python noremap <buffer> <F8> :lcl <bar> call Autopep8()<CR>
+autocmd FileType elm noremap <silent> <buffer> <F8> :ElmFormat<CR>
+autocmd FileType python noremap <silent> <buffer> <F8> :lcl <bar> call Autopep8()<CR>
+
+map <C-tab> <silent>:bnext<CR>
 
 " let g:ycm_semantic_triggers = { 'elm' : ['.'] }
 
@@ -137,6 +139,9 @@ map <silent> <leader>/ :let @/=""<CR>
 " random color scheme
 map <leader>R :colorscheme random<CR>
 
+" save and close buffer
+nmap <silent> <leader>x :x<CR>
+
 
 " Replace word under cursor
 nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
@@ -165,7 +170,7 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
 
 " Tagbar settings
-map <leader>t :TagbarOpenAutoClose<CR>
+map <leader>T :TagbarOpenAutoClose<CR>
 set tags=tags;,.git/tags;
 
 "sane defaults
@@ -173,7 +178,7 @@ colorscheme hken
 let previewheight=5
 
 "neovim python programs
-let g:python_host_prog='/usr/bin/python2'
+" let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
 
 set hidden
@@ -208,7 +213,7 @@ set colorcolumn=-1
 set dictionary="/usr/dict/words"
 
 function! <SID>StripTrailingWhitespaces()
-    " save search pattern 
+    " save search pattern
     let search = @/
     " save cursor position
     let l = line(".")
@@ -233,15 +238,17 @@ if ! has('gui_running')
 endif
 
 " YouCompleteMe settings
-nmap gd :YcmCompleter GoTo<CR>
-nmap gD :YcmCompleter GetDoc<CR>
+nmap <leader>gd :YcmCompleter GoTo<CR>
+nmap <leader>gu :YcmCompleter GoToReferences<CR>
+nmap <leader>gr :YcmCompleter RefactorRename<space><C-r>=expand('<cword>')<CR>
+
 nmap gi /import<CR>:let @/ = ""<CR>
 
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_python_binary_path = "python"
+" let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_python_binary_path = "python3"
 let g:ycm_add_preview_to_completeopt = 1
 " let g:ycm_min_num_identifier_candidate_chars = 2
 
@@ -289,9 +296,12 @@ let g:riv_fold_auto_update = 0
 
 " NERDTree settings
 let NERDTreeShowHidden = 1
-map <leader>n :NERDTreeToggle<CR>
+map <silent> <leader>n :NERDTreeFind<CR>
+autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>
+autocmd FileType nerdtree silent! unmap <buffer> <c-j>
+autocmd FileType nerdtree silent! unmap <buffer> <c-k>
+
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
 
 " Inactive splits background color hack
@@ -324,7 +334,7 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
 
 " CtrlP
-" Use this function to prevent CtrlP opening files inside non-writeable 
+" Use this function to prevent CtrlP opening files inside non-writeable
 " buffers, e.g. NERDTree
 function! SwitchToWriteableBufferAndExec(command)
     let c = 0
@@ -340,7 +350,7 @@ endfunction
 " CTRL-P settings
 nnoremap <C-p> :call SwitchToWriteableBufferAndExec('CtrlPLastMode')<CR>
 nnoremap gb :call SwitchToWriteableBufferAndExec('CtrlPBuffer')<CR>
-nnoremap gT :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
+nnoremap <leader>t :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
 nnoremap gm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
 
 " Disable default mapping since we are overriding it with our command
@@ -370,11 +380,11 @@ let g:user_emmet_prev_key='<M-k>'
 """ Ultisnips config
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsListSnippets="<M-s>"
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<C-k>"
-let g:UltiSnipsExpandTrigger="<nop>"
-let g:UltiSnipsUsePythonVersion=2
+let g:UltiSnipsListSnippets="<M-s>"
+let g:UltiSnipsExpandTrigger="<M-e>"
+let g:UltiSnipsUsePythonVersion=3
 
 " let g:ulti_expand_or_jump_res = 0
 function! <SID>ExpandSnippetOrReturn()
@@ -396,8 +406,16 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 
-     
-    
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py --tern-complete
+  endif
+endfunction
+
 
 call plug#begin('~/.vim/plugged')
 Plug 'sbdchd/neoformat'
@@ -418,16 +436,18 @@ Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
 Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdtree'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'SirVer/ultisnips'
 Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-sensible'
 Plug 'tweekmonster/braceless.vim'
 Plug 'Valloric/ListToggle'
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'elmcast/elm-vim'

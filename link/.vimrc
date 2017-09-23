@@ -56,10 +56,11 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:lt_location_list_toggle_map = '<leader>l'
 let g:lt_quickfix_list_toggle_map = '<leader>q'
 
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+" xmap ga <Plug>(EasyAlign)
+" nmap ga <Plug>(EasyAlign)
 nmap zn :GitGutterNextHunk<CR>
 nmap zp :GitGutterPrevHunk<CR>
+
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
 nmap <leader>h :ElmErrorDetail<CR>
@@ -109,6 +110,7 @@ endfunction
 " augroup END
 
 map! jj <esc>
+nmap Y y$
 " imap DD <esc>dd
 " imap AA <esc>A
 " imap II <esc>I
@@ -116,8 +118,7 @@ map! jj <esc>
 " imap CC <esc>C
 
 imap <c-CR> <esc>o
-imap <c-u> <esc>ui
-map Q @q
+" map Q @q
 " Ctrl-Q = quit
 map <C-Q> :qa!
 map! <C-Q> <esc>:qa!
@@ -173,7 +174,6 @@ colorscheme hken
 let previewheight=5
 
 "neovim python programs
-let g:python_host_prog='/usr/bin/python2'
 let g:python3_host_prog='/usr/bin/python3'
 
 set hidden
@@ -208,7 +208,7 @@ set colorcolumn=-1
 set dictionary="/usr/dict/words"
 
 function! <SID>StripTrailingWhitespaces()
-    " save search pattern 
+    " save search pattern
     let search = @/
     " save cursor position
     let l = line(".")
@@ -235,7 +235,6 @@ endif
 " YouCompleteMe settings
 nmap gd :YcmCompleter GoTo<CR>
 nmap gD :YcmCompleter GetDoc<CR>
-nmap gi /import<CR>:let @/ = ""<CR>
 
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
@@ -324,7 +323,7 @@ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
 
 " CtrlP
-" Use this function to prevent CtrlP opening files inside non-writeable 
+" Use this function to prevent CtrlP opening files inside non-writeable
 " buffers, e.g. NERDTree
 function! SwitchToWriteableBufferAndExec(command)
     let c = 0
@@ -374,7 +373,7 @@ let g:UltiSnipsListSnippets="<M-s>"
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 let g:UltiSnipsExpandTrigger="<nop>"
-let g:UltiSnipsUsePythonVersion=2
+let g:UltiSnipsUsePythonVersion=3
 
 " let g:ulti_expand_or_jump_res = 0
 function! <SID>ExpandSnippetOrReturn()
@@ -396,8 +395,8 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 
-     
-    
+
+
 
 call plug#begin('~/.vim/plugged')
 Plug 'sbdchd/neoformat'
@@ -409,25 +408,26 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
 Plug 'guns/xterm-color-table.vim'
 Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim'
-Plug 'mattn/gist-vim'
-Plug 'mattn/webapi-vim'
-Plug 'mickaobrien/vim-stackoverflow'
-Plug 'mxw/vim-jsx'
+" Plug 'mattn/emmet-vim'
+" Plug 'mattn/gist-vim'
+" Plug 'mattn/webapi-vim'
+" Plug 'mickaobrien/vim-stackoverflow'
+" Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
-Plug 'rking/ag.vim'
+" Plug 'rking/ag.vim'
 Plug 'scrooloose/nerdtree'
 Plug 'SirVer/ultisnips'
-Plug 'tell-k/vim-autopep8'
+" Plug 'tell-k/vim-autopep8'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-characterize'
 Plug 'tweekmonster/braceless.vim'
-Plug 'Valloric/ListToggle'
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python2 ./install.py' }
+" Plug 'Valloric/ListToggle'
+Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'elmcast/elm-vim'

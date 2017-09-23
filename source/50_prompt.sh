@@ -9,9 +9,9 @@
 # 32  42  green     36  46  cyan
 # 33  43  yellow    37  47  white
 
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
+export LC_ALL=C.UTF-8
+export LANG=en_IE.UTF-8
+export LANGUAGE=en_IE.UTF-8
 
 
 if [[ ! "${prompt_colors[@]}" ]]; then
@@ -74,7 +74,7 @@ function prompt_git() {
 function prompt_command() {
   local exit_code=$?
   local hourglass="⧗"
-  #alternatives ⧖⌛
+  #alternatives ⧖⧗⌛
   # If the first command in the stack is prompt_command, no command was run.
   this_command=$(fc -ln -0)
   # this_command=$(history | tail -n1)

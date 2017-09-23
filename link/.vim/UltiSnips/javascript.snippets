@@ -4,33 +4,62 @@
 
 global !p
 from snippet_helpers import *
+import re
 def expand_proptypes(props):
 	if not props:
 		return ''
-	pattern = '{}: React.PropTypes.any'
+	pattern = '{}: PropTypes.any.isRequired'
 	props = (prop.strip() for prop in props.split(','))
 	return ',\n  '.join(pattern.format(prop) for prop in props)
+
+def constant_name(match, default='CONSTANT'):
+	m = match.strip()
+	if not m:
+		return default
+	m = re.sub(r'\s+', '_', m)
+	m = m.upper()
+	return m
+
 endglobal
 
-
-snippet cdm "component did mount" b
-componentDidMount() {
-	${1}
+snippet reducer "redux reducer" b
+const $1 = (state, action) => {
+	switch(action.type) {
+		case $2:
+			return {...state, ...action.payload}
+		default:
+			return state
+	}
 }
-$0
 endsnippet
 
-snippet action "Action creator" b
-export const $1 = '$1'
-export const `!p snip.rv = camel_case(t[1])` = (${2}) => ({
-	type: ${1:ACTION_NAME},
+snippet "action(.*)$" "Action creator" br
+export const $1 = '`!p snip.rv=snip.basename.lower()`/$1'
+export const `!p snip.rv=camel_case(t[1])` = (${2}) => ({
+	type: ${1:`!p snip.rv=constant_name(match.group(1), 'DO_ACTION')`},
 	payload: { ${3:$2} }
 })
 $0
 endsnippet
 
+snippet select "Redux Selector" b
+export const ${1:getFoo} = state => ${2:state.foo.bar}
+endsnippet
+
+snippet "up(.*)$" "uppercase" br
+this is uppercase: ${1:`!p snip.rv = constant_name(match.group(1), 'UPPER')`!!}
+endsnippet
+
+
 snippet cdup "component did update" b
 componentDidUpdate(prevProps, prevState) {
+	${1}
+}
+$0
+endsnippet
+
+snippet cdm "component did mount" b
+componentDidMount() {
 	${1}
 }
 $0
@@ -70,21 +99,13 @@ cx({
 });
 endsnippet
 
-snippet fup
-forceUpdate(${1:callback});
-endsnippet
-
-snippet ism "is mounted"
-isMounted()
-endsnippet
-
-snippet import "import es6" bA
+snippet import "import es6" b
 import ${1:package} from '${2:$1}'
 endsnippet
 
-snippet sc "stateless component" b
+snippet component "stateless component" b
 const $1 = ({ $2 }) => (
-	<${3:div}>
+	<${3:div} className="$1">
 		${VISUAL}$4
 	</$3>
 )
@@ -94,91 +115,44 @@ $1.propTypes = {
 $0
 endsnippet
 
-snippet jsx "define jsx dom" b
+snippet container "connected redux container" b
 import React from 'react'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 const ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} = ({ $2 }) => (
-	<${4:div}>
+	<${4:div} className="$1">
 		${VISUAL}$5
 	</$4>
 )
 $1.propTypes = {
 	`!p snip.rv = expand_proptypes(t[2])`
 }
-$0
-export default $1
+const mapStateToProps = (state, ownProps) => ({
+	$6
+})
+const mapDispatchToProps = (dispatch, ownProps) => ({
+	$7
+})
+export default connect(mapStateToProps, mapDispatchToProps)($1)
 endsnippet
 
 snippet pt "propTypes" b
 propTypes: {
-	${1}: React.PropTypes.${2:string}
+	${1}: PropTypes.${2:string}
 },
 endsnippet
 
-snippet ren
-render: function() {
+snippet render
+render() {
+	const {$1} = this.props
 	return (
-		${1:<div />}
-	);
+		<${2:div} className="$3">
+			${VISUAL}$4
+		</$2>
+	)
 }$0
 endsnippet
-
-snippet sst "set state" b
-this.setState({
-	${1}: ${2}
-});$0
-endsnippet
-
-snippet scu "should component update"
-shouldComponentUpdate: function(nextProps, nextState) {
-	${1}
-},$0
-endsnippet
-
-snippet props "get property" i
-this.props.${1}
-endsnippet
-
-snippet state "get state" i
-this.state.${1}
-endsnippet
-
-snippet trp
-this.transferPropsTo(${VISUAL}$0);
-endsnippet
-
-snippet eslint
-/* eslint-disable $0 */
-endsnippet
-
-snippet cc "createClass" b
-class ${1:`!p snip.rv = path_to_component_name(path,
-pascal_case_basename)`} extends React.Component {
-	render() {
-		return (
-			$0
-		);
-	}
-}
-$1.propTypes = {
-
-}
-$1.defaultProps = {
-
-}
-$0
-endsnippet
-
-snippet con "constructor()" b
-constructor(props) {
-	super(props);
-	$0
-}
-endsnippet
-
-# snippet pt "PropTypes" w
-# PropTypes.$1`!p snip.rv=complete(t[1], ['array', 'bool', 'func', 'number', 'object', 'string', 'node', 'element', 'instanceOf', 'oneOf([])', 'oneOfType([])', 'arrayOf()', 'objectOf()', 'shape({})', 'any'])`,$0
-# endsnippet
 
 snippet scu "shouldComponentUpdate" b
 shouldComponentUpdate(nextProps, nextState) {
@@ -186,114 +160,12 @@ shouldComponentUpdate(nextProps, nextState) {
 }
 endsnippet
 
-snippet <> "<Component>" b
-<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`}>
-	${0:${VISUAL}}
-</$1>
-endsnippet
-
-snippet < "<Component />" b
-<${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} ${0}/>
-endsnippet
-
-# DOM
-
-snippet div "<div>" b
-<div$1>
-	${0:${VISUAL}}
-</div>
-endsnippet
-
-# Diffux-CI
-snippet dd "diffux.define" b
-diffux.define('${1:<`!p snip.rv = path_to_component_name(path, pascal_case_basename)`>}', function() {
-	return Utils.renderAttachedAndGetNode(
-		${0:${VISUAL}}
-	);
-}, { viewports: [${2:'small', 'medium'}] });
-endsnippet
-priority -50
-
-###########################################################################
-#                            TextMate Snippets                            #
-###########################################################################
-
-snippet get "Get Elements"
-getElement${1/(T)|.*/(?1:s)/}By${1:T}${1/(T)|(I)|.*/(?1:agName)(?2:d)/}('$2')
-endsnippet
-
-snippet '':f "object method string"
-'${1:${2:#thing}:${3:click}}': function(element) {
-	${VISUAL}$0
-}${10:,}
-endsnippet
-
-snippet :f "Object Method"
-${1:method_name}: function(${3:attribute}) {
-	${VISUAL}$0
-}${10:,}
-endsnippet
-
-snippet :, "Object Value JS"
-${1:value_name}: ${0:value},
-endsnippet
-
-snippet : "Object key key: 'value'"
-${1:key}: ${2:"${3:value}"}${4:, }
-endsnippet
-
-snippet proto "Prototype (proto)"
-${1:class_name}.prototype.${2:method_name} = function(${3:first_argument}) {
-	${VISUAL}$0
-};
-
-endsnippet
-
-snippet for "for (...) {...} (counting up)" b
-for (var ${1:i} = 0, ${2:len} = ${3:Things.length}; $1 < $2; $1++) {
-	${VISUAL}$0
+snippet con "constructor()" b
+constructor(props) {
+	super(props)
+	$0
 }
 endsnippet
-
-snippet ford "for (...) {...} (counting down, faster)" b
-for (var ${2:i} = ${1:Things.length} - 1; $2 >= 0; $2--) {
-	${VISUAL}$0
-}
-endsnippet
-
-snippet fun "function (fun)"
-function ${1:function_name}(${2:argument}) {
-	${VISUAL}$0
-}
-endsnippet
-
-snippet vf "Function assigned to var"
-${1:var }${2:function_name} = function $2(${3}) {
-	${VISUAL}$0
-};
-endsnippet
-
-snippet iife "Immediately-Invoked Function Expression (iife)"
-(function(${1:window}) {
-	${VISUAL}$0
-}(${2:$1}));
-endsnippet
-
-snippet timeout "setTimeout function"
-setTimeout(function() {
-	${VISUAL}$0
-}${2:.bind(${3:this})}, ${1:10});
-endsnippet
-
-snippet fi "for prop in obj using hasOwnProperty" b
-for (${1:prop} in ${2:obj}){
-	if ($2.hasOwnProperty($1)) {
-		${VISUAL}$0
-	}
-}
-endsnippet
-
-# Snippets for Console Debug Output
 
 snippet ca "console.assert" b
 console.assert(${1:assertion}, ${2:"${3:message}"});
@@ -305,10 +177,6 @@ endsnippet
 
 snippet cdir "console.dir" b
 console.dir(${1:object});
-endsnippet
-
-snippet cdirx "console.dirxml" b
-console.dirxml(${1:object});
 endsnippet
 
 snippet ce "console.error" b

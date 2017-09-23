@@ -13,7 +13,7 @@ hi clear
 " Support for 256-color terminal
 "
 hi Normal             ctermfg=254   ctermbg=232
-hi Comment            ctermfg=241                 cterm=italic
+hi Comment            ctermfg=244                 cterm=italic
 " hi CursorLine                       ctermbg=234   cterm=reverse
 hi CursorLine                       ctermbg=233   cterm=none
 hi CursorLineNr       ctermfg=015   ctermbg=none  cterm=bold

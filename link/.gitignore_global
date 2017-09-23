@@ -17,6 +17,10 @@ __pycache__
 ###################
 *.swp
 
+# Vim session file #
+####################
+Session.vim
+
 # Packages #
 ############
 # It's better to unpack these files and commit the raw source because

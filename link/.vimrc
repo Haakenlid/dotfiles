@@ -29,6 +29,7 @@ endif
 
 
 autocmd BufWritePost * Neomake
+" autocmd InsertChange,TextChanged * update | Neomake
 autocmd BufWritePost *.elm ElmMake
 
 map <leader>h :ElmErrorDetail<CR>
@@ -47,7 +48,8 @@ let g:neomake_python_mypy_maker = {
       \ 'args': ['--ignore-missing-imports'],
       \ 'errorformat': '%f:%l:%m'
       \ }
-let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+
+let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 " let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_sh_enabled_makers = []
 let g:neomake_open_list = 2 " open location list
@@ -64,8 +66,11 @@ nmap zp :GitGutterPrevHunk<CR>
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
 nmap <leader>h :ElmErrorDetail<CR>
-autocmd FileType elm map <F8> :ElmFormat<CR>
-autocmd FileType python noremap <buffer> <F8> :lcl <bar> call Autopep8()<CR>
+autocmd FileType elm noremap <silent> <buffer> <F8> :ElmFormat<CR>
+autocmd FileType python noremap <silent> <buffer> <F8> :lcl <bar> call Autopep8()<CR>
+
+
+map <C-tab> <silent>:bnext<CR>
 
 " let g:ycm_semantic_triggers = { 'elm' : ['.'] }
 
@@ -138,6 +143,9 @@ map <silent> <leader>/ :let @/=""<CR>
 " random color scheme
 map <leader>R :colorscheme random<CR>
 
+" save and close buffer
+nmap <silent> <leader>x :x<CR>
+
 
 " Replace word under cursor
 nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
@@ -149,8 +157,16 @@ map <leader>p :bp<CR>
 map <leader>v :call SwitchToWriteableBufferAndExec('e $MYVIMRC')<CR>
 autocmd BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
-" javascript linting with prettier
+
+let g:neoformat_only_msg_on_error = 1
+" javascript autoformat with prettier
 autocmd BufWritePre *.js Neoformat
+let g:neoformat_enabled_javascript = ['prettier']
+
+" python autoformat with yapf
+autocmd BufWritePre *.py Neoformat
+let g:neoformat_enabled_python = ['yapf']
+
 
 
 autocmd FileType javascript,javascript.jsx set formatprg=prettier\ --stdin
@@ -166,7 +182,7 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
 
 " Tagbar settings
-map <leader>t :TagbarOpenAutoClose<CR>
+map <leader>T :TagbarOpenAutoClose<CR>
 set tags=tags;,.git/tags;
 
 "sane defaults
@@ -233,14 +249,17 @@ if ! has('gui_running')
 endif
 
 " YouCompleteMe settings
-nmap gd :YcmCompleter GoTo<CR>
-nmap gD :YcmCompleter GetDoc<CR>
+nmap <leader>gd :YcmCompleter GoTo<CR>
+nmap <leader>gu :YcmCompleter GoToReferences<CR>
+nmap <leader>gr :YcmCompleter RefactorRename<space><C-r>=expand('<cword>')<CR>
+
+nmap gi /import<CR>:let @/ = ""<CR>
 
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_python_binary_path = "python"
+" let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_python_binary_path = "python3"
 let g:ycm_add_preview_to_completeopt = 1
 " let g:ycm_min_num_identifier_candidate_chars = 2
 
@@ -288,9 +307,12 @@ let g:riv_fold_auto_update = 0
 
 " NERDTree settings
 let NERDTreeShowHidden = 1
-map <leader>n :NERDTreeToggle<CR>
+map <silent> <leader>n :NERDTreeFind<CR>
+autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>
+autocmd FileType nerdtree silent! unmap <buffer> <c-j>
+autocmd FileType nerdtree silent! unmap <buffer> <c-k>
+
 autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
 
 " Inactive splits background color hack
@@ -339,7 +361,7 @@ endfunction
 " CTRL-P settings
 nnoremap <C-p> :call SwitchToWriteableBufferAndExec('CtrlPLastMode')<CR>
 nnoremap gb :call SwitchToWriteableBufferAndExec('CtrlPBuffer')<CR>
-nnoremap gT :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
+nnoremap <leader>t :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
 nnoremap gm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
 
 " Disable default mapping since we are overriding it with our command
@@ -369,10 +391,11 @@ let g:user_emmet_prev_key='<M-k>'
 """ Ultisnips config
 " Trigger configuration. Do not use <tab> if you use
 " https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsListSnippets="<M-s>"
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 let g:UltiSnipsExpandTrigger="<nop>"
+let g:UltiSnipsListSnippets="<M-s>"
+let g:UltiSnipsExpandTrigger="<M-e>"
 let g:UltiSnipsUsePythonVersion=3
 
 " let g:ulti_expand_or_jump_res = 0
@@ -395,47 +418,60 @@ inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "
 " https://github.com/junegunn/vim-plug
 " Reload .vimrc and :PlugInstall to install plugins.
 
-
+function! BuildYCM(info)
+  " info is a dictionary with 3 fields
+  " - name:   name of the plugin
+  " - status: 'installed', 'updated', or 'unchanged'
+  " - force:  set on PlugInstall! or PlugUpdate!
+  if a:info.status == 'installed' || a:info.force
+    !./install.py --tern-complete
+  endif
+endfunction
 
 
 call plug#begin('~/.vim/plugged')
-Plug 'sbdchd/neoformat'
-Plug 'junegunn/vim-easy-align'
+" Plug 'Valloric/ListToggle'
+" Plug 'Xuyuanp/nerdtree-git-plugin'
+" Plug 'honza/vim-snippets'
+" Plug 'hynek/vim-python-pep8-indent'
+" Plug 'joonty/vdebug'
+" Plug 'mattn/gist-vim'
+" Plug 'mattn/webapi-vim'
+" Plug 'mickaobrien/vim-stackoverflow'
+" Plug 'mxw/vim-jsx'
+" Plug 'tpope/vim-eunuch'
+" Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-vinegar'
+Plug 'SirVer/ultisnips'
+Plug 'Valloric/ListToggle'
+Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'airblade/vim-gitgutter'
 Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'easymotion/vim-easymotion'
+Plug 'elmcast/elm-vim'
 Plug 'guns/xterm-color-table.vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
-" Plug 'mattn/emmet-vim'
-" Plug 'mattn/gist-vim'
-" Plug 'mattn/webapi-vim'
-" Plug 'mickaobrien/vim-stackoverflow'
-" Plug 'mxw/vim-jsx'
+Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
-" Plug 'rking/ag.vim'
+Plug 'rking/ag.vim'
+Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdtree'
-Plug 'SirVer/ultisnips'
-" Plug 'tell-k/vim-autopep8'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-characterize'
 Plug 'tweekmonster/braceless.vim'
-" Plug 'Valloric/ListToggle'
-Plug 'Valloric/YouCompleteMe', { 'do': '/usr/bin/python ./install.py' }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'elmcast/elm-vim'
-" Plug 'joonty/vdebug'
-" Plug 'hynek/vim-python-pep8-indent'
-" Plug 'davidhalter/jedi-vim'
-" Plug 'honza/vim-snippets'
-" Plug 'tpope/vim-eunuch'
-" Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-vinegar'
 call plug#end()
+
+" When writing a buffer, and on normal mode changes (after 750ms).
+call neomake#configure#automake('nw', 750)

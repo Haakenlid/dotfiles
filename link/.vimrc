@@ -29,6 +29,7 @@ endif
 
 
 autocmd BufWritePost * Neomake
+" autocmd InsertChange,TextChanged * update | Neomake
 autocmd BufWritePost *.elm ElmMake
 
 map <leader>h :ElmErrorDetail<CR>
@@ -47,7 +48,8 @@ let g:neomake_python_mypy_maker = {
       \ 'args': ['--ignore-missing-imports'],
       \ 'errorformat': '%f:%l:%m'
       \ }
-let g:neomake_python_enabled_makers = ['flake8', 'mypy']
+
+let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 " let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_sh_enabled_makers = []
 let g:neomake_open_list = 2 " open location list
@@ -65,6 +67,7 @@ let g:elm_setup_keybindings = 0
 nmap <leader>h :ElmErrorDetail<CR>
 autocmd FileType elm noremap <silent> <buffer> <F8> :ElmFormat<CR>
 autocmd FileType python noremap <silent> <buffer> <F8> :lcl <bar> call Autopep8()<CR>
+
 
 map <C-tab> <silent>:bnext<CR>
 
@@ -153,8 +156,16 @@ map <leader>p :bp<CR>
 map <leader>v :call SwitchToWriteableBufferAndExec('e $MYVIMRC')<CR>
 autocmd BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
-" javascript linting with prettier
+
+let g:neoformat_only_msg_on_error = 1
+" javascript autoformat with prettier
 autocmd BufWritePre *.js Neoformat
+let g:neoformat_enabled_javascript = ['prettier']
+
+" python autoformat with yapf 
+autocmd BufWritePre *.py Neoformat
+let g:neoformat_enabled_python = ['yapf']
+ 
 
 
 autocmd FileType javascript,javascript.jsx set formatprg=prettier\ --stdin
@@ -459,3 +470,6 @@ Plug 'elmcast/elm-vim'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
 call plug#end()
+
+" When writing a buffer, and on normal mode changes (after 750ms).
+call neomake#configure#automake('nw', 750)

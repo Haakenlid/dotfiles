@@ -25,11 +25,16 @@ endglobal
 ###########################################################################
 #                            TextMate Snippets                            #
 ###########################################################################
-snippet #!
+snippet #! "hashbang" bA
 `!p snip.rv = '#!/bin/' + getShell() + "\n\n" `
 endsnippet
 
-snippet !env "#!/usr/bin/env (!env)"
+
+snippet layout "tmux layout"
+layout="${1:`tmux lsw -F '#{window_active} #{window_layout}'|awk '/^1/{print $2}'`}"
+endsnippet
+
+snippet !env "#!/usr/bin/env (!env)" b
 `!p snip.rv = '#!/usr/bin/env ' + getShell() + "\n\n" `
 endsnippet
 

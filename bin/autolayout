@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 autolayout() {
   local panes=$(tmux display-message -p "#{window_panes}")
   local tall4='d811,274x74,0,0[274x54,0,0,7,274x19,0,55{90x19,0,55,8,90x19,91,55,14,92x19,182,55,16}]'
@@ -10,8 +8,8 @@ autolayout() {
   local wide3="2396,274x74,0,0{188x74,0,0,7,85x74,189,0[85x35,189,0,30,85x38,189,36,10]}"
   local lines=$(tmux display-message -p "#{window_height}")
   local cols=$(tmux display-message -p "#{window_width}")
-  local ratio=$(( 2 * lines / cols ))
-  if [[ '1' == $ratio ]]; then
+  local ratio=$(((5 * lines)/(2 * cols)))
+  if [[ 1 == $ratio ]]; then
     [[ $panes > 3 ]] && tmux select-layout $tall4 || tmux select-layout $tall3
   else
     [[ $panes > 3 ]] && tmux select-layout $wide4 || tmux select-layout $wide3

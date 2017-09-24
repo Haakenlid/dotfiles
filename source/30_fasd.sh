@@ -24,6 +24,14 @@ unset fasd_cache
 
 _fasd_bash_hook_cmd_complete z
 
-alias v=nfasd
+if which nvim &> /dev/null; then
+  alias v=nfasd
+else
+  alias v='fasd -f -t -b viminfo -e vim'
+  alias vv='fasd -f -t -b viminfo -e vim -i'
+fi
+fasd_cd() {
+  cd $(fasd $@)
+}
 alias z='fasd_cd -d'
 alias zz='fasd_cd -d -i'

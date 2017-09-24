@@ -13,6 +13,17 @@ alias open=xdg-open
 # Remote servers
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 
+# pip install user
+pipi() {
+  if [[ -n $VIRTUAL_ENV ]]; then
+    echo "installing in $VIRTUAL_ENV"
+    python -m pip install --upgrade $@
+  else
+    echo "installing in user directory"
+    python3 -m pip install --user --upgrade $@ 
+  fi
+}
+
 # Clipboard shortcuts using xclip
 clip() {
   if [ -t 0 ]; then # no stdin

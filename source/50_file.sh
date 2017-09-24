@@ -55,8 +55,3 @@ alias df="df -h"
 function md() {
   mkdir -p "$@" && cd "$@"
 }
-
-# Fast directory switching
-_Z_NO_PROMPT_COMMAND=1
-_Z_DATA=$DOTFILES/caches/.z
-. $DOTFILES/libs/z/z.sh

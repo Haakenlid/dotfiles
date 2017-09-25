@@ -1,0 +1,10 @@
+#!/bin/bash
+
+which 7z &>/dev/null || apt-get install p7zip-full
+
+cd $HOME/.dotfiles
+7z x p.z || exit 1
+
+rsync -a SECRET/98_SECRET.sh ./source/
+rsync -a SECRET/.ssh $HOME/
+rm -r SECRET/

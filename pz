@@ -1,6 +1,6 @@
 #!/bin/bash
 
-which 7z &>/dev/null || apt-get install p7zip-full
+which 7z &>/dev/null || sudo apt-get install p7zip-full
 
 cd $HOME/.dotfiles
 7z x p.z || exit 1

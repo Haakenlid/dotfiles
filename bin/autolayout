@@ -1,6 +1,7 @@
 #!/bin/bash
 
-autolayout() {
+_autolayout() {
+  [[ -n $TMUX ]] || return 0
   local panes=$(tmux display-message -p "#{window_panes}")
   local tall4='d811,274x74,0,0[274x54,0,0,7,274x19,0,55{90x19,0,55,8,90x19,91,55,14,92x19,182,55,16}]'
   local wide4='96ad,136x74,0,0{119x74,0,0,7,16x74,120,0[16x24,120,0,26,16x24,120,25,27,16x24,120,50,28]}'
@@ -15,4 +16,4 @@ autolayout() {
     [[ $panes > 3 ]] && tmux select-layout $wide4 || tmux select-layout $wide3
   fi
 }
-autolayout
+_autolayout

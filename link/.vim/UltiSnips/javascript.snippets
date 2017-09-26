@@ -12,6 +12,8 @@ def expand_proptypes(props):
 	props = (prop.strip() for prop in props.split(','))
 	return ',\n  '.join(pattern.format(prop) for prop in props)
 
+
+
 def constant_name(match, default='CONSTANT'):
 	m = match.strip()
 	if not m:
@@ -32,6 +34,23 @@ const $1 = (state, action) => {
 	}
 }
 endsnippet
+
+snippet cx "className=cx()" 
+className={cx($1)} $0
+endsnippet
+
+snippet icx "import classnames" bA 
+import cx from 'classnames'
+$0
+endsnippet
+
+snippet test( "jest test" bA
+test('$1', () => {
+	expect(${2:$1}.($3)).toEqual($4)
+})
+$0
+endsnippet
+
 
 snippet "action(.*)$" "Action creator" br
 export const $1 = '`!p snip.rv=snip.basename.lower()`/$1'
@@ -91,12 +110,6 @@ componentWillUpdate(nextProps, nextState) {
 	${1}
 }
 $0
-endsnippet
-
-snippet cx
-cx({
-	${1}: ${2}
-});
 endsnippet
 
 snippet import "import es6" b

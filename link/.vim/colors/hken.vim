@@ -12,17 +12,17 @@ hi clear
 
 " Support for 256-color terminal
 "
-hi Normal             ctermfg=254   ctermbg=232
-hi Comment            ctermfg=244                 cterm=italic
-" hi CursorLine                       ctermbg=234   cterm=reverse
-hi CursorLine                       ctermbg=233   cterm=none
+hi Normal             ctermfg=253   ctermbg=232
+hi Comment            ctermfg=248   ctermbg=235
+hi CursorLine                       ctermbg=234   cterm=none
+" hi CursorLine                       ctermbg=16    cterm=reverse
 hi CursorLineNr       ctermfg=015   ctermbg=none  cterm=bold
 hi LineNr             ctermfg=244   ctermbg=233
 hi Search             ctermfg=none  ctermbg=none  cterm=reverse
 " Brackets and parenthesis
 hi Delimiter          ctermfg=243                 cterm=none
 " Matchin parenthesis
-hi MatchParen         ctermfg=155   ctermbg=none  cterm=bold
+hi MatchParen         ctermfg=155   ctermbg=240   cterm=bold
 hi Operator           ctermfg=39
 
 " Doesn't do anything in xfce-4 terminal
@@ -61,6 +61,26 @@ hi SpecialKey         ctermfg=81
 
 hi ModeMsg            ctermfg=229
 hi MoreMsg            ctermfg=229
+
+" jsx / xml
+hi jsVariableDef      ctermfg=15                cterm=bold
+hi jsObjectProp       ctermfg=250
+hi xmlTag             ctermfg=226                 cterm=bold
+hi xmlTagName         ctermfg=220                 cterm=none
+hi xmlEndTag          ctermfg=196
+hi xmlString          ctermfg=144
+
+" hi xmlAttrib          ctermfg=75
+hi jsObject           ctermfg=207
+hi jsObjectKey        ctermfg=207
+hi jsObjectBraces     ctermfg=207                 cterm=bold
+
+hi jsBraces           ctermfg=226
+hi xmlEqual           ctermfg=226
+
+hi jsImport           ctermfg=39                  cterm=none
+hi jsExport           ctermfg=39                  cterm=none
+hi jsStorageClass     ctermfg=39                  cterm=none
 
 " complete menu
 hi Pmenu              ctermfg=81    ctermbg=16

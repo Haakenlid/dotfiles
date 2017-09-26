@@ -171,9 +171,9 @@ let g:neoformat_enabled_python = ['yapf']
 
 autocmd FileType javascript,javascript.jsx set formatprg=prettier\ --stdin
       \\ --semi\ false\ --single-quote\ --trailing-comma\ es5
+let g:jsx_ext_required = 0
+
 let g:neoformat_try_formatprg = 1
-
-
 
 
 " Airline settings
@@ -339,8 +339,6 @@ function! s:DimInactiveWindows()
   endfor
 endfunction
 
-" JSX settings
-let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
 
@@ -438,7 +436,6 @@ call plug#begin('~/.vim/plugged')
 " Plug 'mattn/gist-vim'
 " Plug 'mattn/webapi-vim'
 " Plug 'mickaobrien/vim-stackoverflow'
-" Plug 'mxw/vim-jsx'
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-sensible'
 " Plug 'tpope/vim-unimpaired'
@@ -457,6 +454,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 Plug 'reedes/vim-lexical'
 Plug 'rking/ag.vim'
 Plug 'sbdchd/neoformat'
@@ -473,5 +471,3 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
-" When writing a buffer, and on normal mode changes (after 750ms).
-call neomake#configure#automake('nw', 750)

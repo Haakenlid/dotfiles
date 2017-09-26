@@ -20,7 +20,7 @@ pipi() {
     python -m pip install --upgrade $@
   else
     echo "installing in user directory"
-    python3 -m pip install --user --upgrade $@ 
+    python3 -m pip install --user --upgrade $@
   fi
 }
 
@@ -40,21 +40,6 @@ killchrome(){
   else
     echo "kill chromeos processes: $PROCS"
     kill $PROCS > /dev/null
-  fi
-}
-
-autolayout() {
-  [[ -n $TMUX ]] || exit 1
-  local lines=$(tmux display-message -p "#{window_height}")
-  local cols=$(tmux display-message -p "#{window_width}")
-  # local panes=$(tmux display-message -p "#{window_panes}")
-  local ratio=$(( 2 * lines / cols ))
-  local h4='bb9a,274x74,0,0{200x74,0,0,7,73x74,201,0[73x24,201,0,8,73x24,201,25,14,73x24,201,50,16]}'
-  local v4='d811,274x74,0,0[274x54,0,0,7,274x19,0,55{90x19,0,55,8,90x19,91,55,14,92x19,182,55,16}]'
-  if [[ '1' == $ratio ]]; then
-    tmux select-layout $v4
-  else
-    tmux select-layout $h4
   fi
 }
 

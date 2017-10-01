@@ -121,7 +121,7 @@ hi Underlined         ctermfg=244                 cterm=underline
 
 hi VertSplit          ctermfg=244   ctermbg=232   cterm=bold
 hi VisualNOS                        ctermbg=238
-hi Visual                           ctermbg=235
+hi Visual                           ctermbg=0     cterm=reverse
 hi WarningMsg         ctermfg=231   ctermbg=238   cterm=bold
 hi WildMenu           ctermfg=81    ctermbg=16
 
@@ -129,3 +129,6 @@ hi CursorColumn                     ctermbg=235
 hi ColorColumn                      ctermbg=233
 hi NonText            ctermfg=59
 hi SpecialKey         ctermfg=59
+
+hi BracelessIndent                  ctermbg=237
+

@@ -58,6 +58,7 @@ let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 let g:lt_location_list_toggle_map = '<leader>ll'
 let g:lt_quickfix_list_toggle_map = '<leader>qq'
 
+
 function! DisableLint()
   " isable linting and formatting
   NeomakeDisable
@@ -89,10 +90,13 @@ function! WrapMove(action)
 endfunction
 
 "git gutter hunks
-nmap <silent> <leader>gn :call WrapMove('GitGutterNextHunk')<CR>
-nmap <silent> <leader>gN :call WrapMove('GitGutterPrevHunk')<CR>
-nmap <leader>gr :GitGutterUndoHunk<CR>
-nmap <leader>gp :GitGutterPreviewHunk<CR>
+nmap <silent> zn :call WrapMove('GitGutterNextHunk')<CR>
+nmap <silent> zN :call WrapMove('GitGutterPrevHunk')<CR>
+nmap zr :GitGutterUndoHunk<CR>
+nmap za :GitGutterAll<CR>
+nmap zp :GitGutterPreviewHunk<CR>
+nmap zb :Gblame<CR>
+nmap zs :Gstatus<CR>
 
 "locations
 nmap <leader>ln :call WrapMove('lnext')<CR>
@@ -206,9 +210,7 @@ let g:neoformat_enabled_javascript = ['prettier']
 autocmd BufWritePre *.py Neoformat
 let g:neoformat_enabled_python = ['yapf']
 
-
-
-autocmd FileType javascript,javascript.jsx set formatprg=prettier\ --stdin
+autocmd FileType javascript,javascript.jsx setlocal formatprg=prettier\ --stdin
       \\ --semi\ false\ --single-quote\ --trailing-comma\ es5
 let g:jsx_ext_required = 0
 
@@ -476,7 +478,6 @@ call plug#begin('~/.vim/plugged')
 " Plug 'Valloric/ListToggle'
 " Plug 'Xuyuanp/nerdtree-git-plugin'
 " Plug 'honza/vim-snippets'
-" Plug 'hynek/vim-python-pep8-indent'
 " Plug 'joonty/vdebug'
 " Plug 'mattn/gist-vim'
 " Plug 'mattn/webapi-vim'
@@ -485,6 +486,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'tpope/vim-sensible'
 " Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
+" Plug 'tell-k/vim-autopep8'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }

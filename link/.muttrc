@@ -88,9 +88,8 @@ push <show-version>  # Shows mutt version at startup
 
 #======================================================#
 # Sidebar
-# set sidebar_visible = yes
-# set sidebar_width = 35
-# set sort_sidebar = desc<Paste>
+set sidebar_visible = yes
+set sidebar_width = 35
 
 #======================================================#
 # Index sorting
@@ -112,7 +111,7 @@ bind index \Cu      previous-page
 # Ctrl-R to mark all as read
 # macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
 
-# Ctrl-B to open urls with browser 
+# Ctrl-B to open urls with browser
 macro pager \Cb <pipe-entry>'urlview'<enter> 'Follow links with urlview'
 
 # Sync email

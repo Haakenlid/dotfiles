@@ -821,6 +821,14 @@ class ${1:MODELNAME}(models.Model):
 
 endsnippet
 
+snippet vn
+verbose_name = _('$1'),$0
+endsnippet
+
+snippet ht
+help_text = _('$1'),$0
+endsnippet
+
 snippet mauto "AutoField" b
 ${1:FIELDNAME} = models.AutoField(
 	verbose_name=_('$1'),
@@ -1137,4 +1145,10 @@ def get_context_data(self, **kwargs):
 	return super(${2:CLASS_NAME}, self).get_context_data(**kwargs)
 endsnippet
 
+snippet save "model save" b
+def save(self, *args, **kwargs):
+	$1
+	super().save(*args, **kwargs)
+$0
+endsnippet
 

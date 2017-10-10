@@ -52,16 +52,51 @@ let g:neomake_python_mypy_maker = {
 let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 " let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_sh_enabled_makers = []
-let g:neomake_open_list = 2 " open location list
+let g:neomake_open_list = 0 " do not open location list
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
-let g:lt_location_list_toggle_map = '<leader>l'
-let g:lt_quickfix_list_toggle_map = '<leader>q'
+let g:lt_location_list_toggle_map = '<leader>ll'
+let g:lt_quickfix_list_toggle_map = '<leader>qq'
 
-" xmap ga <Plug>(EasyAlign)
-" nmap ga <Plug>(EasyAlign)
-nmap zn :GitGutterNextHunk<CR>
-nmap zp :GitGutterPrevHunk<CR>
+function! DisableLint()
+  " isable linting and formatting
+  NeomakeDisable
+  let g:neoformat_enabled_python = []
+  let g:neoformat_enabled_javascript = []
+  echom 'Disabled all linting'
+endfunction
+
+command! Nolint call DisableLint()
+command! Sourcevimrc so $MYVIMRC | echo 'sourced '.$MYVIMRC
+
+
+function! WrapMove(action)
+  "Git gutter previous wrap around
+  let line = line('.')
+  execute a:action
+  if line('.') == line
+    "=~? case insensitive regex match
+    if a:action =~? "next"
+      " forward search
+      normal gg
+    else
+      " backward search
+      normal G
+    endif
+    execute a:action
+  endif
+  normal zz
+endfunction
+
+"git gutter hunks
+nmap <silent> <leader>gn :call WrapMove('GitGutterNextHunk')<CR>
+nmap <silent> <leader>gN :call WrapMove('GitGutterPrevHunk')<CR>
+nmap <leader>gr :GitGutterUndoHunk<CR>
+nmap <leader>gp :GitGutterPreviewHunk<CR>
+
+"locations
+nmap <leader>ln :call WrapMove('lnext')<CR>
+nmap <leader>lN :call WrapMove('lprevious')<CR>
 
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
@@ -88,13 +123,15 @@ map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
       \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)), "name")
       \ . ">"<CR>
 
+
 " Python
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
 autocmd FileType python BracelessEnable +indent +highlight
 
 " let g:lt_height = 5
-autocmd FileType qf nmap <buffer> <CR> <CR>:lcl<CR>
+autocmd FileType qf nmap <silent> <buffer> <CR> <CR>:lcl<CR>
+autocmd FileType qf nmap <silent> <buffer> <ESC> :q<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
@@ -146,6 +183,8 @@ map <leader>R :colorscheme random<CR>
 " save and close buffer
 nmap <silent> <leader>x :x<CR>
 
+" close preview window
+nmap <silent> <leader>z :pclose!<CR>
 
 " Replace word under cursor
 nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
@@ -182,8 +221,10 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
 
 " Tagbar settings
-map <leader>T :TagbarOpenAutoClose<CR>
+map <leader>t :TagbarOpenAutoClose<CR>
 set tags=tags;,.git/tags;
+autocmd FileType tagbar nmap <silent> <buffer> <ESC> :q<CR>
+
 
 "sane defaults
 colorscheme hken
@@ -249,9 +290,10 @@ if ! has('gui_running')
 endif
 
 " YouCompleteMe settings
-nmap <leader>gd :YcmCompleter GoTo<CR>
+nmap <leader>gt :YcmCompleter GoTo<CR>
 nmap <leader>gu :YcmCompleter GoToReferences<CR>
-nmap <leader>gr :YcmCompleter RefactorRename<space><C-r>=expand('<cword>')<CR>
+nmap <leader>gd :YcmCompleter GetDoc<CR>
+"nmap <leader>gr :YcmCompleter RefactorRename<space><C-r>=expand('<cword>')<CR>
 
 nmap gi /import<CR>:let @/ = ""<CR>
 
@@ -297,6 +339,7 @@ omap / <Plug>(easymotion-tn)
 
 " Turn on case sensitive feature
 let g:EasyMotion_smartcase = 1
+set ignorecase
 
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
@@ -357,10 +400,12 @@ function! SwitchToWriteableBufferAndExec(command)
 endfunction
 
 " CTRL-P settings
-nnoremap <C-p> :call SwitchToWriteableBufferAndExec('CtrlPLastMode')<CR>
-nnoremap gb :call SwitchToWriteableBufferAndExec('CtrlPBuffer')<CR>
-nnoremap <leader>t :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
-nnoremap gm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
+nnoremap gpp :call SwitchToWriteableBufferAndExec('CtrlPMixed')<CR>
+nnoremap gpc :call SwitchToWriteableBufferAndExec('CtrlPChange')<CR>
+nnoremap gpb :call SwitchToWriteableBufferAndExec('CtrlPBuffer')<CR>
+nnoremap gpt :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
+nnoremap gpm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
+" nnoremap gm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
 
 " Disable default mapping since we are overriding it with our command
 let g:ctrlp_map = ''

@@ -28,11 +28,8 @@ if &term =~ "xterm\\|rxvt"
 endif
 
 
-autocmd BufWritePost * Neomake
 " autocmd InsertChange,TextChanged * update | Neomake
 autocmd BufWritePost *.elm ElmMake
-
-map <leader>h :ElmErrorDetail<CR>
 
 
 let g:vdebug_options = {
@@ -50,13 +47,12 @@ let g:neomake_python_mypy_maker = {
       \ }
 
 let g:neomake_python_enabled_makers = ['mypy', 'flake8']
-" let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_sh_enabled_makers = []
 let g:neomake_open_list = 0 " do not open location list
 let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
 
 let g:lt_location_list_toggle_map = '<leader>ll'
-let g:lt_quickfix_list_toggle_map = '<leader>qq'
+let g:lt_quickfix_list_toggle_map = '<leader>cc'
 
 
 function! DisableLint()
@@ -104,14 +100,9 @@ nmap <leader>lN :call WrapMove('lprevious')<CR>
 
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
-nmap <leader>h :ElmErrorDetail<CR>
-autocmd FileType elm noremap <silent> <buffer> <F8> :ElmFormat<CR>
-autocmd FileType python noremap <silent> <buffer> <F8> :lcl <bar> call Autopep8()<CR>
-
 
 map <C-tab> <silent>:bnext<CR>
 
-" let g:ycm_semantic_triggers = { 'elm' : ['.'] }
 
 " Don't use swap file.
 set nobackup
@@ -137,7 +128,6 @@ autocmd FileType python BracelessEnable +indent +highlight
 autocmd FileType qf nmap <silent> <buffer> <CR> <CR>:lcl<CR>
 autocmd FileType qf nmap <silent> <buffer> <ESC> :q<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-autocmd BufNewFile,BufReadPost *.{tpl,tmpl} set filetype=jinja
 set modeline
 set modelines=5
 
@@ -154,6 +144,13 @@ endfunction
 "         \ | call pencil#init()
 "         \ | call lexical#init()
 " augroup END
+"
+augroup elmkeys
+  autocmd!
+  autocmd FileType elm nmap <buffer> <leader>e :ElmErrorDetail<CR>
+  autocmd FileType elm nmap <buffer> <leader>d :ElmShowDocs<CR>
+  autocmd FileType elm nmap <buffer> <leader>b :ElmBrowseDocs<CR>
+augroup END
 
 map! jj <esc>
 nmap Y y$
@@ -201,21 +198,23 @@ map <leader>v :call SwitchToWriteableBufferAndExec('e $MYVIMRC')<CR>
 autocmd BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
 
+" Neoformat
+augroup neoformat
+  autocmd!
+  autocmd BufWritePre *.py,*.js,*.css,*.scss,*.elm Neoformat
+augroup END
+
 let g:neoformat_only_msg_on_error = 1
-" javascript autoformat with prettier
-autocmd BufWritePre *.js Neoformat
 let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_enabled_scss = ['prettier']
+let g:neoformat_try_formatprg = 1
 
 " python autoformat with yapf
-autocmd BufWritePre *.py Neoformat
-let g:neoformat_enabled_python = ['yapf']
 
 autocmd FileType javascript,javascript.jsx setlocal formatprg=prettier\ --stdin
       \\ --semi\ false\ --single-quote\ --trailing-comma\ es5
 let g:jsx_ext_required = 0
-
-let g:neoformat_try_formatprg = 1
-
 
 " Airline settings
 let g:airline_powerline_fonts = 1
@@ -295,7 +294,6 @@ endif
 nmap <leader>gt :YcmCompleter GoTo<CR>
 nmap <leader>gu :YcmCompleter GoToReferences<CR>
 nmap <leader>gd :YcmCompleter GetDoc<CR>
-"nmap <leader>gr :YcmCompleter RefactorRename<space><C-r>=expand('<cword>')<CR>
 
 nmap gi /import<CR>:let @/ = ""<CR>
 
@@ -306,6 +304,7 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_python_binary_path = "python3"
 let g:ycm_add_preview_to_completeopt = 1
 " let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_semantic_triggers = { 'elm' : ['.'] }
 
 
 let g:ycm_filetype_blacklist = {
@@ -484,7 +483,7 @@ call plug#begin('~/.vim/plugged')
 " Plug 'mickaobrien/vim-stackoverflow'
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-sensible'
-" Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
 " Plug 'tell-k/vim-autopep8'
 Plug 'SirVer/ultisnips'
@@ -516,5 +515,7 @@ Plug 'tpope/vim-surround'
 Plug 'tweekmonster/braceless.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'sjl/strftimedammit.vim'
 call plug#end()
 
+call neomake#configure#automake('w')

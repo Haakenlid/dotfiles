@@ -63,7 +63,8 @@ hi ModeMsg            ctermfg=229
 hi MoreMsg            ctermfg=229
 
 " jsx / xml
-hi jsVariableDef      ctermfg=15                cterm=bold
+hi jsVariableDef      ctermfg=15                  cterm=bold
+" hi jsModuleKeyword    ctermfg=15                  cterm=bold
 hi jsObjectProp       ctermfg=250
 hi xmlTag             ctermfg=226                 cterm=bold
 hi xmlTagName         ctermfg=220                 cterm=none

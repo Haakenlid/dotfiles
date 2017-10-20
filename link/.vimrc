@@ -483,8 +483,8 @@ call plug#begin('~/.vim/plugged')
 " Plug 'mickaobrien/vim-stackoverflow'
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-sensible'
-" Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-unimpaired'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
@@ -508,11 +508,13 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tweekmonster/braceless.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+Plug 'justinmk/vim-sneak'
 call plug#end()
 

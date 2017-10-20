@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if logname &>/dev/null
-then USER_NAME=$(logname)
-else USER_NAME=$SUDO_USER
-fi
 if [[ -z $1 ]]; then
   echo 'usage: install [packages ...]' >&2
   exit 1
@@ -11,7 +7,7 @@ fi
 
 
 function main__() {
-  is_root || exit 1
+  must_be_root || exit 1
   OTHER=()
   SPECIAL=()
   for arg in $@; do
@@ -30,56 +26,59 @@ function main__() {
   apt install -y ${SPECIAL[@]} ${OTHER[@]}
 }
 
-function is_root() {
-  # Is this run as root?
-  [ $UID != 0 ] && echo 'must run as root' && return 1
-  return 0
+function must_be_root() {
+  [[ $UID == 0 ]] && return 0
+  echo 'must run as root' >&2
+  return 1
 }
 
 function apt_update() {
-  # Update if needed
+  # Run update if it has not been done in a while
+  TWENTY_FOUR_HOURS=$(( 60 * 60 * 24 ))
   APT_CACHE_FILE='/var/cache/apt/pkgcache.bin'
-  # this file will be modified by apt-get update
+
   NOW=$(date +%s)
   LAST_UPDATE=$(stat $APT_CACHE_FILE -c %Y)
   DELTA=$(( NOW - LAST_UPDATE ))
-  ONE_HOUR=3600
-  [[ $DELTA -gt $ONE_HOUR ]] && apt update
+  [[ $DELTA -gt $TWENTY_FOUR_HOURS ]] && apt update
 }
 
 function _docker() {
   DOCKER_REPO="deb https://apt.dockerproject.org/repo ubuntu-xenial main"
   echo "$DOCKER_REPO" > /etc/apt/sources.list.d/docker.list
-  # apt-get install -y apt-transport-https ca-certificates
   (
-  apt-key adv \
-    --keyserver hkp://ha.pool.sks-keyservers.net:80 \
-    --recv-keys 58118E89F3A912897C070ADBF76221572C52609D 
-  python3 -m pip install docker-compose
-  groupadd -f docker
-  usermod -aG docker $USER_NAME
+    type apt-key &>/dev/null || apt-get install -y apt-transport-https ca-certificates
+    apt-key adv \
+      --keyserver hkp://ha.pool.sks-keyservers.net:80 \
+      --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
+    python3 -m pip install docker-compose
+    groupadd -f docker
+    usermod -aG docker $SUDO_USER
   ) >&2
   echo 'docker-engine'
 }
 
 function _neovim() {
-  su $USER_NAME << 'EOF'
-  ln -fs ${HOME}/.vim ${HOME}/.config/nvim
-  ln -fs ${HOME}/.vimrc ${HOME}/.config/nvim/init.vim
+  su $SUDO_USER << EOF
+ln -fsT ${HOME}/.vim ${HOME}/.config/nvim
+ln -fsT ${HOME}/.vimrc ${HOME}/.config/nvim/init.vim
 EOF
   echo 'neovim python3-neovim'
 }
 
 function _nodejs() {
-  curl -sL https://deb.nodesource.com/setup_8.x | /bin/bash - >&2
+  curl -sL https://deb.nodesource.com/setup_8.x \
+    | /bin/bash - >&2
   echo 'nodejs'
 }
 
 function _spotify() {
+  SPOTIFY_REPO='deb http://repository.spotify.com stable non-free'
+  echo "$SPOTIFY_REPO" > /etc/apt/sources.list.d/spotify.list
   (
-  apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886 
-
-  echo 'deb http://repository.spotify.com stable non-free' > /etc/apt/sources.list.d/spotify.list
+    apt-key adv \
+      --keyserver hkp://keyserver.ubuntu.com:80 \
+      --recv-keys BBEBDCB318AD50EC6865090613B00F1FD2C19886
   ) >&2
   echo 'spotify-client'
 }

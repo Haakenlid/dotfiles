@@ -1,44 +1,29 @@
-"keyboard shortcuts
-let mapleader=" "
-syntax on
-filetype plugin indent on
+source ~/.vim/vimrc/basic_options.vim
+source ~/.vim/vimrc/plugin_options.vim
+source ~/.vim/vimrc/vim_functions.vim
+source ~/.vim/vimrc/keyboard_shortcuts.vim
+
+" source ~/.vim/vimrc/easymotion.vim
+
+" FZF keyboard shortcuts
+nmap <silent> <leader><leader>b :Buffers<cr>
+nmap <silent> <leader><leader>h :Helptags<cr>
+nmap <silent> <leader><leader>m :History<cr>
+nmap <silent> <leader><leader>s :Snippets<cr>
+nmap <silent> <leader><leader>t :Tags <c-r><c-w><cr>
+nmap <silent> <leader><leader>l :Lines<cr>
+nmap <silent> <leader><leader>g :GGrep <c-r><c-w><cr>
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'right': '15%'})
+inoremap <expr> <c-x><c-l> fzf#vim#complete#line()
+
+" Command for git grep
+" - fzf#vim#grep(command, with_column, [options], [fullscreen])
+command! -bang -nargs=* GGrep
+  \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
+
 
 " Fix ctrp highlight
-let g:ctrlp_buffer_func = { 'enter': 'BrightHighlightOn', 'exit':  'BrightHighlightOff', }
 let python_highlight_all = 1
-
-fun! BrightHighlightOn()
-  hi CursorLine ctermfg=15 cterm=bold
-endfun
-
-fun! BrightHighlightOff()
-  hi CursorLine ctermfg=none cterm=none
-endfun
-
-
-if &term =~ "xterm\\|rxvt"
-  " use an orange cursor in insert mode
-  let &t_SI = "\<Esc>]12;orange\x7"
-  " use a red cursor otherwise
-  let &t_EI = "\<Esc>]12;red\x7"
-  silent !echo -ne "\033]12;red\007"
-  " reset cursor when vim exits
-  autocmd VimLeave * silent !echo -ne "\033]112\007"
-  " use \003]12;gray\007 for gnome-terminal
-endif
-
-
-" autocmd InsertChange,TextChanged * update | Neomake
-autocmd BufWritePost *.elm ElmMake
-
-
-let g:vdebug_options = {
-      \ 'port': 9000,
-      \ 'server': '',
-      \ 'ide_key': '',
-      \ 'debug_file': '/home/haakenlid/vdebug.log',
-      \ 'debug_file_level': 2,
-      \ }
 
 let g:neomake_python_mypy_maker = {
       \ 'exe': 'mypy',
@@ -49,74 +34,12 @@ let g:neomake_python_mypy_maker = {
 let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 let g:neomake_sh_enabled_makers = []
 let g:neomake_open_list = 0 " do not open location list
-let g:markdown_fenced_languages = ['html', 'python', 'bash=sh']
-
-let g:lt_location_list_toggle_map = '<leader>ll'
-let g:lt_quickfix_list_toggle_map = '<leader>cc'
-
-
-function! DisableLint()
-  " isable linting and formatting
-  NeomakeDisable
-  let g:neoformat_enabled_python = []
-  let g:neoformat_enabled_javascript = []
-  echom 'Disabled all linting'
-endfunction
 
 command! Nolint call DisableLint()
+
+" vimrc stuff
+
 command! Sourcevimrc so $MYVIMRC | echo 'sourced '.$MYVIMRC
-
-
-function! WrapMove(action)
-  "Git gutter previous wrap around
-  let line = line('.')
-  execute a:action
-  if line('.') == line
-    "=~? case insensitive regex match
-    if a:action =~? "next"
-      " forward search
-      normal gg
-    else
-      " backward search
-      normal G
-    endif
-    execute a:action
-  endif
-  normal zz
-endfunction
-
-"git gutter hunks
-nmap <silent> zn :call WrapMove('GitGutterNextHunk')<CR>
-nmap <silent> zN :call WrapMove('GitGutterPrevHunk')<CR>
-nmap zr :GitGutterUndoHunk<CR>
-nmap za :GitGutterAll<CR>
-nmap zp :GitGutterPreviewHunk<CR>
-nmap zb :Gblame<CR>
-nmap zs :Gstatus<CR>
-
-"locations
-nmap <leader>ln :call WrapMove('lnext')<CR>
-nmap <leader>lN :call WrapMove('lprevious')<CR>
-
-let g:elm_format_autosave = 0
-let g:elm_setup_keybindings = 0
-
-map <C-tab> <silent>:bnext<CR>
-
-
-" Don't use swap file.
-set nobackup
-set nowritebackup
-set noswapfile
-
-" Printing
-set printoptions+=formfeed:y
-set printoptions+=header:0
-" Splain syntax highlight
-map <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
-      \ . '> trans<' . synIDattr(synID(line("."),col("."),0),"name")
-      \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)), "name")
-      \ . ">"<CR>
 
 
 " Python
@@ -128,23 +51,23 @@ autocmd FileType python BracelessEnable +indent +highlight
 autocmd FileType qf nmap <silent> <buffer> <CR> <CR>:lcl<CR>
 autocmd FileType qf nmap <silent> <buffer> <ESC> :q<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-set modeline
-set modelines=5
 
 " Dynamic quickfix height
-au FileType qf call AdjustWindowHeight(3, 10)
-function! AdjustWindowHeight(minheight, maxheight)
-  exe max([min([line("$") + 1, a:maxheight]), a:minheight]) . "wincmd _"
-endfunction
+autocmd FileType qf call AdjustWindowHeight(3, 10)
 
 " let g:airline_section_x = 'pencil: %{PencilMode()}'
+"
 " augroup pencil
 "   autocmd!
 "   autocmd FileType markdown,mkd,text
 "         \ | call pencil#init()
 "         \ | call lexical#init()
 " augroup END
-"
+
+
+" Elm stuff
+let g:elm_format_autosave = 0
+let g:elm_setup_keybindings = 0
 augroup elmkeys
   autocmd!
   autocmd FileType elm nmap <buffer> <leader>e :ElmErrorDetail<CR>
@@ -152,51 +75,9 @@ augroup elmkeys
   autocmd FileType elm nmap <buffer> <leader>b :ElmBrowseDocs<CR>
 augroup END
 
-map! jj <esc>
-nmap Y y$
-" imap DD <esc>dd
-" imap AA <esc>A
-" imap II <esc>I
-" imap OO <esc>O
-" imap CC <esc>C
-
-imap <c-CR> <esc>o
-" map Q @q
-" Ctrl-Q = quit
-map <C-Q> :qa!
-map! <C-Q> <esc>:qa!
-" Ctrl-S = save
-"
-
-fun! <SID>Writefile()
-  call <SID>StripTrailingWhitespaces()
-  w!
-endfun
-
-map <silent> <C-S> :call <SID>Writefile()<CR>
-imap <silent> <C-S> <esc>:call <SID>Writefile()<CR>
-" clear search pattern
-map <silent> <leader>/ :let @/=""<CR>
-
-" random color scheme
-map <leader>R :colorscheme random<CR>
-
-" save and close buffer
-nmap <silent> <leader>x :x<CR>
-
-" close preview window
-nmap <silent> <leader>z :pclose!<CR>
-
-" Replace word under cursor
-nmap <leader>r *N:redraw!<CR>:%s/\<<C-r>=expand('<cword>')<CR>\>//g<left><left>
-
-" leader p => previous buffer
-map <leader>p :bp<CR>
 
 " open vimrc with leader V
-map <leader>v :call SwitchToWriteableBufferAndExec('e $MYVIMRC')<CR>
 autocmd BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
-
 
 " Neoformat
 augroup neoformat
@@ -222,90 +103,35 @@ let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
 
 " Tagbar settings
-map <leader>t :TagbarOpenAutoClose<CR>
-set tags=tags;,.git/tags;
 autocmd FileType tagbar nmap <silent> <buffer> <ESC> :q<CR>
 
-
-"sane defaults
-colorscheme hken
 let previewheight=5
 
 "neovim python programs
 let g:python3_host_prog='/usr/bin/python3'
 
-set hidden
-set autoindent
-set tabstop=2
-set shiftwidth=2
-set expandtab
-" set rnu
-set nu
-set listchars=tab:>-,extends:>,precedes:<
-set list
-set mouse=a
-set backspace=indent,eol,start
-set cursorline
-set laststatus=2 " Always display the statusline in all windows
-" set showtabline=2 " Always display the tabline, even if there is only one tab
-" set showtabline=1
-set noshowmode " Hide the default mode text (e.g. -- INSERT -- below the statusline)
 
-" Splits
-set splitbelow " New split goes below
-set splitright " New split goes right
+augroup prewrite
+  autocmd!
+  autocmd BufWritePre * :call StripTrailingWhitespaces()
+augroup END
 
-" Show absolute numbers in insert mode, otherwise relative line numbers.
-" autocmd vimrc InsertEnter * :set norelativenumber
-" autocmd vimrc InsertLeave * :set relativenumber
-
-" Make it obvious where 80 characters is
-" set textwidth=80
-set colorcolumn=-1
-
-set dictionary="/usr/dict/words"
-
-function! <SID>StripTrailingWhitespaces()
-    " save search pattern
-    let search = @/
-    " save cursor position
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    " reset cursor position and search
-    let @/ = search
-    call cursor(l, c)
-endfun
-
-autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
-
-nmap <leader>S :call <SID>StripTrailingWhitespaces()<CR>
-
-if ! has('gui_running')
-    " this makes insert mode commands such as jj possible
-    augroup FastEscape
-        autocmd!
-        au InsertEnter * set timeoutlen=300
-        au InsertLeave * set timeoutlen=1000
-    augroup END
-endif
+" this makes insert mode commands such as jj possible
+augroup FastEscape
+    autocmd!
+    autocmd InsertEnter * set timeoutlen=300
+    autocmd InsertLeave * set timeoutlen=1000
+augroup END
 
 " YouCompleteMe settings
-nmap <leader>gt :YcmCompleter GoTo<CR>
-nmap <leader>gu :YcmCompleter GoToReferences<CR>
-nmap <leader>gd :YcmCompleter GetDoc<CR>
-
-nmap gi /import<CR>:let @/ = ""<CR>
-
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
-" let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_python_binary_path = "python3"
 let g:ycm_add_preview_to_completeopt = 1
-" let g:ycm_min_num_identifier_candidate_chars = 2
 let g:ycm_semantic_triggers = { 'elm' : ['.'] }
-
+" let g:ycm_autoclose_preview_window_after_completion = 1
+" let g:ycm_min_num_identifier_candidate_chars = 2
 
 let g:ycm_filetype_blacklist = {
       \ 'tagbar' : 1,
@@ -319,113 +145,18 @@ let g:ycm_filetype_blacklist = {
       \ 'mail' : 1
       \}
 
-" Easymotion settings
-let g:EasyMotion_do_mapping = 1 " Disable default mappings
-map <Leader> <Plug>(easymotion-prefix)
-
-" Bi-directional find motions
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `s{char}{label}`
-nmap <leader>s <Plug>(easymotion-s)
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-
-"
-" " These `n` & `N` mappings are options. You do not have to map `n` & `N` to
-" EasyMotion.
-" " Without these mappings, `n` & `N` works fine. (These mappings just provide
-" " different highlight method and have some other features )
-" map  n <Plug>(easymotion-next)
-" map  N <Plug>(easymotion-prev)
-
-" Turn on case sensitive feature
-let g:EasyMotion_smartcase = 1
-set ignorecase
-
-" JK motions: Line motions
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-
-" RIV settings
-let g:riv_fold_auto_update = 0
 
 " NERDTree settings
 let NERDTreeShowHidden = 1
-map <silent> <leader>n :NERDTreeFind<CR>
-autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>
-autocmd FileType nerdtree silent! unmap <buffer> <c-j>
-autocmd FileType nerdtree silent! unmap <buffer> <c-k>
+let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
+augroup NerdTree
+  autocmd!
+  autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>
+  autocmd FileType nerdtree silent! unmap <buffer> <c-j>
+  autocmd FileType nerdtree silent! unmap <buffer> <c-k>
+augroup END
 
 autocmd StdinReadPre * let s:std_in=1
-let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
-
-" Inactive splits background color hack
-" Dim inactive windows using 'colorcolumn' setting
-" This tends to slow down redrawing, but is very useful.
-" Based on https://groups.google.com/d/msg/vim_use/IJU-Vk-QLJE/xz4hjPjCRBUJ
-" XXX: this will only work with lines containing text (i.e. not '~')
-function! s:DimInactiveWindows()
-  for i in range(1, tabpagewinnr(tabpagenr(), '$'))
-    let l:range = ""
-    if i != winnr()
-      if &wrap
-        " HACK: when wrapping lines is enabled, we use the maximum number
-        " of columns getting highlighted. This might get calculated by
-        " looking for the longest visible line and using a multiple of
-        " winwidth().
-        let l:width=256 " max
-      else
-        let l:width=winwidth(i)
-      endif
-      let l:range = join(range(1, l:width), ',')
-    endif
-    call setwinvar(i, '&colorcolumn', l:range)
-  endfor
-endfunction
-
-
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/vendor/*
-
-" CtrlP
-" Use this function to prevent CtrlP opening files inside non-writeable
-" buffers, e.g. NERDTree
-function! SwitchToWriteableBufferAndExec(command)
-    let c = 0
-    let wincount = winnr('$')
-    " Don't open it here if current buffer is not writable (e.g. NERDTree)
-    while !empty(getbufvar(+expand("<abuf>"), "&buftype")) && c < wincount
-        exec 'wincmd w'
-        let c = c + 1
-    endwhile
-    exec a:command
-endfunction
-
-" CTRL-P settings
-nnoremap gpp :call SwitchToWriteableBufferAndExec('CtrlPMixed')<CR>
-nnoremap gpc :call SwitchToWriteableBufferAndExec('CtrlPChange')<CR>
-nnoremap gpb :call SwitchToWriteableBufferAndExec('CtrlPBuffer')<CR>
-nnoremap gpt :call SwitchToWriteableBufferAndExec('CtrlPTag')<CR>
-nnoremap gpm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
-" nnoremap gm :call SwitchToWriteableBufferAndExec('CtrlPMRUFiles')<CR>
-
-" Disable default mapping since we are overriding it with our command
-let g:ctrlp_map = ''
-
-" let g:ctrlp_cmd = 'CtrlPLastMode'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_match_window_bottom=1
-let g:ctrlp_max_height=20
-" let g:ctrlp_reuse_window='nerdtree'
-let g:ctrlp_lazy_update=1
-let g:ctrlp_match_window_reversed=0
-let g:ctrlp_mruf_max=500
-let g:ctrlp_clear_cache_on_exit=0
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-let g:ctrlp_extensions = ['tag']
-if executable('ag')
-  let g:ctrlp_user_command = 'ag %s -lS --ignore=".git" --hidden --nocolor -g ""'
-endif
 
 """ Emmet config
 let g:user_emmet_leader_key='<C-e>'
@@ -443,79 +174,55 @@ let g:UltiSnipsExpandTrigger="<M-e>"
 let g:UltiSnipsUsePythonVersion=3
 
 " let g:ulti_expand_or_jump_res = 0
-function! <SID>ExpandSnippetOrReturn()
-  let snippet = UltiSnips#ExpandSnippetOrJump()
-  if g:ulti_expand_or_jump_res > 0
-    return snippet
-  else
-    return "\<CR>"
-  endif
-endfunction
-inoremap <expr> <CR> pumvisible() ? "<C-R>=<SID>ExpandSnippetOrReturn()<CR>" : "\<CR>"
+
+" vim-sneak
+" let g:sneak#label = 1
+" nmap s <Plug>SneakLabel_s
+" nmap S <Plug>SneakLabel_S
+
 
 " let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 " let g:UltiSnipsSnippetDirectories=[]
 
 " If you want :UltiSnipsEdit to split your window.
 " let g:UltiSnipsEditSplit="vertical"
-"
-" https://github.com/junegunn/vim-plug
-" Reload .vimrc and :PlugInstall to install plugins.
-
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py --tern-complete
-  endif
-endfunction
 
 
 call plug#begin('~/.vim/plugged')
-" Plug 'Valloric/ListToggle'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-" Plug 'honza/vim-snippets'
-" Plug 'joonty/vdebug'
-" Plug 'mattn/gist-vim'
-" Plug 'mattn/webapi-vim'
-" Plug 'mickaobrien/vim-stackoverflow'
 " Plug 'tpope/vim-eunuch'
-" Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-vinegar'
-" Plug 'tell-k/vim-autopep8'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/ListToggle'
 Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 Plug 'airblade/vim-gitgutter'
 Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'easymotion/vim-easymotion'
 Plug 'elmcast/elm-vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'justinmk/vim-sneak'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
-Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
-Plug 'rking/ag.vim'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdtree'
+Plug 'sjl/strftimedammit.vim'
 Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
 Plug 'tweekmonster/braceless.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'sjl/strftimedammit.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 call neomake#configure#automake('w')

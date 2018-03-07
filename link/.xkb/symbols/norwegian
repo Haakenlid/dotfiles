@@ -1,16 +1,20 @@
 partial alphanumeric_keys
-xkb_symbols "basic" {
-    name[Group1] = "Norwgian glyphs"; 
-    include "us(altgr-intl)"
-    // My custom changes:
-    key <AE11> { [ minus, underscore, endash, emdash ] };
-    key <AD11> { [ bracketleft, braceleft, aring, Aring ] };
-    key <AC10> { [ semicolon, colon, oslash, Oslash ] };
-    key <AC11> { [ apostrophe, quotedbl, ae, AE ] };
-    key <AB08> { [ comma, less, guillemotleft ] };
-    key <AB09> { [ period, greater, guillemotright ] };
-    key <AB09> { [ period, greater, guillemotright ] };
-    key <CAPS> { [ Escape ] };
-    include "level3(ralt_switch)"
-};
+xkb_symbols "basic" { name[Group1] = "Norwegian glyphs";
 
+    include "us(altgr-intl)" // US International with dead keys
+    include "level3(ralt_switch)" // use AltGr as dead key modifier
+
+    // Norwegian Glyphs æ ø å Æ Ø Å « » –
+    key <AE11> { [ minus, underscore, endash, emdash ] }; // top row -
+    key <AD11> { [ bracketleft, braceleft, aring, Aring ] }; // letter Å
+    key <AC10> { [ semicolon, colon, oslash, Oslash ] }; // letter Ø
+    key <AC11> { [ apostrophe, quotedbl, ae, AE ] }; // letter Æ
+    key <AB08> { [ comma, less, guillemotleft ] };  // for typing «
+    key <AB09> { [ period, greater, guillemotright ] }; // for typing »
+
+    // Other rebindings
+    key <CAPS> { [ Escape ] }; // remap Caps lock -> escape
+    key <LSGT> { [ Multi_key, dead_greek ] }; // 105 keys <> key -> compose
+    key <LFSH> { [ Shift_L , Caps_Lock ] }; // Both shift -> Caps Lock
+    key <RTSH> { [ Shift_R , Caps_Lock] }; // Both shift -> Caps Lock
+};

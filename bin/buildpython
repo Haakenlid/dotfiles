@@ -22,8 +22,7 @@ exitOnError() {
 trap 'exitOnError ${?} ${LINENO}' ERR
 
 setNameAndURL() {
-    pythonName="Python-${inputVersion}"
-    # pythonURL="https://www.python.org/ftp/python/${inputVersion}/Python-${inputVersion}.tgz"
+    pythonName="v$inputVersion"
     pythonURL="https://github.com/python/cpython/archive/v${inputVersion}.zip"
 }
 
@@ -65,7 +64,7 @@ download() {
 
 makePython() {
     cd /usr/src/cpython
-    ./configure --enable-optimiziations --quiet
+    ./configure --enable-optimizations --quiet
     make --jobs=3 --quiet
     make install --jobs=3 --quiet
 }

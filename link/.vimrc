@@ -7,14 +7,20 @@ source ~/.vim/vimrc/keyboard_shortcuts.vim
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
+nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>
 nmap <silent> <leader><leader>m :History<cr>
 nmap <silent> <leader><leader>s :Snippets<cr>
-nmap <silent> <leader><leader>t :Tags <c-r><c-w><cr>
+nmap <silent> <leader><leader>t :Tags<cr>
 nmap <silent> <leader><leader>l :Lines<cr>
-nmap <silent> <leader><leader>g :GGrep <c-r><c-w><cr>
-inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'right': '15%'})
-inoremap <expr> <c-x><c-l> fzf#vim#complete#line()
+nmap <silent> <leader><leader>g :GGrep<cr>
+" inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'right': '15%'})
+" inoremap <expr> <c-x><c-l> fzf#vim#complete#line()
+" inoremap <expr> <c-x><c-l> fzf#vim#complete#line()
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 
 " Command for git grep
 " - fzf#vim#grep(command, with_column, [options], [fullscreen])
@@ -148,6 +154,10 @@ let g:ycm_filetype_blacklist = {
 
 " NERDTree settings
 let NERDTreeShowHidden = 1
+let NERDTreeQuitOnOpen = 1
+let g:NERDTreeMapOpenVSplit = '<c-v>'
+let g:NERDTreeMapPreviewVSplit = 'gv'
+
 let NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
 augroup NerdTree
   autocmd!
@@ -179,7 +189,6 @@ let g:UltiSnipsUsePythonVersion=3
 " let g:sneak#label = 1
 " nmap s <Plug>SneakLabel_s
 " nmap S <Plug>SneakLabel_S
-
 
 " let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 " let g:UltiSnipsSnippetDirectories=[]

@@ -40,8 +40,8 @@ noremap <silent> <leader>/ :let @/=""<CR>
 " Random colorscheme ;)
 noremap <leader>R :colorscheme random<CR>
 
-" Save and close
-nnoremap <silent> <leader>x :x<CR>
+" Close other buffers
+nnoremap <silent> <leader>x :up \| %bd \| e# \| bd#<CR>
 
 " Close preview window
 nnoremap <silent> <leader>z :pclose!<CR>

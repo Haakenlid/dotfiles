@@ -1,0 +1,6 @@
+#!/bin/bash
+IMG=$(xfce4-screenshooter -wo echo)
+NOW=$(date +%F_%T:%2N)
+WINDOW_NAME=$(xdotool getactivewindow getwindowname | sed 's/[\W_]\+/-/g')
+FILENAME="${HOME}/Pictures/screenshots/${NOW}_${WINDOW_NAME}.png"
+mv "${IMG}" "${FILENAME}"

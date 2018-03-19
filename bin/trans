@@ -23,7 +23,7 @@
 # from, out of or in connection with the software or the use or other
 # dealings in the software.
 #
-if ! [[ $LANG =~ '[UTF|utf]-?8$' ]]; then export LANG=en_US.UTF-8; fi
+if ! [[ $LANG =~ [UTF|utf]-?8$ ]]; then export LANG=en_US.UTF-8; fi
 read -r -d '' TRANS_PROGRAM << 'EOF'
 BEGIN {
 Name        = "Translate Shell"

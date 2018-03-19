@@ -2,18 +2,19 @@
 
 _autolayout() {
   [[ -n $TMUX ]] || return 0
-  local panes=$(tmux display-message -p "#{window_panes}")
   local tall4='d811,274x74,0,0[274x54,0,0,7,274x19,0,55{90x19,0,55,8,90x19,91,55,14,92x19,182,55,16}]'
   local wide4='96ad,136x74,0,0{119x74,0,0,7,16x74,120,0[16x24,120,0,26,16x24,120,25,27,16x24,120,50,28]}'
   local tall3="2e0f,136x74,0,0[136x54,0,0,7,136x19,0,55{67x19,0,55,30,68x19,68,55,10}]"
   local wide3="2396,274x74,0,0{188x74,0,0,7,85x74,189,0[85x35,189,0,30,85x38,189,36,10]}"
-  local lines=$(tmux display-message -p "#{window_height}")
-  local cols=$(tmux display-message -p "#{window_width}")
-  local ratio=$(((5 * lines)/(2 * cols)))
-  if [[ 1 == $ratio ]]; then
-    [[ $panes > 3 ]] && tmux select-layout $tall4 || tmux select-layout $tall3
+  local panes lines cols ratio
+  panes=$(tmux display-message -p "#{window_panes}")
+  lines=$(tmux display-message -p "#{window_height}")
+  cols=$(tmux display-message -p "#{window_width}")
+  ratio=$(((5 * lines)/(2 * cols)))
+  if (( 1 == ratio )); then
+    if (( panes > 3 )); then tmux select-layout $tall4; else tmux select-layout $tall3 ; fi
   else
-    [[ $panes > 3 ]] && tmux select-layout $wide4 || tmux select-layout $wide3
+   if  (( panes > 3 )); then tmux select-layout $wide4; else tmux select-layout $wide3; fi
   fi
 }
 _autolayout

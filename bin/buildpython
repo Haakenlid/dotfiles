@@ -6,11 +6,32 @@ if [ "$(whoami)" != "root" ]; then
     exec sudo -- "$0" "$@"
 fi
 
-inputVersion=$1
+TAGS=$(
+    curl -s https://api.github.com/repos/python/cpython/tags?per_page=100
+    sort -r |\
+    sed -n '/name/p'
+    sed -E 's/.*"v(.*)".*/\1/' |\
+    sed -n "/^$1/p"
+)
+
+if [[ -n $2 ]]; then
+  TAGS=$(printf "$TAGS" | sed -n "/$2/p")
+else
+  TAGS=$(printf "$TAGS" | sed '/[a-z]/d')
+fi
+
+TAG=$(printf "$TAGS" | head -n1)
+if [[ -n $TAG ]]; then
+  inputVersion=$TAG
+else
+  inputVersion=$1
+fi
+
 if [[ $inputVersion == "" ]]; then
     echo "You must input a supported version (e.g. 2.7.11, 3.5.1)"
     exit 1
 fi
+
 
 exitOnError() {
     error=$1

@@ -31,9 +31,9 @@ else
   alias vv='fasd -f -t -b viminfo -e vim -i'
 fi
 fasd_cd() {
-  if [[ -z $1 ]] 
-  then CD_DIR=$(fasd -d -i)
-  else CD_DIR=$(fasd $@)
+  if [[ -z $1 ]]
+  then CD_DIR="$(fasd -d -i)"
+  else CD_DIR="$(fasd $@)"
   fi
   [[ -n $CD_DIR ]] && cd $CD_DIR
 }

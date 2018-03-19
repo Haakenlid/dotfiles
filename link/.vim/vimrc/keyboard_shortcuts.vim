@@ -1,4 +1,9 @@
-let mapleader=" "
+let g:mapleader=' '
+
+" insert mode
+inoremap <silent> <C-s> <esc>:call StripTrailingWhitespaces() \| w!<CR>
+inoremap <M-s> <ESC>:Snippets<CR>
+noremap <M-s> <ESC>:Snippets<CR>
 
 " vim keyboard shortcuts
 nmap <silent> ]g :call WrapMove('GitGutterNextHunk')<CR>
@@ -16,6 +21,9 @@ nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
       \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)), "name")
       \ . ">"<CR>
 
+" 'splain character
+nmap g? <Plug>(characterize)
+
 " easy escape
 noremap! jj <esc>
 
@@ -32,7 +40,6 @@ noremap! <C-Q> <esc>:qa!
 
 " Control-S to save
 map <silent> <C-S> :call StripTrailingWhitespaces() \| w!<CR>
-imap <silent> <C-S> <esc>:call StripTrailingWhitespaces() \| w!<CR>
 
 " Clear search
 noremap <silent> <leader>/ :let @/=""<CR>
@@ -40,8 +47,14 @@ noremap <silent> <leader>/ :let @/=""<CR>
 " Random colorscheme ;)
 noremap <leader>R :colorscheme random<CR>
 
-" Close other buffers
-nnoremap <silent> <leader>x :up \| %bd \| e# \| bd#<CR>
+" Delete current buffer
+nnoremap <silent> <leader>x :bd<CR>
+
+" Write current buffer
+nnoremap <silent> <leader>w :w<CR>
+
+" Close other buffers if they are saved (o = 'only')
+nnoremap <silent> <leader>o mx:up \| %bd \| e# \| bd#<CR>`x
 
 " Close preview window
 nnoremap <silent> <leader>z :pclose!<CR>
@@ -62,6 +75,10 @@ nmap <leader>S :call StripTrailingWhitespaces()<CR>
 nmap <leader>gt :YcmCompleter GoTo<CR>
 nmap <leader>gu :YcmCompleter GoToReferences<CR>
 nmap <leader>gd :YcmCompleter GetDoc<CR>
+
+" Easy Align shortcuts
+nmap ga <Plug>(LiveEasyAlign)
+xmap ga <Plug>(LiveEasyAlign)
 
 " python goto imports
 nmap <silent> gi gg/import<CR>:let @/ = ""<CR>

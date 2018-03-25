@@ -30,9 +30,16 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 command! -bang -nargs=* GGrep
   \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
 
+" Buffergator config
+let g:buffergator_autoupdate=1
+let g:buffergator_sort_regime='mru'
+let g:buffergator_display_regime='basename'
+let g:buffergator_suppress_keymaps=1
+nnoremap <leader>b :BuffergatorToggle<cr> 
+
 " Autopairs config
 let g:AutoPairsFlyMode = 0  " fly mode closes brackets
-let g:AutoPairsMultiLineClose = 0  " fly mode closes brackets
+let g:AutoPairsMultilineClose = 0  " fly mode closes brackets
 let g:AutoPairsShortcutFastWrap = '<M-w>'  " wrap following
 autocmd rcgroup Filetype vim let b:AutoPairs = {'{':'}', '(':')', '<':'>', '''':''''}
 " https://github.com/jiangmiao/auto-pairs/issues/187
@@ -47,7 +54,7 @@ let g:neomake_python_mypy_maker = {
 
 let g:neomake_python_enabled_makers = ['mypy', 'flake8']
 let g:neomake_sh_enabled_makers = []
-let g:neomake_open_list = 1 " open location list
+let g:neomake_open_list = 0 " open location list
 
 command! Nolint call DisableLint()
 
@@ -221,6 +228,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'jeetsukumaran/vim-buffergator'
 call plug#end()
 
 call neomake#configure#automake('w')

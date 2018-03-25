@@ -33,14 +33,15 @@ snippet import "import es6" b
 import ${1:package} from '${2:$1}'
 endsnippet
 
-snippet icx "import classnames" bA
-import cx from 'classnames'
-$0
+snippet icx "import classnames" b
+import cx from 'classnames'$0
 endsnippet
 
-snippet ire "import react" bA
-import React from 'react'
-$0
+snippet ire "import react" b
+import React from 'react'$0
+endsnippet
+snippet ira "import Ramda" b
+import * as R from 'ramda'$0
 endsnippet
 ######################
 #  React components  #
@@ -187,7 +188,7 @@ snippet cx "className=cx()"
 className={cx($1)} $0
 endsnippet
 
-snippet test( "jest test" bA
+snippet test "jest test" bA
 test('$1', () => {
 	expect(${2:$1}($3)).toEqual($4)
 })

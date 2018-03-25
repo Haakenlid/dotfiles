@@ -123,3 +123,18 @@ finally                              " Execute even if exception is raised
 endtry
 endfunction
 com! ShowMaps call s:ShowMaps()      " Enable :ShowMaps to call the function
+
+" Redirect ex command to new tap
+function! Redir(cmd)
+  redir => message
+  silent execute a:cmd
+  redir END
+  if empty(message)
+    echoerr "no output"
+  else
+    new
+    setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted nomodified ft=vim
+    silent put=message
+  endif
+endfunction
+command! -nargs=+ -complete=command Redir call Redir(<q-args>)

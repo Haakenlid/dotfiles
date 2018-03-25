@@ -50,6 +50,9 @@ noremap <leader>R :colorscheme random<CR>
 " Delete current buffer
 nnoremap <silent> <leader>x :bd<CR>
 
+" Neoformat
+nnoremap <silent> <leader>f :Neoformat<CR>
+
 " Write current buffer
 nnoremap <silent> <leader>w :w<CR>
 
@@ -83,7 +86,7 @@ xmap ga <Plug>(LiveEasyAlign)
 " python goto imports
 nmap <silent> gi gg/import<CR>:let @/ = ""<CR>
 
-noremap <silent> <leader>n :NERDTreeFind<CR>
+noremap <silent> <leader>n :if bufname('%') != '' \| NERDTreeFind \| else \| NERDTreeCWD \| endif<CR> 
 
 " Ultisnips expand on <CR>
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrReturn()<CR>" : "\<CR>"

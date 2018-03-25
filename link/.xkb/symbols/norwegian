@@ -15,6 +15,6 @@ xkb_symbols "basic" { name[Group1] = "Norwegian glyphs";
     // Other rebindings
     key <CAPS> { [ Escape ] }; // remap Caps lock -> escape
     key <LSGT> { [ Multi_key, dead_greek ] }; // 105 keys <> key -> compose
-    key <LFSH> { [ Shift_L , Caps_Lock ] }; // Both shift -> Caps Lock
-    key <RTSH> { [ Shift_R , Caps_Lock] }; // Both shift -> Caps Lock
+    // key <LFSH> { [ Shift_R , Caps_Lock ] }; // Both shift -> Caps Lock
+    key <RTSH> { [ Shift_L , Caps_Lock] }; // Both shift -> Caps Lock
 };

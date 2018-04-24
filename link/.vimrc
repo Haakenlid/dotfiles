@@ -60,6 +60,8 @@ autocmd rcgroup BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
+nmap <silent> <leader><leader>a :Ag!<cr>
+nmap <silent> <leader><leader>A :Ag!<c-r><c-w><cr>
 nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>
 nmap <silent> <leader><leader>m :History<cr>
@@ -86,6 +88,14 @@ command! -bang -nargs=* Ag
   \                 <bang>0 ? fzf#vim#with_preview('up:60%')
   \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
   \                 <bang>0)
+
+" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
 " Buffergator config
 let g:buffergator_autoupdate=1

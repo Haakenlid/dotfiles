@@ -8,32 +8,37 @@ fi
 
 function main__() {
   must_be_root || exit 1
-  OTHER=()
+  REGULAR=()
   SPECIAL=()
   for arg in $@; do
     case $arg in
-      spotify ) SPECIAL+=($(_spotify)) ;;
-      docker  ) SPECIAL+=($(_docker)) ;;
-      neovim  ) SPECIAL+=($(_neovim)) ;;
-      nodejs  ) SPECIAL+=($(_nodejs)) ;;
-      ripgrep ) SPECIAL+=($(_ripgrep)) ;;
-      *       ) OTHER+=($arg) ;;
+    ripgrep|rg   )  _ripgrep                ;;
+    find|fd      )  _fd                     ;;
+    spotify      )  SPECIAL+=($(_spotify))  ;;
+    docker       )  SPECIAL+=($(_docker))   ;;
+    neovim       )  SPECIAL+=($(_neovim))   ;;
+    nodejs|node  )  REGULAR+=($(_nodejs))   ;;
+    *            )  REGULAR+=($arg)         ;;
     esac
   done
   if [[ $SPECIAL ]]
-  then apt update
-  else apt_update
+    then apt-get update >/dev/null
+    else apt_update_if_needed >/dev/null
   fi
-  apt install -y ${SPECIAL[@]} ${OTHER[@]}
+  APTLIST=("${SPECIAL[@]}" "${REGULAR[@]}")
+  [[ $APTLIST ]] && apt install -y ${APTLIST[@]}
 }
 
 function must_be_root() {
-  [[ $UID == 0 ]] && return 0
-  echo 'must run as root' >&2
-  return 1
+  if [[ $UID == 0 ]] 
+  then return 0
+  else 
+    echo "$(basename $0) must run as root" >&2
+    return 1
+  fi
 }
 
-function apt_update() {
+function apt_update_if_needed() {
   # Run update if it has not been done in a while
   TWENTY_FOUR_HOURS=$(( 60 * 60 * 24 ))
   APT_CACHE_FILE='/var/cache/apt/pkgcache.bin'
@@ -41,7 +46,7 @@ function apt_update() {
   NOW=$(date +%s)
   LAST_UPDATE=$(stat $APT_CACHE_FILE -c %Y)
   DELTA=$(( NOW - LAST_UPDATE ))
-  [[ $DELTA -gt $TWENTY_FOUR_HOURS ]] && apt update
+  [[ $DELTA -gt $TWENTY_FOUR_HOURS ]] && apt-get update
 }
 
 function _docker() {
@@ -68,8 +73,9 @@ EOF
 }
 
 function _nodejs() {
-  curl -sL https://deb.nodesource.com/setup_9.x \
-    | /bin/bash - >&2
+  DOWNLOAD=https://deb.nodesource.com/setup_9.x
+  echo "downloading and executing ${DOWNLOAD}" >&2
+  curl -sL ${DOWNLOAD} | /bin/bash - | awk '/^##/' >&2
   echo 'nodejs'
 }
 
@@ -84,22 +90,47 @@ function _spotify() {
   echo 'spotify-client'
 }
 
-function _ripgrep() {
-  REPO="https://github.com/BurntSushi/ripgrep/releases/download/"
-  RELEASE="0.6.0/ripgrep-0.6.0-x86_64-unknown-linux-musl.tar.gz"
+function _fd() {
+  REPO="sharkdp/fd"
+  LATEST=$(curl -sSL "https://api.github.com/repos/${REPO}/releases/latest" \
+    | sed -n 's/.*tag_name".*"\(.*\)".*/\1/p')
+  echo
+  echo "install fd version: ${LATEST=v7.0.0}"  # fallback to v7.0.0
+  ARCHITECTURE="amd64"  # or "i386"
+  FILENAME="fd_${LATEST#v}_${ARCHITECTURE}.deb"
+  DOWNLOAD="https://github.com/${REPO}/releases/download/${LATEST}/${FILENAME}"
+  TMPDIR=$(mktemp -d)
+  # https://github.com/sharkdp/fd/releases/download/v7.0.0/fd_7.0.0_amd64.deb
   (
-    TMPDIR=$(mktemp -d)
+    cd ${TMPDIR}
+    echo "downloading ${DOWNLOAD}"
+    wget --show-progress -q ${DOWNLOAD} 
+    ls -R1
+    sudo dpkg -i ${FILENAME} && echo $'Install fd OK'
+  ) >&2
+  rm -r ${TMPDIR}
+}
+
+function _ripgrep() {
+  REPO="BurntSushi/ripgrep"
+  LATEST=$(curl -sSL "https://api.github.com/repos/${REPO}/releases/latest"\
+    | sed -n '/tag_name/s/[^0-9.]//gp')
+  echo
+  echo "install ripgrep version: ${LATEST=0.8.1}"  # fallback to v0.8.1
+  FILE="${LATEST}/ripgrep-${LATEST}-x86_64-unknown-linux-musl.tar.gz"
+  DOWNLOAD="https://github.com/${REPO}/releases/download/${FILE}"
+  TMPDIR=$(mktemp -d)
+  (
     cd $TMPDIR
-    wget --show-progress -q -O - ${REPO}${RELEASE} | tar zxf - --strip-component=1
-
-    cp rg /usr/local/bin/
-    cp rg.1 /usr/local/share/man/man1/
-    cp complete/rg.bash-completion /usr/share/bash-completion/completions/rg
-
-    cd ..
-    rm -r $TMPDIR
+    echo "downloading ${DOWNLOAD}"
+    wget --show-progress -q -O - ${DOWNLOAD} | tar zxf - --strip-component=1
+    tree --noreport # list files
+    cp rg /usr/local/bin/ && echo $'Install ripgrep OK'
+    cp doc/rg.1 /usr/local/share/man/man1/
+    cp complete/rg.bash /usr/share/bash-completion/completions/rg
     mandb -q
   ) >&2
+  rm -r $TMPDIR
 }
 
 main__ $@

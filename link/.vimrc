@@ -30,6 +30,13 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 command! -bang -nargs=* GGrep
   \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
 
+" Ag with preview
+command! -bang -nargs=* Ag
+  \ call fzf#vim#ag(<q-args>,
+  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \                 <bang>0)
+
 " Buffergator config
 let g:buffergator_autoupdate=1
 let g:buffergator_sort_regime='mru'
@@ -172,7 +179,9 @@ let g:NERDTreeQuitOnOpen = 1
 let g:NERDTreeMapOpenVSplit = '<c-v>'
 let g:NERDTreeMapPreviewVSplit = 'gv'
 
-let g:NERDTreeIgnore=['.git$', '.pyc$', '__pyc__', '__pycache__']
+let g:NERDTreeIgnore=[
+      \'\.[^.]*cache$', 
+      \'\.git$', '\.pyc$', '__pyc__', '__pycache__']
 augroup NerdTree
   autocmd!
   autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>

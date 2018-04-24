@@ -48,7 +48,7 @@ noremap <silent> <leader>/ :let @/=""<CR>
 noremap <leader>R :colorscheme random<CR>
 
 " Delete current buffer
-nnoremap <silent> <leader>x :bd<CR>
+nnoremap <silent> <leader>x :wshada \| bd<CR>
 
 " Neoformat
 nnoremap <silent> <leader>f :Neoformat<CR>

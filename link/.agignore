@@ -3,6 +3,8 @@
 __pycache__
 *.pyc
 .sass-cache
+build/*
+*bundle.js*
 
 # Temporary files #
 ###################
@@ -11,33 +13,6 @@ __pycache__
 # OS generated files #
 ######################
 .DS_Store
-._*
-.Spotlight-V100
-.Trashes
-Thumbs.db
-Desktop.ini
-
-# VCS #
-#######
-.git
-.svn
-.hg
-
-# npm #
-#######
-node_modules
-# Compiled source #
-###################
-__pycache__
-*.pyc
-.sass-cache
-
-# Temporary files #
-###################
-*.swp
-
-# OS generated files #
-######################
 ._*
 .Spotlight-V100
 .Trashes

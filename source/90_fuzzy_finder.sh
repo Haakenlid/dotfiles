@@ -25,7 +25,11 @@ else
   # Key bindings
   # ------------
   source "$FZFPATH/shell/key-bindings.bash"
-export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow -g "!{.git,node_modules}/*" 2> /dev/null'
+  export FZF_DEFAULT_COMMAND='rg --files --hidden --follow 2> /dev/null'
+  PREVIEW='file {}; [[ $(file --mime {}) =~ binary ]] &&  hd -n1024 {} ||
+    highlight -O ansi {} 2> /dev/null | head -100'
+  export FZF_DEFAULT_OPTS="--reverse --inline-info --height=40"
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  export FZF_CTRL_T_OPTS="--preview '${PREVIEW}'"
 fi
 

@@ -58,11 +58,6 @@ nmap <leader>t :TagbarOpenAutoClose<CR>
 " Strip trailing
 nmap <leader>S :call StripTrailingWhitespaces()<CR>
 
-" YouCompleteMe shortcuts
-nmap <leader>gt :YcmCompleter GoTo<CR>
-nmap <leader>gu :YcmCompleter GoToReferences<CR>
-nmap <leader>gd :YcmCompleter GetDoc<CR>
-
 " python goto imports
 nmap <silent> gi gg/import<CR>:let @/ = ""<CR>
 

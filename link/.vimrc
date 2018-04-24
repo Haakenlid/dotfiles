@@ -1,7 +1,42 @@
+call plug#begin('~/.vim/plugged')
 source ~/.vim/vimrc/basic_options.vim
 source ~/.vim/vimrc/plugin_options.vim
 source ~/.vim/vimrc/vim_functions.vim
 source ~/.vim/vimrc/keyboard_shortcuts.vim
+source ~/.vim/vimrc/deoplete.vim
+Plug 'SirVer/ultisnips'
+Plug 'Valloric/ListToggle'
+Plug 'airblade/vim-gitgutter'
+Plug 'benekastah/neomake'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'elmcast/elm-vim'
+Plug 'guns/xterm-color-table.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'justinmk/vim-sneak'
+Plug 'majutsushi/tagbar'
+Plug 'mattn/emmet-vim'
+Plug 'mxw/vim-jsx'
+Plug 'pangloss/vim-javascript'
+Plug 'reedes/vim-lexical'
+Plug 'sbdchd/neoformat'
+Plug 'scrooloose/nerdtree'
+Plug 'sjl/strftimedammit.vim'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rhubarb'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tweekmonster/braceless.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
+
+call plug#end()
 
 " source ~/.vim/vimrc/easymotion.vim
 
@@ -123,28 +158,6 @@ augroup FastEscape
     autocmd InsertLeave * set timeoutlen=1000
 augroup END
 
-" YouCompleteMe settings
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_python_binary_path = "python3"
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_semantic_triggers = { 'elm' : ['.'] }
-" let g:ycm_autoclose_preview_window_after_completion = 1
-" let g:ycm_min_num_identifier_candidate_chars = 2
-
-let g:ycm_filetype_blacklist = {
-      \ 'tagbar' : 1,
-      \ 'qf' : 1,
-      \ 'notes' : 1,
-      \ 'rst' : 1,
-      \ 'unite' : 1,
-      \ 'vimwiki' : 1,
-      \ 'pandoc' : 1,
-      \ 'infolog' : 1,
-      \ 'mail' : 1
-      \}
-
 
 " NERDTree settings
 let NERDTreeShowHidden = 1
@@ -164,8 +177,6 @@ let g:user_emmet_next_key='<M-j>'
 let g:user_emmet_prev_key='<M-k>'
 
 """ Ultisnips config
-" Trigger configuration. Do not use <tab> if you use
-" https://github.com/Valloric/YouCompleteMe.
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 let g:UltiSnipsExpandTrigger="<nop>"
@@ -186,43 +197,5 @@ let g:UltiSnipsUsePythonVersion=3
 
 " If you want :UltiSnipsEdit to split your window.
 " let g:UltiSnipsEditSplit="vertical"
-
-
-call plug#begin('~/.vim/plugged')
-" Plug 'tpope/vim-eunuch'
-" Plug 'tpope/vim-vinegar'
-Plug 'SirVer/ultisnips'
-Plug 'Valloric/ListToggle'
-Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-Plug 'airblade/vim-gitgutter'
-Plug 'benekastah/neomake'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'elmcast/elm-vim'
-Plug 'guns/xterm-color-table.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'justinmk/vim-sneak'
-Plug 'majutsushi/tagbar'
-Plug 'mattn/emmet-vim'
-Plug 'mxw/vim-jsx'
-Plug 'pangloss/vim-javascript'
-Plug 'reedes/vim-lexical'
-Plug 'sbdchd/neoformat'
-Plug 'scrooloose/nerdtree'
-Plug 'sjl/strftimedammit.vim'
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-characterize'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rhubarb'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tweekmonster/braceless.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
-call plug#end()
 
 call neomake#configure#automake('w')

@@ -1,7 +1,6 @@
 import os
 import re
 
-
 def pascal_case_basename(basename):
     return ''.join(x[0].upper() + x[1:] for x in basename.split('_'))
 

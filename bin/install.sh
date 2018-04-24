@@ -68,7 +68,7 @@ EOF
 }
 
 function _nodejs() {
-  curl -sL https://deb.nodesource.com/setup_8.x \
+  curl -sL https://deb.nodesource.com/setup_9.x \
     | /bin/bash - >&2
   echo 'nodejs'
 }

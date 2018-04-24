@@ -1,17 +1,18 @@
-#
-#  React and javascript snippets
-#
+##############################################################################
+#                       React and javascript snippets                        #
+##############################################################################
 
+# python helper function definitions
 global !p
 from snippet_helpers import *
 import re
+
 def expand_proptypes(props):
 	if not props:
 		return ''
 	pattern = '{}: PropTypes.any.isRequired'
 	props = (prop.strip() for prop in props.split(','))
 	return ',\n  '.join(pattern.format(prop) for prop in props)
-
 
 
 def constant_name(match, default='CONSTANT'):
@@ -24,6 +25,150 @@ def constant_name(match, default='CONSTANT'):
 
 endglobal
 
+#############
+#  Imports  #
+#############
+
+snippet import "import es6" b
+import ${1:package} from '${2:$1}'
+endsnippet
+
+snippet icx "import classnames" b
+import cx from 'classnames'$0
+endsnippet
+
+snippet ire "import react" b
+import React from 'react'$0
+endsnippet
+snippet ira "import Ramda" b
+import * as R from 'ramda'$0
+endsnippet
+######################
+#  React components  #
+######################
+
+snippet ccomponent "react class component" b
+class ${1:`!p snip.rv = path_to_component_name(path)`} extends React.Component {
+
+	constructor(props) {
+		super(props)
+	}
+
+	render() {
+		const { $2 } = this.props
+		return (
+			<${3:div} className="$1">
+				$0
+			</$3>
+		)
+	}
+}
+endsnippet
+
+snippet component "react stateless component" b
+const ${1:`!p snip.rv = path_to_component_name(path)`} = ({ $2 }) => (
+	<${3:div} className="$1">
+		${VISUAL}$4
+	</$3>
+)
+$0
+endsnippet
+
+snippet connect "redux connect"
+import { connect } from 'react-redux'
+const mapStateToProps = (state, ownProps) => ({ $2 })
+const mapDispatchToProps = (dispatch, ownProps) => ({ $3 })
+export default connect(mapStateToProps, mapDispatchToProps)($1)
+endsnippet
+
+snippet pt "propTypes" b
+propTypes: {
+	${1}: PropTypes.${2:string}
+},
+endsnippet
+
+#######################
+#  Lifecycle methods  #
+#######################
+
+
+snippet con "constructor()" b
+constructor(props) {
+	super(props)
+	$0
+}
+endsnippet
+
+snippet ren "render()" b
+render() {
+	const { $1 } = this.props
+	return (
+		<${2:div} className="$3">
+			$0
+		</$2>
+	)
+}
+endsnippet
+
+snippet scu "shouldComponentUpdate" b
+shouldComponentUpdate(nextProps, nextState) {
+	return ${1:true}
+}
+endsnippet
+
+snippet cdup "component did update" b
+componentDidUpdate(prevProps, prevState) {
+	$0
+}
+endsnippet
+
+snippet cdm "component did mount" b
+componentDidMount() {
+	$0
+}
+endsnippet
+
+snippet cwm "component will mount" b
+componentWillMount() {
+	$0
+}
+endsnippet
+
+snippet cwr "component will receive props" b
+componentWillReceiveProps(nextProps) {
+	$0
+}
+endsnippet
+
+snippet cwun "component will unmount" b
+componentWillUnmount() {
+	$0
+}
+endsnippet
+
+snippet cwu "component will update" b
+componentWillUpdate(nextProps, nextState) {
+	$0
+}
+endsnippet
+
+###########
+#  Ducks  #
+###########
+
+snippet select "Redux Selector" b
+export const ${1:getFoo} = state => ${2:state.foo.bar}
+endsnippet
+
+snippet "action(.*)$" "Action creator" br
+export const $1 = '`!p snip.rv=snip.basename.lower()`/$1'
+export const `!p snip.rv=camel_case(t[1])` = (${2}) => ({
+	type: ${1:`!p snip.rv=constant_name(match.group(1), 'DO_ACTION')`},
+	payload: { ${3:$2} }
+})
+$0
+endsnippet
+
 snippet reducer "redux reducer" b
 const $1 = (state, action) => {
 	switch(action.type) {
@@ -35,216 +180,58 @@ const $1 = (state, action) => {
 }
 endsnippet
 
-snippet cx "className=cx()" 
-className={cx($1)} $0
+###################
+#  Miscellaneous  #
+###################
+
+snippet cx "className=cx()"
+className={cx($0)}
 endsnippet
 
-snippet icx "import classnames" bA 
-import cx from 'classnames'
-$0
-endsnippet
-
-snippet test( "jest test" bA
+snippet test "jest test" bA
 test('$1', () => {
 	expect(${2:$1}($3)).toEqual($4)
 })
 $0
 endsnippet
 
-
-snippet "action(.*)$" "Action creator" br
-export const $1 = '`!p snip.rv=snip.basename.lower()`/$1'
-export const `!p snip.rv=camel_case(t[1])` = (${2}) => ({
-	type: ${1:`!p snip.rv=constant_name(match.group(1), 'DO_ACTION')`},
-	payload: { ${3:$2} }
-})
-$0
-endsnippet
-
-snippet select "Redux Selector" b
-export const ${1:getFoo} = state => ${2:state.foo.bar}
-endsnippet
-
-snippet "up(.*)$" "uppercase" br
-this is uppercase: ${1:`!p snip.rv = constant_name(match.group(1), 'UPPER')`!!}
-endsnippet
-
-
-snippet cdup "component did update" b
-componentDidUpdate(prevProps, prevState) {
-	${1}
-}
-$0
-endsnippet
-
-snippet cdm "component did mount" b
-componentDidMount() {
-	${1}
-}
-$0
-endsnippet
-
-snippet cwm "component will mount" b
-componentWillMount() {
-	${1}
-}
-$0
-endsnippet
-
-snippet cwr "component will receive props" b
-componentWillReceiveProps(nextProps) {
-	${1}
-}
-$0
-endsnippet
-
-snippet cwun "component will unmount" b
-componentWillUnmount() {
-	${1}
-}
-$0
-endsnippet
-
-snippet cwu "component will update" b
-componentWillUpdate(nextProps, nextState) {
-	${1}
-}
-$0
-endsnippet
-
-snippet import "import es6" b
-import ${1:package} from '${2:$1}'
-endsnippet
-
-snippet component "stateless component" b
-const $1 = ({ $2 }) => (
-	<${3:div} className="$1">
-		${VISUAL}$4
-	</$3>
-)
-$1.propTypes = {
-	`!p snip.rv = expand_proptypes(t[2])`
-}
-$0
-endsnippet
-
-snippet container "connected redux container" b
-import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-
-const ${1:`!p snip.rv = path_to_component_name(path, pascal_case_basename)`} = ({ $2 }) => (
-	<${4:div} className="$1">
-		${VISUAL}$5
-	</$4>
-)
-$1.propTypes = {
-	`!p snip.rv = expand_proptypes(t[2])`
-}
-const mapStateToProps = (state, ownProps) => ({
-	$6
-})
-const mapDispatchToProps = (dispatch, ownProps) => ({
-	$7
-})
-export default connect(mapStateToProps, mapDispatchToProps)($1)
-endsnippet
-
-snippet pt "propTypes" b
-propTypes: {
-	${1}: PropTypes.${2:string}
-},
-endsnippet
-
-snippet render
-render() {
-	const {$1} = this.props
-	return (
-		<${2:div} className="$3">
-			${VISUAL}$4
-		</$2>
-	)
-}$0
-endsnippet
-
-snippet scu "shouldComponentUpdate" b
-shouldComponentUpdate(nextProps, nextState) {
-	return ${1:true};
-}
-endsnippet
-
-snippet con "constructor()" b
-constructor(props) {
-	super(props)
-	$0
-}
-endsnippet
+#######################
+#  Console utilities  #
+#######################
 
 snippet ca "console.assert" b
-console.assert(${1:assertion}, ${2:"${3:message}"});
-endsnippet
-
-snippet cclear "console.clear" b
-console.clear();
-endsnippet
-
-snippet cdir "console.dir" b
-console.dir(${1:object});
-endsnippet
-
-snippet ce "console.error" b
-console.error(${1:"${2:value}"});
-endsnippet
-
-snippet cgroup "console.group" b
-console.group("${1:label}");
-${VISUAL}$0
-console.groupEnd();
-endsnippet
-
-snippet cgroupc "console.groupCollapsed" b
-console.groupCollapsed("${1:label}");
-${VISUAL}$0
-console.groupEnd();
-endsnippet
-
-snippet ci "console.info" b
-console.info(${1:"${2:value}"});
+console.assert(${1:assertion}, ${2:"${3:message}"})
 endsnippet
 
 snippet cl "console.log" b
-console.log(${1:"${2:value}"});
+console.log(${1:"${2:value}"})
 endsnippet
 
 snippet cd "console.debug" b
-console.debug(${1:"${2:value}"});
+console.debug(${1:"${2:value}"})
 endsnippet
 
 snippet cprof "console.profile" b
-console.profile("${1:label}");
+console.profile("${1:label}")
 ${VISUAL}$0
-console.profileEnd();
+console.profileEnd()
 endsnippet
 
 snippet ctable "console.table" b
-console.table(${1:"${2:value}"});
+console.table(${1:"${2:value}"})
 endsnippet
 
 snippet ctime "console.time" b
-console.time("${1:label}");
+console.time("${1:label}")
 ${VISUAL}$0
-console.timeEnd("$1");
+console.timeEnd("$1")
 endsnippet
 
 snippet ctimestamp "console.timeStamp" b
-console.timeStamp("${1:label}");
+console.timeStamp("${1:label}")
 endsnippet
 
 snippet ctrace "console.trace" b
-console.trace();
-endsnippet
-
-snippet cw "console.warn" b
-console.warn(${1:"${2:value}"});
+console.trace()
 endsnippet
 

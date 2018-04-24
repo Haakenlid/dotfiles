@@ -8,9 +8,9 @@ function change() {
   fi
   if [[ -z "$extension" ]]; then
     # using ´ as separator in sed, since it's highly unlikely to be used in the input.
-    ag -lu "$needle" | xargs -I @ sed -i "s#$needle#$replacement#g" @
+    ag -l "$needle" | xargs -I @ sed -i "s#$needle#$replacement#g" @
   else
-    ag -luG="*.$extension" "$needle" | xargs -I @ sed -i "s#$needle#$replacement#g" @
+    ag -lG="*.$extension" "$needle" | xargs -I @ sed -i "s#$needle#$replacement#g" @
   fi
 }
 

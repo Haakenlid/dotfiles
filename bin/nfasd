@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# PYTHON_ARGCOMPLETE_OK
 import argcomplete
 import argparse
 import os  # to execute nvim
@@ -31,11 +30,32 @@ def shada_path():
     return path
 
 
+def unpack(shada_path, valid_types=(7, 8, 9, 10, 11), limit=None):
+    recent_files = []
+    with open(shada_path, 'rb') as fp:
+        unpacker = msgpack.Unpacker(fp, encoding='utf8')
+
+        while True:
+            try:
+                otype = unpacker.unpack()
+                timestamp = unpacker.unpack()
+                unpacker.skip()  # data_length in bytes
+                if otype not in valid_types:
+                    unpacker.skip()
+                else:
+                    data = unpacker.unpack()
+                    file_name = data['f'].decode()
+                    recent_files.append((timestamp, file_name))
+            except msgpack.exceptions.OutOfData as e:
+                # all data are processed
+                break
+    files = {fn: ts for ts, fn in sorted(recent_files)}
+    return list(files.keys())[:limit]
+
+
 # return an array of v:oldfiles
-def nvim_oldfiles(shada_path):
+def nvim_oldfiles(shada_path=shada_path(), limit=None):
     shada_path = os.path.expanduser(shada_path)
-    f = open(shada_path, 'rb')
-    unpacker = msgpack.Unpacker(f, encoding='utf8')
 
     # see https://neovim.io/doc/user/starting.html#shada-format
 
@@ -51,31 +71,10 @@ def nvim_oldfiles(shada_path):
 
     # 7 (GlobalMark)
     # 8 (Jump)
+    # 9 (BufferList)
     # 10 (LocalMark)
     # 11 (Change)
-    valid_types = [7, 8, 10, 11]
-
-    file_set = set()
-    recent_files = []
-
-    try:
-        while True:
-            otype = unpacker.unpack()
-
-            unpacker.skip()  # timestamp
-            unpacker.skip()  # data_length in bytes
-            if otype not in valid_types:
-                unpacker.skip()
-            else:
-                data = unpacker.unpack()
-                file_name = data['f'].decode()
-                if file_name not in file_set:
-                    file_set.add(file_name)
-                    recent_files.append(file_name)
-    except msgpack.exceptions.OutOfData as e:
-        # all data are processed
-        pass
-    return recent_files
+    return unpack(shada_path, valid_types=(8, 9, 10), limit=limit)
 
 
 # convert string into a (char -> list) map
@@ -147,8 +146,7 @@ def match_fuzzy_substring(user_input, string):
 
     if len(distances) > 0:
         return sorted(distances)[
-            0
-        ]  # return tuple (final cost, an array of last matching indices)
+            0]  # return tuple (final cost, an array of last matching indices)
     else:
         return None  # user_input is not a subsequence of string
 
@@ -172,8 +170,8 @@ def fuzzyfinder(user_input, collection, is_case_sensitive=True):
             matching_item = matching_item[::-1]
 
         res = match_fuzzy_substring(
-            user_input, matching_item
-        )  # Checks if user_input is a subsequence of theItem
+            user_input,
+            matching_item)  # Checks if user_input is a subsequence of theItem
         if res is not None:
             score = res[0]
 
@@ -190,8 +188,8 @@ def fuzzyfinder(user_input, collection, is_case_sensitive=True):
     # sort the result based on score and i
     # smaller i means more recent files
     return [
-        x for _, _, _, x in
-        sorted(suggestions, key=operator.itemgetter(0, 1, 2))
+        x for _, _, _, x in sorted(
+            suggestions, key=operator.itemgetter(0, 1, 2))
     ]
 
 
@@ -243,40 +241,41 @@ def file_prefix_completer(prefix, cwd, is_case_sensitive, prefix_only=True):
     return res
 
 
-def nvim_recent_files(prefix, parsed_args, **kwargs):
-    MAX_OUTPUT_NUMBER = 8
+def nvim_recent_files(prefix='', parsed_args=None, number=8, **kwargs):
     # limit choices to 8, otherwise the screen might be cluttered with lines
     # handle ~/my_file or ~abc cases
-    prefix = os.path.expanduser(os.path.normpath(prefix))
 
     # get nvim recent files
-    history = nvim_oldfiles(shada_path())
-
+    history = nvim_oldfiles()
     cwd = os.getcwd()
+    if prefix:
+        prefix = os.path.expanduser(os.path.normpath(prefix))
 
-    is_case_sensitive = False
+        is_case_sensitive = False
 
-    # case insensitive is better in all scenarios
-    # if prefix == prefix.lower():
-    # smart case: no uppercase char, so we just ignore cases
-    # is_case_sensitive = False
+        # case insensitive is better in all scenarios
+        # if prefix == prefix.lower():
+        # smart case: no uppercase char, so we just ignore cases
+        # is_case_sensitive = False
 
-    # search for local files
-    files = file_prefix_completer(prefix, cwd, is_case_sensitive)
+        # search for local files
+        files = file_prefix_completer(prefix, cwd, is_case_sensitive)
 
-    matched = []
-    # don't need to do expensive fuzzy matching if we already got enough data
-    if len(prefix) and len(files) < MAX_OUTPUT_NUMBER:
-        # fuzzy file matching, will match infix or suffix substring
-        fuzzy_files = file_prefix_completer(
-            prefix, cwd, is_case_sensitive, False
-        )
-        matched = fuzzyfinder(prefix, fuzzy_files + history, is_case_sensitive)
+        matched = []
+        # don't need to do expensive fuzzy matching if we already got enough
+        if len(prefix) and len(files) < number:
+            # fuzzy file matching, will match infix or suffix substring
+            fuzzy_files = file_prefix_completer(prefix, cwd, is_case_sensitive,
+                                                False)
+            matched = fuzzyfinder(prefix, fuzzy_files + history,
+                                  is_case_sensitive)
+        else:
+            matched = history
+
+        # give local files higher priority over nvim history (my intuition?)
+        collection = files + matched
     else:
-        matched = history
-
-    # give local files higher priority over nvim history (my intuition?)
-    collection = files + matched
+        collection = history
 
     # remove duplicated files
     seen = {}
@@ -286,7 +285,7 @@ def nvim_recent_files(prefix, parsed_args, **kwargs):
         exclude = re.compile(parsed_args.exclude)
         collection = [x for x in collection if not exclude.search(x)]
 
-    res = exist_filter(collection, MAX_OUTPUT_NUMBER)
+    res = exist_filter(collection, number)
 
     # if the result is a subdir of current working dir remove the common prefix
     # if it is not current working directory ('./' looks weird in terminal)
@@ -310,10 +309,19 @@ parser.add_argument(
     help=(
         'If specified, it excludes files matching the given filename pattern. '
         'Patterns are matched to the full path specified, not only to the '
-        'filename component. The pattern is matched by python re module.'
-    )
-)
-parser.add_argument("filepath", help='the path of the recent file').completer = nvim_recent_files
+        'filename component. The pattern is matched by python re module.'))
+
+parser.add_argument(  # type: ignore
+    "filepath",
+    nargs='?',
+    help='the path of the recent file',
+).completer = nvim_recent_files
+
+parser.add_argument(
+    '-l',
+    '--ls',
+    action='store_true',
+    help='list recent files opened by neovim')
 
 
 def my_validator(current_input, keyword_to_check_against):
@@ -324,55 +332,39 @@ def my_validator(current_input, keyword_to_check_against):
 
 
 argcomplete.autocomplete(
-    parser, validator=my_validator, always_complete_options=False
-)  # don't complete annoying --help
+    parser, validator=my_validator,
+    always_complete_options=False)  # don't complete annoying --help
 
 # args = parser.parse_args()
 args, unknown = parser.parse_known_args()
 
 # print args.filepath
 # print args.e
-# print unknown
 
-if len(unknown):
-    path = unknown[0]
+if args.ls:
+    res = nvim_recent_files(args.filepath, number=50)
+    print('\n'.join(res))
+    exit(0)
+
+if not args.filepath:
+    print('enter a search term')
+    exit(1)
+if os.path.exists(args.filepath):
+    filepath = args.filepath
 else:
-    path = args.filepath
-
-if not os.path.exists(path):
     # the user might forget to press tab (like nfasd -e nvim mysomet...)
     # help the user press "the tab"
-    res = nvim_recent_files(path, None)
 
-    if len(res):
-        path = res[0]
+    try:
+        filepath = nvim_recent_files(args.filepath)[0]
+    except IndexError:
+        filepath = args.filepath
 
 # don't do anything when the file doesn't exist we don't want user to
 # accidentally create some file with strange partial file name
-if os.path.exists(path):
-    exe_name = 'nvim'
-    if args.e and len(args.e):
-        exe_name = args.e  # use the user-defined executable name
-    exec_str = exe_name + ' ' + path
-
-    os.system(exec_str)
-
-# if __name__ == "__main__":
-# print match_fuzzy_substring('drop', 'Dropbox/p')         # =>None
-# print match_fuzzy_substring('drop', 'dropbox/p')         # =>(3, 0)
-# print match_fuzzy_substring('aa', 'aa')                  # =>(1, 0)
-# print match_fuzzy_substring('aa', 'aab')                 # =>(1, 0)
-# print match_fuzzy_substring('aa', 'baa')                 # =>(2, 0)
-# print match_fuzzy_substring('aa', 'bbaa')                # =>(3, 0)
-# print match_fuzzy_substring('aa', 'aabb')                # =>(1, 0)
-# print match_fuzzy_substring('aa', 'abba')                # =>(3, 1)
-# print match_fuzzy_substring('aaa', 'ababa')              # =>(4, 2)
-# print match_fuzzy_substring('init', 'ing/install.sh')    # =>(7, 2)
-# print match_fuzzy_substring('init', 'ing/nvim/init.vim') # =>(12, 0)
-# print match_fuzzy_substring('init', 'ing/insitall.sh')   # =>(8, 1)
-# print match_fuzzy_substring("foo",    "foobar")          # =>(2, 0)
-# print match_fuzzy_substring("foo",    "FooBar")          # =>None
-# print match_fuzzy_substring("fb",    "foobar")           # =>(3, 1)
-# print match_fuzzy_substring("",    "foo bar")            # =>0
-# print match_fuzzy_substring("",    "")                   # =>0
-# print match_fuzzy_substring("f",    "")                  # =>None
+if os.path.exists(filepath):
+    exe_name = args.e or 'nvim'
+    os.execlp(exe_name, exe_name, filepath)
+else:
+    print(f'could not find a match for "{filepath}"')
+    exit(1)

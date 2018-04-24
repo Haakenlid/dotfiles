@@ -1,4 +1,9 @@
-let mapleader=" "
+let g:mapleader=' '
+
+" insert mode
+inoremap <silent> <C-s> <esc>:call StripTrailingWhitespaces() \| w!<CR>
+inoremap <M-s> <ESC>:Snippets<CR>
+noremap <M-s> <ESC>:Snippets<CR>
 
 " vim keyboard shortcuts
 nmap <silent> ]g :call WrapMove('GitGutterNextHunk')<CR>
@@ -16,6 +21,9 @@ nmap <F10> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name")
       \ . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)), "name")
       \ . ">"<CR>
 
+" 'splain character
+nmap g? <Plug>(characterize)
+
 " easy escape
 noremap! jj <esc>
 
@@ -32,7 +40,6 @@ noremap! <C-Q> <esc>:qa!
 
 " Control-S to save
 map <silent> <C-S> :call StripTrailingWhitespaces() \| w!<CR>
-imap <silent> <C-S> <esc>:call StripTrailingWhitespaces() \| w!<CR>
 
 " Clear search
 noremap <silent> <leader>/ :let @/=""<CR>
@@ -40,8 +47,17 @@ noremap <silent> <leader>/ :let @/=""<CR>
 " Random colorscheme ;)
 noremap <leader>R :colorscheme random<CR>
 
-" Save and close
-nnoremap <silent> <leader>x :x<CR>
+" Delete current buffer
+nnoremap <silent> <leader>x :wshada \| bd<CR>
+
+" Neoformat
+nnoremap <silent> <leader>f :Neoformat<CR>
+
+" Write current buffer
+nnoremap <silent> <leader>w :w<CR>
+
+" Close other buffers if they are saved (o = 'only')
+nnoremap <silent> <leader>o mx:up \| %bd \| e# \| bd#<CR>`x
 
 " Close preview window
 nnoremap <silent> <leader>z :pclose!<CR>
@@ -58,10 +74,11 @@ nmap <leader>t :TagbarOpenAutoClose<CR>
 " Strip trailing
 nmap <leader>S :call StripTrailingWhitespaces()<CR>
 
-" python goto imports
-nmap <silent> gi gg/import<CR>:let @/ = ""<CR>
+" Easy Align shortcuts
+nmap ga <Plug>(LiveEasyAlign)
+xmap ga <Plug>(LiveEasyAlign)
 
-noremap <silent> <leader>n :NERDTreeFind<CR>
+noremap <silent> <leader>n :if bufname('%') != '' \| NERDTreeFind \| else \| NERDTreeCWD \| endif<CR> 
 
 " Ultisnips expand on <CR>
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrReturn()<CR>" : "\<CR>"

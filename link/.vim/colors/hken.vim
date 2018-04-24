@@ -133,3 +133,5 @@ hi SpecialKey         ctermfg=59
 
 hi BracelessIndent                  ctermbg=237
 
+" Sneak Plugin
+hi Sneak              ctermfg=black ctermbg=white

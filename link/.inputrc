@@ -62,9 +62,19 @@ set completion-display-width -1
 # If set to ‘on’, add a character to the beginning of the prompt indicating
 # the editing mode. The default value is ‘off’. Not available in bash 4.3
 # set show-mode-in-prompt on
-set vi-ins-mode-string $
-# yellow text
-set vi-cmd-mode-string \1\e[0;49;93m\2$
+set show-mode-in-prompt on
+set vi-cmd-mode-string "\1\e[2 q\2"
+set vi-ins-mode-string "\1\e[6 q\2"
+
+# Set cursor style (DECSCUSR), VT520.
+#          Ps = 0  -> blinking block.
+#          Ps = 1  -> blinking block (default).
+#          Ps = 2  -> steady block.
+#          Ps = 3  -> blinking underline.
+#          Ps = 4  -> steady underline.
+#          Ps = 5  -> blinking bar (xterm).
+#          Ps = 6  -> steady bar (xterm).
+
 
 # If set to ‘on’, this alters the default completion behavior when inserting a
 # single match into the line. It’s only active when performing completion in

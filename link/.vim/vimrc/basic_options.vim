@@ -7,6 +7,9 @@ set nobackup
 set nowritebackup
 set noswapfile
 
+" show at least N lines before and after cursor position
+set scrolloff=3
+
 " Printing
 set printoptions+=formfeed:y
 set printoptions+=header:0
@@ -23,7 +26,7 @@ set tags=tags;,.git/tags;
 " Hide buffers instead of closing
 set hidden
 
-" Indent
+" Indent 
 set textwidth=80
 set colorcolumn=-1
 set autoindent

@@ -14,6 +14,7 @@ def _convert_camel_case(string):
     s1 = re.sub('(.)([A-Z][a-z]+)', r'\1-\2', string)
     return re.sub('([a-z0-9])([A-Z])', r'\1-\2', s1).lower()
 
+
 # http://stackoverflow.com/a/1176023/18986
 
 
@@ -34,7 +35,7 @@ def _clean_basename(basename):
 # directory name. Otherwise, it returns the PascalCased filename. This allows
 # me to use my snippets with modules that are like `/path/to/module_name.jsx`
 # and modules that are like `/path/to/ModuleName/index.jsx`.
-def path_to_component_name(path, case_fn):
+def path_to_component_name(path, case_fn=pascal_case_basename):
     dirname, filename = os.path.split(path)
     basename = os.path.splitext(filename)[0]
     if basename in ['index', 'index-test', 'index-diffux']:

@@ -54,6 +54,7 @@ function pp() {
 
 # NEOVIM
 program_exists /usr/bin/nvim && alias vim=/usr/bin/nvim
+program_exists /usr/bin/vi && alias vi="/usr/bin/vi -u NONE"
 
 # Keyboard layout changes (only works if you have the keyboard layouts installed)
 function nor() {  # Norwegian

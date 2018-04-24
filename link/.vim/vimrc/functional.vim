@@ -28,7 +28,6 @@ function! Pop(l, i)
   return new_list
 endfunction
 
-
 function! Test()
   let ll = [3, 6, 7, 8, 0, 223]
   echo ll

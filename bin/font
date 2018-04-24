@@ -3,33 +3,35 @@
 #Change fontsize in xfce4-terminal
 
 BASESIZE=9
+MAXSIZE=25
+MINSIZE=6
 CONFIG_FILE="$HOME/.config/xfce4/terminal/terminalrc"
-SIZE=$(awk '/^FontName/ { print $NF; exit }' $CONFIG_FILE)
+SIZE=$(awk '/^FontName/ { print $NF; exit }' "$CONFIG_FILE" )
 WIN=$(xdotool getactivewindow)
-eval $(xdotool getwindowgeometry --shell $WIN)
+eval "$(xdotool getwindowgeometry --shell "$WIN" )"
 
-ARGS=$(echo $1 | fold -w1)
+if [[ $# = 0 ]]; then 
+  echo "font size: $SIZE"
+  exit 0
+fi
 
-for A in $ARGS
+for A in $(echo "$@" | fold -w1)
   do case $A in
-    +)
-      SIZE=$((SIZE + 1))
-      ;;
-    -)
-      SIZE=$((SIZE - 1))
-      ;;
-    *)
-      SIZE=$BASESIZE
-      ;;
+    '+') (( SIZE < MAXSIZE )) && (( SIZE++ )) ;;
+    '-') (( SIZE > MINSIZE )) && (( SIZE-- )) ;;
+    ' ') : ;;
+     * ) SIZE=$BASESIZE ;;
   esac
 done
 
-if (($1 > 1)) 2>/dev/null; then
-  SIZE=$1
+if (( $1 >= 0 )) &>/dev/null; then
+  if (( $1 > MINSIZE ))
+    then SIZE=$1 
+    else SIZE=$MINSIZE
+  fi
 fi
 
-regex="s/^\(FontName.\+\) [0-9]\+$/\1 ${SIZE}/"
-sed -i "$regex" $CONFIG_FILE
-sleep 0.2
-echo fontsize: $SIZE
-xdotool windowsize $WIN $WIDTH $HEIGHT
+sed -i "/^FontName/s/[0-9]\+$/${SIZE}/" "$CONFIG_FILE"
+sleep 0.1
+# echo fontsize: $SIZE
+xdotool windowsize "$WIN" "$WIDTH" "$HEIGHT"

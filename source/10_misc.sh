@@ -7,3 +7,7 @@ export TERM=xterm-256color
 export BROWSER=sensible-browser
 # fi
 
+# Use uppercase V only for edit and execute
+bind -m vi-command -r 'v'
+bind -m vi-command 'V':edit-and-execute-command
+

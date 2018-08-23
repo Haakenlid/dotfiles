@@ -1,11 +1,16 @@
 # Git shortcuts
 
+gm() {
+  git commit -m "$( echo "$@" )"
+}
+
 ga() {
   git add -A :/
   if [[ $# -gt 0 ]]
-  then git commit -m "$( echo "$@" )"
+  then gm "$@"
   fi
 }
+
 alias gp='git push'
 alias gpa='gp --all'
 alias gu='git pull'
@@ -15,8 +20,6 @@ alias gs='git status'
 alias gst='gs'
 alias gd='git diff'
 alias gdc='gd --cached'
-alias gm='git commit -m'
-alias gma='git commit --all -m'
 alias gb='git branch'
 alias gba='git branch -a'
 # function gc() { git checkout "${@:-master}"; } # Checkout master by default

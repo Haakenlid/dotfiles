@@ -14,7 +14,17 @@ get_emulator(){
   echo "Emulator not found" >&2 ; exit 1
 }
 
+reset-keyboard() {
+  [[ $DISPLAY ]] || return 1
+  # set english keyboard layout 
+  xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY &> /dev/null
+  # unset caps lock if it's on
+  xset q | grep 'Caps Lock:\s*on' && xdotool key Caps_Lock
+  return 0
+}
+
 main() {
+  reset-keyboard
   win_id=$(get_terminal_window)
   if [[ -n $win_id ]]; then
     if [[ $(xdotool getactivewindow) == $win_id ]]; then

@@ -1,5 +1,6 @@
 #!/bin/bash
 # This script will install specific versions of Python on Ubuntu Linux servers
+
 if [ "$(whoami)" != "root" ]; then
     echo "WARNING: You must run this script as 'root'"
     # This shortcut method will fail if the script file does not have execute permissions
@@ -7,11 +8,11 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 TAGS=$(
-    curl -s https://api.github.com/repos/python/cpython/tags?per_page=100
-    sort -r |\
-    sed -n '/name/p'
-    sed -E 's/.*"v(.*)".*/\1/' |\
-    sed -n "/^$1/p"
+    curl -s https://api.github.com/repos/python/cpython/tags?per_page=100\
+    | sort -r\
+    | sed -n '/name/p'\
+    | sed -E 's/.*"v(.*)".*/\1/'\
+    | sed -n "/^$1/p"
 )
 
 if [[ -n $2 ]]; then
@@ -31,7 +32,6 @@ if [[ $inputVersion == "" ]]; then
     echo "You must input a supported version (e.g. 2.7.11, 3.5.1)"
     exit 1
 fi
-
 
 exitOnError() {
     error=$1
@@ -85,18 +85,23 @@ download() {
 
 makePython() {
     cd /usr/src/cpython
+    rm -f Modules/Setup
     ./configure --enable-optimizations --quiet
     make --jobs=3 --quiet
     make install --jobs=3 --quiet
 }
 
 main() {
+    echo 'installing dependencies'
     pythonDependencies
     setNameAndURL
     download
+    echo 'building python'
     makePython
+    echo 'ensure pip'
     installPip
     exit 0
 }
 
 main
+set -x

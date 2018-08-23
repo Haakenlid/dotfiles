@@ -3,8 +3,8 @@ source ~/.vim/vimrc/basic_options.vim
 source ~/.vim/vimrc/plugin_options.vim
 source ~/.vim/vimrc/vim_functions.vim
 source ~/.vim/vimrc/keyboard_shortcuts.vim
-source ~/.vim/vimrc/deoplete.vim
-" source ~/.vim/vimrc/youcompleteme.vim
+" source ~/.vim/vimrc/deoplete.vim
+source ~/.vim/vimrc/youcompleteme.vim
 " source ~/.vim/vimrc/easymotion.vim
 
 " Plug 'tpope/vim-eunuch'
@@ -60,8 +60,8 @@ autocmd rcgroup BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
+nmap <silent> <leader><leader>A :Ag!<cr>
 nmap <silent> <leader><leader>a :Ag!<cr>
-nmap <silent> <leader><leader>A :Ag!<c-r><c-w><cr>
 nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>
 nmap <silent> <leader><leader>m :History<cr>
@@ -177,7 +177,7 @@ let g:neoformat_try_formatprg = 1
 " python autoformat with yapf
 
 autocmd rcgroup FileType javascript,javascript.jsx setlocal formatprg=prettier\ --stdin
-      \\ --semi\ false\ --single-quote\ --trailing-comma\ es5
+      \\ --semi=false\ --single-quote\ --trailing-comma=all
 let g:jsx_ext_required = 0
 
 " Airline settings
@@ -212,7 +212,7 @@ let g:NERDTreeMapPreviewVSplit = 'gv'
 
 let g:NERDTreeIgnore=[
       \'\.[^.]*cache$',
-      \'\.git$', '\.pyc$', '__pyc__', '__pycache__']
+      \'\.git$', '\.pyc$', '__pyc__', '__pycache__', '__snapshots__']
 augroup NerdTree
   autocmd!
   autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>
@@ -227,9 +227,9 @@ let g:user_emmet_prev_key='<M-k>'
 let g:user_emmet_settings = {'html':{'empty_element_suffix': ' />'}}
 
 """ Ultisnips config
-let g:UltiSnipsExpandTrigger="<nop>"
-let g:UltiSnipsListSnippets="<M-s>"
-let g:UltiSnipsExpandTrigger="<M-e>"
+let g:UltiSnipsExpandTrigger='<nop>'
+let g:UltiSnipsListSnippets='<M-s>'
+let g:UltiSnipsExpandTrigger='<M-e>'
 let g:UltiSnipsUsePythonVersion=3
 
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
@@ -245,3 +245,4 @@ let g:UltiSnipsUsePythonVersion=3
 " let g:sneak#label = 1
 " nmap s <Plug>SneakLabel_s
 " nmap S <Plug>SneakLabel_S
+

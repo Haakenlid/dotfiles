@@ -1,0 +1,18 @@
+#!/bin/bash
+
+english() {
+  xkbcomp -w0 -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY 
+}
+
+watchforunlock() {
+  gdbus monitor --system \
+    --dest org.freedesktop.login1 \
+    --object-path /org/freedesktop/login1/session/c3 \
+    | sed -nu '/Unlock/p'
+}
+
+mainfn() {
+  watchforunlock | while read line; do sleep 3; english; done 
+}
+
+mainfn

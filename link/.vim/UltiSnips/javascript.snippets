@@ -47,7 +47,7 @@ endsnippet
 #  React components  #
 ######################
 
-snippet ccomponent "react class component" b
+snippet ccom "react class component" b
 class ${1:`!p snip.rv = path_to_component_name(path)`} extends React.Component {
 
 	constructor(props) {
@@ -65,7 +65,7 @@ class ${1:`!p snip.rv = path_to_component_name(path)`} extends React.Component {
 }
 endsnippet
 
-snippet component "react stateless component" b
+snippet com "react stateless component" b
 const ${1:`!p snip.rv = path_to_component_name(path)`} = ({ $2 }) => (
 	<${3:div} className="$1">
 		${VISUAL}$4
@@ -185,7 +185,7 @@ endsnippet
 ###################
 
 snippet cx "className=cx()"
-className={cx($0)}
+className={cx("${1:`!p snip.rv = path_to_component_name(path)`}")} $0
 endsnippet
 
 snippet test "jest test" bA

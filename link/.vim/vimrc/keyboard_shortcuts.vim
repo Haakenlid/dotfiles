@@ -78,7 +78,7 @@ nmap <leader>S :call StripTrailingWhitespaces()<CR>
 nmap ga <Plug>(LiveEasyAlign)
 xmap ga <Plug>(LiveEasyAlign)
 
-noremap <silent> <leader>n :if bufname('%') != '' \| NERDTreeFind \| else \| NERDTreeCWD \| endif<CR> 
+noremap <silent> <leader>n :if bufname('%') != '' \| NERDTreeFind \| else \| NERDTreeCWD \| endif<CR>
 
 " Ultisnips expand on <CR>
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrReturn()<CR>" : "\<CR>"

@@ -1,10 +1,10 @@
 # Git shortcuts
 
-gm() {
+function gm() {
   git commit -m "$( echo "$@" )"
 }
 
-ga() {
+function ga() {
   git add -A :/
   if [[ $# -gt 0 ]]
   then gm "$@"

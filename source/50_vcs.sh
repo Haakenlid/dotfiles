@@ -3,7 +3,7 @@
 ga() {
   git add -A :/
   if [[ $# -gt 0 ]]
-  then git commit -m "$@"
+  then git commit -m "$( echo "$@" )"
   fi
 }
 alias gp='git push'

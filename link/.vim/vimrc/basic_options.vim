@@ -2,10 +2,12 @@ syntax on
 filetype plugin indent on
 colorscheme hken
 
-" Don't use swap file.
-set nobackup
-set nowritebackup
-set noswapfile
+" Use swap file
+set swapfile
+
+" Don't write backup
+" set nobackup
+" set nowritebackup
 
 " show at least N lines before and after cursor position
 set scrolloff=3

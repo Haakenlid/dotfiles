@@ -73,3 +73,5 @@
 	submoduleSummary = true
 [diff]
 	submodule = log
+[interactive]
+	singlekey = true

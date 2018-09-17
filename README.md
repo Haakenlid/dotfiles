@@ -12,7 +12,7 @@ for further documentation.
   distros as long as you use `bash`, as well as OSX
 * Run these commands:
 ```
-git clone https:///haakenlid/dotfiles.git ~/.dotfiles
+git clone https://github.com/haakenlid/dotfiles.git ~/.dotfiles
 ~/.dotfiles/bin/dotfiles
 ```
 

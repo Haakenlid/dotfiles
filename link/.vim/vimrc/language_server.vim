@@ -26,7 +26,7 @@ set hidden
 let g:LanguageClient_serverCommands = {
     \ 'javascript': ['javascript-typescript-stdio'],
     \ 'javascript.jsx': ['javascript-typescript-stdio'],
-    \ 'python': ['pyls', '--log-file', 'pyls.log'],
+    \ 'python': ['pyls', '--log-file', expand('$HOME/pyls.log')],
     \ }
 
 let g:LanguageClient_diagnosticsList = "Location"
@@ -39,4 +39,4 @@ nnoremap <silent> <leader>R :call LanguageClient#textDocument_rename()<CR>
 nnoremap <silent> <leader>f :call LanguageClient#textDocument_formatting()<CR>
 
 let g:LanguageClient_loggingLevel='DEBUG'
-let g:LanguageClient_loggingFile='languageclient.log'
+let g:LanguageClient_loggingFile=expand('$HOME/languageclient.log')

@@ -3,18 +3,20 @@ source ~/.vim/vimrc/basic_options.vim
 source ~/.vim/vimrc/plugin_options.vim
 source ~/.vim/vimrc/vim_functions.vim
 source ~/.vim/vimrc/keyboard_shortcuts.vim
-" source ~/.vim/vimrc/deoplete.vim
-source ~/.vim/vimrc/youcompleteme.vim
-" source ~/.vim/vimrc/easymotion.vim
+source ~/.vim/vimrc/language_server.vim
+source ~/.vim/vimrc/deoplete.vim
+
+" source ~/.vim/vimrc/youcompleteme.vim
+" source ~/.vim/vimrc/ale_linter.vim
 
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-vinegar'
 
+" Plug 'plytophogy/vim-virtualenv'
 Plug 'junegunn/vim-peekaboo'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/ListToggle'
 Plug 'airblade/vim-gitgutter'
-Plug 'benekastah/neomake'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'elmcast/elm-vim'
 Plug 'guns/xterm-color-table.vim'
@@ -29,7 +31,6 @@ Plug 'mattn/emmet-vim'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
-Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdtree'
 Plug 'sjl/strftimedammit.vim'
 Plug 'tpope/vim-abolish'
@@ -112,21 +113,6 @@ autocmd rcgroup Filetype vim let b:AutoPairs = {'{':'}', '(':')', '<':'>', '''':
 " https://github.com/jiangmiao/auto-pairs/issues/187
 " autocmd VimEnter,BufEnter,BufWinEnter * silent! iunmap <buffer> <M-">
 
-
-" Neomake config
-let g:neomake_python_mypy_maker = {
-      \ 'exe': 'mypy',
-      \ 'args': ['--ignore-missing-imports'],
-      \ 'errorformat': '%f:%l:%m'
-      \ }
-
-let g:neomake_python_enabled_makers = ['mypy', 'flake8']
-let g:neomake_sh_enabled_makers = []
-let g:neomake_open_list = 0 " open location list
-call neomake#configure#automake('w')
-
-command! Nolint call DisableLint()
-
 " Python
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
@@ -140,16 +126,6 @@ autocmd rcgroup BufNewFile,BufReadPost *.md set filetype=markdown
 " Dynamic quickfix height
 autocmd rcgroup FileType qf call AdjustWindowHeight(3, 10)
 
-" let g:airline_section_x = 'pencil: %{PencilMode()}'
-"
-" augroup pencil
-"   autocmd!
-"   autocmd FileType markdown,mkd,text
-"         \ | call pencil#init()
-"         \ | call lexical#init()
-" augroup END
-
-
 " Elm stuff
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
@@ -161,29 +137,13 @@ augroup elmkeys
 augroup END
 
 
-
-" Neoformat
-augroup neoformat
-  autocmd!
-  autocmd BufWritePre * Neoformat
-augroup END
-
-let g:neoformat_only_msg_on_error = 1
-let g:neoformat_enabled_javascript = ['prettier']
-let g:neoformat_enabled_scss = ['prettier']
-let g:neoformat_enabled_python = ['yapf']
-let g:neoformat_try_formatprg = 1
-
-" python autoformat with yapf
-
-autocmd rcgroup FileType javascript,javascript.jsx setlocal formatprg=prettier\ --stdin
-      \\ --semi=false\ --single-quote\ --trailing-comma=all
 let g:jsx_ext_required = 0
 
 " Airline settings
 let g:airline_powerline_fonts = 1
 let g:airline_theme='badwolf'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#languageclient#enabled = 0
 
 " Tagbar settings
 autocmd rcgroup FileType tagbar nmap <silent> <buffer> <ESC> :q<CR>
@@ -245,4 +205,3 @@ let g:UltiSnipsUsePythonVersion=3
 " let g:sneak#label = 1
 " nmap s <Plug>SneakLabel_s
 " nmap S <Plug>SneakLabel_S
-

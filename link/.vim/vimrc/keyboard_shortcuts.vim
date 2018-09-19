@@ -45,13 +45,11 @@ map <silent> <C-S> :call StripTrailingWhitespaces() \| w!<CR>
 noremap <silent> <leader>/ :let @/=""<CR>
 
 " Random colorscheme ;)
-noremap <leader>R :colorscheme random<CR>
+noremap <leader>cr :colorscheme random<CR>
 
 " Delete current buffer
 nnoremap <silent> <leader>x :wshada \| bd<CR>
 
-" Neoformat
-nnoremap <silent> <leader>f :Neoformat<CR>
 
 " Write current buffer
 nnoremap <silent> <leader>w :w<CR>

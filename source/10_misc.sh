@@ -8,7 +8,5 @@ export BROWSER=sensible-browser
 # fi
 
 # Use uppercase V only for edit and execute
-if [[ -t 0 ]]; then  # stdin is available
-  bind -m vi-command -r 'v'
-  bind -m vi-command 'V':edit-and-execute-command
-fi
+bind -m vi-command -r 'v' 2> /dev/null
+bind -m vi-command 'V':edit-and-execute-command 2> /dev/null

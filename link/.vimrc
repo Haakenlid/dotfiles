@@ -13,7 +13,6 @@ source ~/.vim/vimrc/deoplete.vim
 " Plug 'tpope/vim-vinegar'
 
 " Plug 'plytophogy/vim-virtualenv'
-Plug 'junegunn/vim-peekaboo'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/ListToggle'
 Plug 'airblade/vim-gitgutter'
@@ -25,12 +24,14 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-peekaboo'
 Plug 'justinmk/vim-sneak'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
 Plug 'mxw/vim-jsx'
 Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
+Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdtree'
 Plug 'sjl/strftimedammit.vim'
 Plug 'tpope/vim-abolish'
@@ -47,6 +48,8 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
+silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
+
 " reset autocommands
 aug rcgroup
   au!
@@ -57,19 +60,41 @@ command! Sourcevimrc so $MYVIMRC | echo 'sourced '.$MYVIMRC
 " open vimrc with leader V
 autocmd rcgroup BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
+" Neoformat
+augroup neoformat
+  autocmd!
+  autocmd BufWritePre * Neoformat
+augroup END
+
+augroup tmux_pane_title
+  autocmd!
+  autocmd VimEnter * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
+  autocmd VimResume * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
+  autocmd VimLeavePre * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
+  autocmd VimSuspend * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
+augroup END
+
+nnoremap <silent> <leader>f :Neoformat<CR>
+
+let g:neoformat_only_msg_on_error = 1
+let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_scss = ['prettier']
+let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_try_formatprg = 1
 
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
-nmap <silent> <leader><leader>A :Ag!<cr>
-nmap <silent> <leader><leader>a :Ag!<cr>
+nmap <silent> <leader><leader>A :Ag<cr>
+nmap <silent> <leader><leader>a :Ag<cr>
 nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>
+nmap <silent> <leader><leader>c :Commands<cr>
 nmap <silent> <leader><leader>m :History<cr>
 nmap <silent> <leader><leader>s :Snippets<cr>
 nmap <silent> <leader><leader>t :Tags<cr>
 nmap <silent> <leader><leader>l :Lines<cr>
-nmap <silent> <leader><leader>g :GGrep<cr>
+nmap <silent> <leader><leader>g :BCommits!<cr>
 " inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'right': '15%'})
 " inoremap <expr> <c-x><c-l> fzf#vim#complete#line()
 " inoremap <expr> <c-x><c-l> fzf#vim#complete#line()
@@ -136,6 +161,11 @@ augroup elmkeys
   autocmd FileType elm nmap <buffer> <leader>b :ElmBrowseDocs<CR>
 augroup END
 
+" file is large from 10mb
+let g:LargeFile = 1024 * 1024 * 10
+augroup LargeFile
+   autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+augroup END
 
 let g:jsx_ext_required = 0
 
@@ -153,7 +183,7 @@ let g:previewheight=5
 augroup prewrite
   autocmd!
   " change class to className in jsx
-  autocmd BufWritePre *.js,*.jsx sil! %s/class=/className=/
+  autocmd BufWritePre *.js,*.jsx sil! %s/\<class=/className=/
 augroup END
 
 augroup insertmode
@@ -162,7 +192,6 @@ augroup insertmode
   autocmd InsertEnter * set timeoutlen=300
   autocmd InsertLeave * set timeoutlen=1000
 augroup END
-
 
 " NERDTree settings
 let g:NERDTreeShowHidden = 1
@@ -188,9 +217,9 @@ let g:user_emmet_settings = {'html':{'empty_element_suffix': ' />'}}
 
 """ Ultisnips config
 let g:UltiSnipsExpandTrigger='<nop>'
-let g:UltiSnipsListSnippets='<M-s>'
-let g:UltiSnipsExpandTrigger='<M-e>'
-let g:UltiSnipsUsePythonVersion=3
+" let g:UltiSnipsListSnippets='<M-s>'
+" let g:UltiSnipsExpandTrigger='<M-e>'
+" let g:UltiSnipsUsePythonVersion=3
 
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<C-k>"

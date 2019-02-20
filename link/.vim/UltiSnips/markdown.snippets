@@ -58,6 +58,14 @@ snippet .im "Image" iA
 ![${1:pic alt}](${2:http://image.jpg}${3/.+/ "/}${3:$1}${3/.+/"/})$0
 endsnippet
 
+snippet .vid "Video" iA
+<video autoplay muted loop style="width: 100%" >
+	<source src="${1:filename}.webm" type="video/webm">
+	<source src="$1.mp4" type="video/mp4">
+	Sorry, your browser doesn't support embedded videos.
+</video>
+endsnippet
+
 snippet pre "Inline Code" i
 \`$1\`$0
 endsnippet

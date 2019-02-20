@@ -24,10 +24,10 @@ if [[ ! "${prompt_colors[@]}" ]]; then
 
   if [[ "$SSH_TTY" ]]; then
     # connected via ssh
-    prompt_colors[0]="34"
+    prompt_colors[0]="32"
   elif [[ "$USER" == "root" ]]; then
     # logged in as root
-    prompt_colors[0]="35"
+    prompt_colors[0]="96"
   fi
 fi
 

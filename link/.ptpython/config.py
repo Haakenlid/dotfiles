@@ -5,14 +5,15 @@ Copy this file to ~/.ptpython/config.py
 """
 from __future__ import unicode_literals
 from prompt_toolkit.filters import ViInsertMode
-from prompt_toolkit.key_binding.input_processor import KeyPress
+try:
+    from prompt_toolkit.key_binding.input_processor import KeyPress
+except ImportError:
+    from prompt_toolkit.key_binding.key_processor import KeyPress
 from prompt_toolkit.keys import Keys
 from pygments.token import Token
 from ptpython.layout import CompletionVisualisation
 
-__all__ = (
-    'configure',
-)
+__all__ = ('configure', )
 
 
 def configure(repl):
@@ -139,8 +140,8 @@ def configure(repl):
 # `ptpython/style.py` for all possible tokens.
 _custom_ui_colorscheme = {
     # Blue prompt.
-    Token.Layout.Prompt:                          'bg:#eeeeff #000000 bold',
+    Token.Layout.Prompt: 'bg:#eeeeff #000000 bold',
 
     # Make the status toolbar red.
-    Token.Toolbar.Status:                         'bg:#ff0000 #000000',
+    Token.Toolbar.Status: 'bg:#ff0000 #000000',
 }

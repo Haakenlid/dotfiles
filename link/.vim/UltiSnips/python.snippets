@@ -829,20 +829,6 @@ snippet ht
 help_text = _('$1'),$0
 endsnippet
 
-snippet mauto "AutoField" b
-${1:FIELDNAME} = models.AutoField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
-snippet mbigint "BigIntegerField" b
-${1:FIELDNAME} = models.BigIntegerField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
 snippet mbool "BooleanField" b
 ${1:FIELDNAME} = models.BooleanField(
 	verbose_name=_('$1'),
@@ -853,13 +839,6 @@ endsnippet
 snippet mchar "CharField" b
 ${1:FIELDNAME} = models.CharField(
 	max_length=${3:50},
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
-snippet mcoseint "CommaSeparatedIntegerField" b
-${1:FIELDNAME} = models.CommaSeparatedIntegerField(
 	verbose_name=_('$1'),
 	help_text=_('$1'),
 )
@@ -879,13 +858,6 @@ ${1:FIELDNAME} = models.DateTimeField(
 )
 endsnippet
 
-snippet mdecimal "DecimalField" b
-${1:FIELDNAME} = models.DecimalField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
 snippet memail "EmailField" b
 ${1:FIELDNAME} = models.EmailField(
 	verbose_name=_('$1'),
@@ -900,13 +872,6 @@ ${1:FIELDNAME} = models.FileField(
 )
 endsnippet
 
-snippet mfilepath "FilePathField" b
-${1:FIELDNAME} = models.FilePathField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
 snippet mfloat "FloatField" b
 ${1:FIELDNAME} = models.FloatField(
 	verbose_name=_('$1'),
@@ -916,15 +881,9 @@ endsnippet
 
 snippet fk "ForeignKey" b
 ${1:FIELDNAME} = models.ForeignKey(
-	$2,
+	to=$2,
+	on_delete=models.CASCADE,
 	related_name='$1',
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
-snippet mip "IPAddressField" b
-${1:FIELDNAME} = models.IPAddressField(
 	verbose_name=_('$1'),
 	help_text=_('$1'),
 )
@@ -944,17 +903,22 @@ ${1:FIELDNAME} = models.IntegerField(
 )
 endsnippet
 
-snippet m2m "ManyToManyField" b
-${1:FIELDNAME} = models.ManyToManyField(
-	$2,
-	related_name='$1',
+snippet mjson "JSONField" b
+from django.core.serializers.json import DjangoJSONEncoder
+from django.contrib.postgres.fields import JSONField
+${1:FIELDNAME} = JSONField(
+	default=dict,
+	encoder=DjangoJSONEncoder,
 	verbose_name=_('$1'),
 	help_text=_('$1'),
 )
 endsnippet
 
-snippet mnullbool "NullBooleanField" b
-${1:FIELDNAME} = models.NullBooleanField(
+snippet m2m "ManyToManyField" b
+${1:FIELDNAME} = models.ManyToManyField(
+	to=$2,
+	on_delete=models.CASCADE,
+	related_name='$1',
 	verbose_name=_('$1'),
 	help_text=_('$1'),
 )
@@ -962,7 +926,8 @@ endsnippet
 
 snippet o2o "OneToOneField" b
 ${1:FIELDNAME} = models.OneToOneField(
-	$2,
+	to=$2,
+	on_delete=models.CASCADE,
 	related_name='$1',
 	verbose_name=_('$1'),
 	help_text=_('$1'),
@@ -976,14 +941,7 @@ ${1:FIELDNAME} = models.PhoneNumberField(
 )
 endsnippet
 
-snippet mposint "PositiveIntegerField" b
-${1:FIELDNAME} = models.PositiveIntegerField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
-snippet mpossmallint "PositiveSmallIntegerField" b
+snippet mpsint "PositiveSmallIntegerField" b
 ${1:FIELDNAME} = models.PositiveSmallIntegerField(
 	verbose_name=_('$1'),
 	help_text=_('$1'),
@@ -992,13 +950,6 @@ endsnippet
 
 snippet mslug "SlugField" b
 ${1:FIELDNAME} = models.SlugField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
-snippet msmallint "SmallIntegerField" b
-${1:FIELDNAME} = models.SmallIntegerField(
 	verbose_name=_('$1'),
 	help_text=_('$1'),
 )
@@ -1025,15 +976,11 @@ ${1:FIELDNAME} = models.URLField(
 )
 endsnippet
 
-snippet musstate "USStateField" b
-${1:FIELDNAME} = models.USStateField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
-)
-endsnippet
-
-snippet mxml "XMLField" b
-${1:FIELDNAME} = models.XMLField(
+snippet muid "UUIDField" b
+${1:FIELDNAME} = models.UUIDField(
+	primary_key=True,
+	default=uuid.uuid4,
+	editable=False,
 	verbose_name=_('$1'),
 	help_text=_('$1'),
 )

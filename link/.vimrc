@@ -69,9 +69,11 @@ augroup END
 augroup tmux_pane_title
   autocmd!
   autocmd VimEnter * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
-  autocmd VimResume * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
   autocmd VimLeavePre * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
-  autocmd VimSuspend * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
+  if exists('##VimSuspend')
+    autocmd VimResume * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
+    autocmd VimSuspend * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
+  endif
 augroup END
 
 nnoremap <silent> <leader>f :Neoformat<CR>
@@ -219,7 +221,7 @@ let g:user_emmet_settings = {'html':{'empty_element_suffix': ' />'}}
 let g:UltiSnipsExpandTrigger='<nop>'
 " let g:UltiSnipsListSnippets='<M-s>'
 " let g:UltiSnipsExpandTrigger='<M-e>'
-" let g:UltiSnipsUsePythonVersion=3
+let g:UltiSnipsUsePythonVersion=3
 
 " let g:UltiSnipsJumpForwardTrigger="<C-j>"
 " let g:UltiSnipsJumpBackwardTrigger="<C-k>"

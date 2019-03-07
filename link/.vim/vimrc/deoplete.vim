@@ -12,6 +12,7 @@ endif
 
 set pumheight=20
 set completeopt=menuone,longest,preview
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Ctrl-Space: summon FULL (synced) autocompletion
 inoremap <silent><expr> <C-Space> deoplete#mappings#manual_complete()

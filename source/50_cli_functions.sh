@@ -14,6 +14,12 @@ function change() {
   fi
 }
 
+randpw() { 
+  LENGTH=${1:-16}
+  # sixteen random characters
+  < /dev/urandom tr -dc A-Za-z0-9 | head -c$LENGTH
+}
+
 function chrome() {
     ( (LANGUAGE=no nohup google-chrome $* >& /dev/null) & disown >& /dev/null)
 }

@@ -6,6 +6,9 @@
 *.exe
 *.o
 *.so
+
+# Cache files #
+###############
 __pycache__
 *.pyc
 .sass-cache
@@ -64,18 +67,3 @@ Session.vim
 .Trashes
 Thumbs.db
 Desktop.ini
-
-# NPM #
-#######
-.npmignore
-
-# Sublime Text project files #
-##############################
-*.sublime-project
-*.sublime-workspace
-
-# Python virtual environment #
-##############################
-activate
-.venv/
-

@@ -7,7 +7,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 
 " Automatically start language servers.
 let g:LanguageClient_autoStart = 1
-
+" let g:LanguageClient_hasSnippet = 0
 
 " Required for operations modifying multiple buffers like rename.
 set hidden
@@ -30,5 +30,5 @@ nnoremap <silent> <leader>h :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> <leader>gt :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <leader>R :call LanguageClient#textDocument_rename()<CR>
 
-let g:LanguageClient_loggingLevel='DEBUG'
+let g:LanguageClient_loggingLevel='WARN'
 let g:LanguageClient_loggingFile=expand('$HOME/languageclient.log')

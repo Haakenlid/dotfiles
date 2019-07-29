@@ -87,7 +87,7 @@ let g:neoformat_try_formatprg = 1
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
-nmap <silent> <leader><leader>A :Ag<cr>
+nmap <silent> <leader><leader>A :Ag <cr>
 nmap <silent> <leader><leader>a :Ag<cr>
 nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>

@@ -17,7 +17,8 @@ def set_caps_lock_off():
     X11 = cdll.LoadLibrary('libX11.so.6')
     X11.XOpenDisplay.restype = POINTER(type('Display', (Structure, ), {}))
     display = X11.XOpenDisplay(None)
-    X11.XkbLockModifiers(display, c_uint(0x0100), c_uint(2), c_int(0)) X11.XCloseDisplay(display)
+    X11.XkbLockModifiers(display, c_uint(0x0100), c_uint(2), c_int(0))
+    X11.XCloseDisplay(display)
 
 
 set_caps_lock_off()

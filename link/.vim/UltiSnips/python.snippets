@@ -397,9 +397,6 @@ def __repr__(self):
 
 def __str__(self):
 	${2:pass}
-
-def __unicode__(self):
-	${3:pass}
 endsnippet
 
 
@@ -596,14 +593,14 @@ endsnippet
 snippet try "Try / Except" b
 try:
 	${1:${VISUAL:pass}}
-except ${2:Exception} as ${3:e}:
+except (${2:Exception}) as ${3:e}:
 	${4:raise $3}
 endsnippet
 
 snippet trye "Try / Except / Else" b
 try:
 	${1:${VISUAL:pass}}
-except ${2:Exception} as ${3:e}:
+except (${2:Exception}) as ${3:e}:
 	${4:raise $3}
 else:
 	${5:pass}
@@ -612,7 +609,7 @@ endsnippet
 snippet tryf "Try / Except / Finally" b
 try:
 	${1:${VISUAL:pass}}
-except ${2:Exception} as ${3:e}:
+except (${2:Exception}) as ${3:e}:
 	${4:raise $3}
 finally:
 	${5:pass}
@@ -621,12 +618,12 @@ endsnippet
 snippet tryef "Try / Except / Else / Finally" b
 try:
 	${1:${VISUAL:pass}}
-except${2: ${3:Exception} as ${4:e}}:
-	${5:raise}
+except (${2:Exception}) as ${3:e}:
+	${4:raise}
 else:
-	${6:pass}
+	${5:pass}
 finally:
-	${7:pass}
+	${6:pass}
 endsnippet
 
 
@@ -1046,7 +1043,7 @@ class ${1:ModelName}Inline(admin.TabularInline):
 	raw_id_fields = (${6},)
 endsnippet
 
-snippet _serializer "API ModelSerializer" b
+snippet serializer "API ModelSerializer" b
 class ${1:CLASS_NAME}Serializer(serializers.ModelSerializer):
 
 	"""ModelSerializer for $1"""
@@ -1055,7 +1052,7 @@ class ${1:CLASS_NAME}Serializer(serializers.ModelSerializer):
 		model = $1
 endsnippet
 
-snippet _viewset "API ModelViewSet" b
+snippet viewset "API ModelViewSet" b
 class ${1:CLASS_NAME}ViewSet(viewsets.ModelViewSet):
 
 	"""
@@ -1066,7 +1063,7 @@ class ${1:CLASS_NAME}ViewSet(viewsets.ModelViewSet):
 	serializer_class = $1Serializer
 endsnippet
 
-snippet _router "API router" b
+snippet router "API router" b
 router.register(r'${1/.+/\L$0s\E/}', ${1:CLASS_NAME}ViewSet)
 endsnippet
 

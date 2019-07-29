@@ -40,9 +40,11 @@ endsnippet
 snippet ire "import react" b
 import React from 'react'$0
 endsnippet
-snippet ira "import Ramda" b
+
+snippet ira "import ramda" b
 import * as R from 'ramda'$0
 endsnippet
+
 ######################
 #  React components  #
 ######################
@@ -79,6 +81,14 @@ import { connect } from 'react-redux'
 const mapStateToProps = (state, ownProps) => ({ $2 })
 const mapDispatchToProps = (dispatch, ownProps) => ({ $3 })
 export default connect(mapStateToProps, mapDispatchToProps)($1)
+endsnippet
+
+snippet mergeProps "redux mergeProps function" b
+const mergeProps = (stateProps, dispatchProps, ownProps) => ({
+	...stateProps,
+	...dispatchProps,
+	...ownProps,
+})
 endsnippet
 
 snippet pt "propTypes" b
@@ -233,5 +243,9 @@ endsnippet
 
 snippet ctrace "console.trace" b
 console.trace()
+endsnippet
+
+snippet jsondebug "<pre>json.stringify</pre>"
+<pre>{JSON.stringify(props, null, 2)}</pre>
 endsnippet
 

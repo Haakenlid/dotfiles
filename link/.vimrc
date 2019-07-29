@@ -48,8 +48,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 call plug#end()
 
-silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
-
 " reset autocommands
 aug rcgroup
   au!
@@ -69,7 +67,7 @@ augroup END
 augroup tmux_pane_title
   autocmd!
   autocmd VimEnter * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
-  autocmd VimLeavePre * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
+  autocmd VimLeave * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
   if exists('##VimSuspend')
     autocmd VimResume * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'vim'"
     autocmd VimSuspend * silent exec "![[ -n $TMUX ]] && tmux select-pane -T 'shell'"
@@ -79,15 +77,23 @@ augroup END
 nnoremap <silent> <leader>f :Neoformat<CR>
 
 let g:neoformat_only_msg_on_error = 1
-let g:neoformat_enabled_javascript = ['prettier']
-let g:neoformat_enabled_scss = ['prettier']
-let g:neoformat_enabled_python = ['yapf']
+" let g:neoformat_enabled_javascript = ['prettier']
+" let g:neoformat_enabled_scss = ['prettier']
+let g:neoformat_enabled_python = ['yapf', 'isort']
 let g:neoformat_try_formatprg = 1
+let g:neoformat_run_all_formatters = 1
+
+" Enable trimmming of trailing whitespace globally
+let g:neoformat_basic_format_trim = 1
+" Enable tab to spaces conversion globally
+let g:neoformat_basic_format_retab = 1
+" Enable alignment globally
+let g:neoformat_basic_format_align = 0
 
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
-nmap <silent> <leader><leader>A :Ag<cr>
+nmap <silent> <leader><leader>A :Ag <cr>
 nmap <silent> <leader><leader>a :Ag<cr>
 nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>
@@ -108,22 +114,22 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 " Command for git grep
 " - fzf#vim#grep(command, with_column, [options], [fullscreen])
 command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
+      \ call fzf#vim#grep('git grep --line-number '.shellescape(<q-args>), 0, <bang>0)
 
 " Ag with preview
 command! -bang -nargs=* Ag
-  \ call fzf#vim#ag(<q-args>,
-  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \                 <bang>0)
+      \ call fzf#vim#ag(<q-args>,
+      \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+      \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \                 <bang>0)
 
 " Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
 command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --hidden --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
+      \ call fzf#vim#grep(
+      \   'rg --hidden --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview('up:60%')
+      \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \   <bang>0)
 
 " Buffergator config
 let g:buffergator_autoupdate=1
@@ -166,7 +172,7 @@ augroup END
 " file is large from 10mb
 let g:LargeFile = 1024 * 1024 * 10
 augroup LargeFile
-   autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
+  autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:LargeFile || f == -2 | call LargeFile() | endif
 augroup END
 
 let g:jsx_ext_required = 0

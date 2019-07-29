@@ -5,7 +5,6 @@ colorscheme hken
 " Use swap file
 set noswapfile
 
-
 " Don't write backup
 set nobackup
 set nowritebackup
@@ -32,7 +31,7 @@ set tags=tags;,.git/tags;
 " Hide buffers instead of closing
 set hidden
 
-" Indent 
+" Indent
 set textwidth=80
 set colorcolumn=-1
 set autoindent

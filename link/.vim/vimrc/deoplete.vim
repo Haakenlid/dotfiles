@@ -1,9 +1,11 @@
 let g:deoplete#enable_at_startup = 1
+let deoplete#tag#cache_limit_size = 5000000
 inoremap <expr> <tab> pumvisible() ? "<c-n>" : "<tab>"
 inoremap <expr> <s-tab> pumvisible() ? "<c-p>" : "<s-tab>"
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/echodoc.vim'
+  Plug 'deoplete-plugins/deoplete-tag'
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
@@ -12,7 +14,7 @@ endif
 
 set pumheight=20
 set completeopt=menuone,longest,preview
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python3_host_prog = '/usr/bin/python3'
 
 " Ctrl-Space: summon FULL (synced) autocompletion
 inoremap <silent><expr> <C-Space> deoplete#mappings#manual_complete()

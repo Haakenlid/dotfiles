@@ -7,6 +7,10 @@ alias whois='whois -h whois.geektools.com'
 # tassen run
 alias tassen="$HOME/projects/tassen/tassen/run"
 
+# docker-compose
+program_exists docker-compose && alias doco="docker-compose"
+program_exists fdfind && alias fd="fdfind"
+
 # open
 alias open=xdg-open
 

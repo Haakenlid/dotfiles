@@ -16,7 +16,7 @@ get_emulator(){
 
 reset-keyboard() {
   [[ $DISPLAY ]] || return 1
-  # set english keyboard layout 
+  # set english keyboard layout
   xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY &> /dev/null
   # unset caps lock if it's on
   xset q | grep 'Caps Lock:\s*on' && xdotool key Caps_Lock
@@ -25,14 +25,26 @@ reset-keyboard() {
 
 main() {
   reset-keyboard
+  geofile=/tmp/terminalgeometry
   win_id=$(get_terminal_window)
   if [[ -n $win_id ]]; then
     if [[ $(xdotool getactivewindow) == $win_id ]]; then
       # if terminal window is active, unmap
-      xdotool getactivewindow windowunmap
+      xwininfo -stats -id $(xdotool getactivewindow ) \
+        | awk '/Absolute|Width|Height/ { gsub(":","=",$0); print $(NF-1)$NF }' \
+        > $geofile
+      xdotool \
+        getactivewindow windowunmap
     else
       # if terminal window is inactive, map and bring in focus
       xdotool windowmap $win_id
+      if [[ -e $geofile ]]; then
+        source $geofile
+        xdotool \
+          windowsize $win_id $Width $Height;
+        xdotool \
+          windowmove $win_id $X $Y;
+      fi
       xdotool set_desktop_for_window $win_id $(xdotool get_desktop)
       xdotool windowactivate $win_id
     fi

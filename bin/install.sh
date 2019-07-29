@@ -30,9 +30,9 @@ function main__() {
 }
 
 function must_be_root() {
-  if [[ $UID == 0 ]] 
+  if [[ $UID == 0 ]]
   then return 0
-  else 
+  else
     echo "$(basename $0) must run as root" >&2
     return 1
   fi
@@ -104,7 +104,7 @@ function _fd() {
   (
     cd ${TMPDIR}
     echo "downloading ${DOWNLOAD}"
-    wget --show-progress -q ${DOWNLOAD} 
+    wget --show-progress -q ${DOWNLOAD}
     ls -R1
     sudo dpkg -i ${FILENAME} && echo $'Install fd OK'
   ) >&2

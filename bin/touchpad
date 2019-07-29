@@ -43,18 +43,18 @@ function restore_location() {
 }
 
 function turn_on() {
-  restore_location
-  wiggle_cursor
   xinput enable $TP_PID
-  echo 'touchpad on'
   sleep 0.1
   xinput set-prop $TP_PID 'Synaptics Off' 0
+  restore_location
+  wiggle_cursor
+  echo 'touchpad on'
 }
 
 function turn_off() {
   save_location
-  xdotool mousemove 10000 10000
   xinput disable $TP_PID
+  xdotool mousemove 10000 10000
   echo 'touchpad off'
 }
 

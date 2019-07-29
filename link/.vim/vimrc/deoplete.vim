@@ -23,7 +23,7 @@ inoremap <silent><expr> <C-Space> deoplete#mappings#manual_complete()
 " inoremap <silent><expr> <Esc> pumvisible() ? "<C-e><Esc>" : "<Esc>"
 
 " close preview window
-autocmd InsertLeave * silent! pclose!
+" autocmd InsertLeave * silent! pclose!
 set runtimepath+=~/.vim/plugged/deoplete.nvim/
 
 " call deoplete#custom#option({ 'max_list': 40 })

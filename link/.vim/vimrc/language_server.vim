@@ -30,5 +30,5 @@ nnoremap <silent> <leader>h :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> <leader>gt :call LanguageClient#textDocument_definition()<CR>
 nnoremap <silent> <leader>R :call LanguageClient#textDocument_rename()<CR>
 
-let g:LanguageClient_loggingLevel='WARN'
+let g:LanguageClient_loggingLevel='INFO'
 let g:LanguageClient_loggingFile=expand('$HOME/languageclient.log')

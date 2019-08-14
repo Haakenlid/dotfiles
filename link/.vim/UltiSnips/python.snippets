@@ -791,7 +791,7 @@ class ${1:MODELNAME}(models.Model):
 		verbose_name_plural = _("$1s")
 
 	def __str__(self):
-		return super($1, self).__str__()
+		return super().__str__()
 
 endsnippet
 
@@ -805,10 +805,10 @@ class ${1:MODELNAME}(models.Model):
 		verbose_name_plural = _("$1s")
 
 	def __str__(self):
-		return super($1, self).__str__()
+		return super().__str__()
 
 	def save(self):
-		return super($1, self).save()
+		return super().save()
 
 	@models.permalink
 	def get_absolute_url(self):
@@ -830,6 +830,16 @@ snippet mbool "BooleanField" b
 ${1:FIELDNAME} = models.BooleanField(
 	verbose_name=_('$1'),
 	help_text=_('$1'),
+)
+endsnippet
+
+snippet mlang "CharField Language" b
+language = models.CharField(
+	max_length=8,
+	verbose_name=_('language'),
+	help_text=_('language'),
+	choices=settings.LANGUAGES,
+	default=settings.LANGUAGES[0][0],
 )
 endsnippet
 
@@ -1080,13 +1090,13 @@ endsnippet
 
 snippet dispatch "Dispatch View method" b
 def dispatch(self, request, *args, **kwargs):
-	return super(${1:CLASS_NAME}, self).dispatch(request, *args, **kwargs)
+	return super().dispatch(request, *args, **kwargs)
 endsnippet
 
 snippet context "get_context_data view method" b
 def get_context_data(self, **kwargs):
 	kwargs['extra_context'] = ${1:'New Value'}
-	return super(${2:CLASS_NAME}, self).get_context_data(**kwargs)
+	return super().get_context_data(**kwargs)
 endsnippet
 
 snippet save "model save" b

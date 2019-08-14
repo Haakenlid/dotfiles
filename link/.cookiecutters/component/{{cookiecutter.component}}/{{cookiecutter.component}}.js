@@ -1,3 +1,4 @@
+import React from 'react'
 const {{cookiecutter.component}} = ({  }) => (
   <div className="{{cookiecutter.component}}">
     

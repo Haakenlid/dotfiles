@@ -1,3 +1,4 @@
+import React from 'react'
 import {{cookiecutter.component}} from './index'
 import renderer from 'react-test-renderer'
 

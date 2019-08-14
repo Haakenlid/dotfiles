@@ -34,15 +34,23 @@ import ${1:package} from '${2:$1}'
 endsnippet
 
 snippet icx "import classnames" b
-import cx from 'classnames'$0
+import cx from 'classnames'
+$0
 endsnippet
 
 snippet ire "import react" b
-import React from 'react'$0
+import React from 'react'
+$0
 endsnippet
 
 snippet ira "import ramda" b
-import * as R from 'ramda'$0
+import * as R from 'ramda'
+$0
+endsnippet
+
+snippet itt "import translate ttag" b
+import { t } from 'ttag'
+$0
 endsnippet
 
 ######################
@@ -194,7 +202,7 @@ endsnippet
 #  Miscellaneous  #
 ###################
 
-snippet json "json debug <pre/>" 
+snippet json "json debug <pre/>"
 <pre>{JSON.stringify(props, null, 2)}</pre>
 endsnippet
 

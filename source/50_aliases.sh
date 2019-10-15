@@ -17,6 +17,17 @@ alias open=xdg-open
 # Remote servers
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 
+# cd to git root
+cg() {
+  dir=$(git rev-parse --show-toplevel)
+  if [[ -n "$dir" ]]; then
+    echo "cd to git root: $dir"
+    cd "$dir"
+  else
+    printf "not in git" >&2
+  fi
+}
+
 # pip install user
 pipi() {
   if [[ -n $VIRTUAL_ENV ]]; then

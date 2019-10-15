@@ -38,6 +38,12 @@ set autoindent
 set tabstop=2
 set shiftwidth=2
 set expandtab
+set formatoptions=crqlj
+" c Auto-wrap comments using textwidth, inserting the current comment leader
+" r Automatically insert the current comment leader after hitting <Enter>
+" q Allow formatting of comments with `gq`.
+" l Long lines are not broken in insert mode
+" j Where it makes sense, remove a comment leader when joining lines.
 
 " line numbers
 set number

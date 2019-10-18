@@ -7,9 +7,15 @@ alias whois='whois -h whois.geektools.com'
 # tassen run
 alias tassen="$HOME/projects/tassen/tassen/run"
 
-# docker-compose
-program_exists docker-compose && alias doco="docker-compose"
 program_exists fdfind && alias fd="fdfind"
+
+doco() {
+  # docker compose from git root directory
+  gitroot=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
+  pushd $gitroot >/dev/null
+  docker-compose $@;
+  popd >/dev/null
+}
 
 # open
 alias open=xdg-open
@@ -19,13 +25,8 @@ alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; ba
 
 # cd to git root
 cg() {
-  dir=$(git rev-parse --show-toplevel)
-  if [[ -n "$dir" ]]; then
-    echo "cd to git root: $dir"
-    cd "$dir"
-  else
-    printf "not in git" >&2
-  fi
+  dir=$(git rev-parse --show-toplevel 2>/dev/null)
+  [[ -n "$dir" ]] && cd "$dir"
 }
 
 # pip install user

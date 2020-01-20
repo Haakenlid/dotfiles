@@ -74,22 +74,21 @@ augroup tmux_pane_title
   endif
 augroup END
 
-nnoremap <silent> <leader>f :Neoformat<CR>
+nnoremap <leader>f :Neoformat<CR>
 
 let g:neoformat_only_msg_on_error = 1
 " let g:neoformat_enabled_javascript = ['prettier']
 " let g:neoformat_enabled_scss = ['prettier']
-let g:neoformat_enabled_python = ['yapf', 'isort']
+let g:neoformat_enabled_python = ['yapf']
 let g:neoformat_try_formatprg = 1
-let g:neoformat_run_all_formatters = 1
+let g:neoformat_run_all_formatters = 0
 
 " Enable trimmming of trailing whitespace globally
 let g:neoformat_basic_format_trim = 1
 " Enable tab to spaces conversion globally
-let g:neoformat_basic_format_retab = 1
+let g:neoformat_basic_format_retab = 0
 " Enable alignment globally
 let g:neoformat_basic_format_align = 0
-
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
@@ -213,6 +212,7 @@ let g:NERDTreeIgnore=[
 augroup NerdTree
   autocmd!
   autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>n :NERDTreeToggle<CR>
+  autocmd FileType nerdtree,'' noremap <buffer> <silent> <leader>o :NERDTreeToggle<CR>
   autocmd FileType nerdtree silent! unmap <buffer> <c-j>
   autocmd FileType nerdtree silent! unmap <buffer> <c-k>
 augroup END
@@ -240,5 +240,10 @@ let g:UltiSnipsUsePythonVersion=3
 
 " vim-sneak
 " let g:sneak#label = 1
+let g:sneak#absolute_dir = 1
+let g:sneak#prompt = 'vim-sneak >'
+
+" 1 : Case sensitivity is determined by 'ignorecase' and 'smartcase'.
+let g:sneak#use_ic_scs = 1
 " nmap s <Plug>SneakLabel_s
 " nmap S <Plug>SneakLabel_S

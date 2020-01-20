@@ -24,7 +24,7 @@ snippet trans "import ugettext_lazy as _" b
 from django.utils.translation import ugettext_lazy as _
 endsnippet
 
-snippet with "with" b
+snippet bith "with" b
 with ${1:expr}`!p snip.rv = " as " if t[2] else ""`${2:var}:
 	${3:${VISUAL:pass}}
 ${0}
@@ -828,8 +828,8 @@ endsnippet
 
 snippet mbool "BooleanField" b
 ${1:FIELDNAME} = models.BooleanField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
@@ -846,43 +846,43 @@ endsnippet
 snippet mchar "CharField" b
 ${1:FIELDNAME} = models.CharField(
 	max_length=${3:50},
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mdate "DateField" b
 ${1:FIELDNAME} = models.DateField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mdatetime "DateTimeField" b
 ${1:FIELDNAME} = models.DateTimeField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet memail "EmailField" b
 ${1:FIELDNAME} = models.EmailField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mfile "FileField" b
 ${1:FIELDNAME} = models.FileField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mfloat "FloatField" b
 ${1:FIELDNAME} = models.FloatField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
@@ -890,23 +890,23 @@ snippet fk "ForeignKey" b
 ${1:FIELDNAME} = models.ForeignKey(
 	to=$2,
 	on_delete=models.CASCADE,
-	related_name='$1',
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	related_name='$3',
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mimg "ImageField" b
 ${1:FIELDNAME} = models.ImageField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mint "IntegerField" b
 ${1:FIELDNAME} = models.IntegerField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
@@ -916,8 +916,8 @@ from django.contrib.postgres.fields import JSONField
 ${1:FIELDNAME} = JSONField(
 	default=dict,
 	encoder=DjangoJSONEncoder,
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
@@ -925,9 +925,9 @@ snippet m2m "ManyToManyField" b
 ${1:FIELDNAME} = models.ManyToManyField(
 	to=$2,
 	on_delete=models.CASCADE,
-	related_name='$1',
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	related_name='$3',
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
@@ -935,51 +935,51 @@ snippet o2o "OneToOneField" b
 ${1:FIELDNAME} = models.OneToOneField(
 	to=$2,
 	on_delete=models.CASCADE,
-	related_name='$1',
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	related_name='$3',
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mphone "PhoneNumberField" b
 ${1:FIELDNAME} = models.PhoneNumberField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mpsint "PositiveSmallIntegerField" b
 ${1:FIELDNAME} = models.PositiveSmallIntegerField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mslug "SlugField" b
 ${1:FIELDNAME} = models.SlugField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mtext "TextField" b
 ${1:FIELDNAME} = models.TextField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet mtime "TimeField" b
 ${1:FIELDNAME} = models.TimeField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
 snippet murl "URLField" b
 ${1:FIELDNAME} = models.URLField(
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 
@@ -988,8 +988,8 @@ ${1:FIELDNAME} = models.UUIDField(
 	primary_key=True,
 	default=uuid.uuid4,
 	editable=False,
-	verbose_name=_('$1'),
-	help_text=_('$1'),
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
 )
 endsnippet
 

@@ -55,7 +55,15 @@ nnoremap <silent> <leader>x :wshada \| bd<CR>
 nnoremap <silent> <leader>w :w<CR>
 
 " Close other buffers if they are saved (o = 'only')
-nnoremap <silent> <leader>o mx:up \| %bd \| e# \| bd#<CR>`x
+" mx           create mark 'x'
+" :up(date)    save file if modified
+" :wshada      write shada file
+" :%bd         delete all buffers
+" :e#          edit last file in buffer list
+" :bd#         delete last buffer
+" `x           go to mark x
+" :rshada      read shada file
+nnoremap <silent> <leader>o mx:up \| wshada \| %bd \| e# \| bd#<CR>`x:rshada<CR>
 
 " Close preview window
 nnoremap <silent> <leader>z :pclose!<CR>
@@ -76,7 +84,7 @@ nmap <leader>S :call StripTrailingWhitespaces()<CR>
 nmap ga <Plug>(LiveEasyAlign)
 xmap ga <Plug>(LiveEasyAlign)
 
-noremap <silent> <leader>n :if bufname('%') != '' \| NERDTreeFind \| else \| NERDTreeCWD \| endif<CR>
+noremap <silent> <leader>n :if bufname('%') =~ '/' \| NERDTreeFind \| else \| NERDTreeCWD \| endif<CR>
 
 " Ultisnips expand on <CR>
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrReturn()<CR>" : "\<CR>"

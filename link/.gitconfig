@@ -75,3 +75,5 @@
 	submodule = log
 [interactive]
 	singlekey = true
+[pull]
+	default = current

@@ -70,6 +70,8 @@ function pp() {
 
 # NEOVIM
 program_exists nvim && alias vim=nvim
+
+# Don't use vimrc with vi.
 program_exists vi && alias vi="vi -u NONE"
 
 # Keyboard layout changes (only works if you have the keyboard layouts installed)
@@ -109,6 +111,8 @@ alias nocolor='sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]//g"'
 function mcd () {
   mkdir -p $1 && cd $1
 }
+
+alias rr='reset'
 
 # You only live once
 alias YOLO='git add -A && git commit -m "$(fortune -o | cowsay -W80)" && git push --force'

@@ -24,7 +24,7 @@ alias open=xdg-open
 alias UIO='ssh -t haakenl@login.uio.no "cd /uio/kant/div-universitas-desken/; bash"'
 
 # cd to git root
-cg() {
+cdg() {
   dir=$(git rev-parse --show-toplevel 2>/dev/null)
   [[ -n "$dir" ]] && cd "$dir"
 }

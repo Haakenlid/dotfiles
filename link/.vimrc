@@ -148,6 +148,7 @@ autocmd rcgroup Filetype vim let b:AutoPairs = {'{':'}', '(':')', '<':'>', '''':
 " Python
 let g:autopep8_disable_show_diff=1
 let g:autopep8_max_line_length=79
+let g:python3_host_prog = 'python3'
 autocmd rcgroup FileType python BracelessEnable +indent +highlight
 
 " let g:lt_height = 5

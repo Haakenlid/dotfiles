@@ -50,18 +50,17 @@ function apt_update_if_needed() {
 }
 
 function _docker() {
-  DOCKER_REPO="deb https://apt.dockerproject.org/repo ubuntu-xenial main"
+  DOCKER_REPO="deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   echo "$DOCKER_REPO" > /etc/apt/sources.list.d/docker.list
   (
-    type apt-key &>/dev/null || apt-get install -y apt-transport-https ca-certificates
-    apt-key adv \
-      --keyserver hkp://ha.pool.sks-keyservers.net:80 \
-      --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-    python3 -m pip install docker-compose
+    type apt-key &>/dev/null || apt-get install -y \
+      apt-transport-https ca-certificates curl gnupg-agent software-properties-common
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+    python3 -m pip install --upgrade docker-compose
     groupadd -f docker
     usermod -aG docker $SUDO_USER
   ) >&2
-  echo 'docker-engine'
+  echo 'docker-ce docker-ce-cli containerd.io'
 }
 
 function _neovim() {

@@ -1,1 +1,1 @@
-unclutter -idle 1 -noevents -jitter 20 -notclass Inkscape
+unclutter -idle 5 -noevents -jitter 20 -notclass Inkscape

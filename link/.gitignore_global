@@ -20,6 +20,10 @@ __pycache__
 ###################
 *.swp
 
+# Temporary added
+backend/django_rq
+
+
 # Vim session file #
 ####################
 Session.vim
@@ -65,5 +69,10 @@ Session.vim
 ._*
 .Spotlight-V100
 .Trashes
+.Trash-*
 Thumbs.db
 Desktop.ini
+
+# Lambda test binary #
+######################
+.ltcbin

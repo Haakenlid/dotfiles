@@ -6,6 +6,7 @@ if [[ -z $1 ]]; then
 fi
 
 
+
 function main__() {
   must_be_root || exit 1
   REGULAR=()
@@ -64,7 +65,7 @@ function _docker() {
 }
 
 function _neovim() {
-  su $SUDO_USER << EOF
+  su - $SUDO_USER << 'EOF'
 ln -fsT ${HOME}/.vim ${HOME}/.config/nvim
 ln -fsT ${HOME}/.vimrc ${HOME}/.config/nvim/init.vim
 EOF

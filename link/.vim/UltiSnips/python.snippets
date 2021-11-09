@@ -20,8 +20,8 @@ import logging
 logger = logging.getLogger(__name__)
 endsnippet
 
-snippet trans "import ugettext_lazy as _" b
-from django.utils.translation import ugettext_lazy as _
+snippet trans "import gettext_lazy as _" b
+from django.utils.translation import gettext_lazy as _
 endsnippet
 
 snippet bith "with" b
@@ -912,12 +912,26 @@ endsnippet
 
 snippet mjson "JSONField" b
 from django.core.serializers.json import DjangoJSONEncoder
+${1:FIELDNAME} = models.JSONField(
+	default=dict,
+	encoder=DjangoJSONEncoder,
+	verbose_name=_('${1/_/ /g}'),
+	help_text=_('${1/_/ /g}'),
+	blank=True,
+	editable=True,
+)
+endsnippet
+
+snippet mpjson "PostgreSQL JSONField" b
+from django.core.serializers.json import DjangoJSONEncoder
 from django.contrib.postgres.fields import JSONField
 ${1:FIELDNAME} = JSONField(
 	default=dict,
 	encoder=DjangoJSONEncoder,
 	verbose_name=_('${1/_/ /g}'),
 	help_text=_('${1/_/ /g}'),
+	blank=True,
+	editable=True,
 )
 endsnippet
 
@@ -1105,4 +1119,15 @@ def save(self, *args, **kwargs):
 	super().save(*args, **kwargs)
 $0
 endsnippet
+
+snippet runpython "django data migration functions" b
+def forwards(apps, schema_editor):
+	"""forwards data migration"""
+	${1:MODEL_NAME} = apps.get_model('${2:APP_NAME}', '$1')
+
+def backwards(apps, schema_editor):
+	"""backwards data migration"""
+	$1 = apps.get_model('$2', '$1')
+endsnippet
+
 

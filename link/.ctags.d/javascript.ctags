@@ -1,0 +1,10 @@
+
+--exclude=bower_components
+--exclude=node_modules
+--langdef=js
+--langmap=js:.js.jsx
+--regex-js=/^(export)?\s*const\s+([A-Z]\S+)/\2/C,component/
+--regex-js=/^(export)?\s*const\s+([a-z]\S+)/\2/c,const/
+--regex-js=/([A-Za-z$][A-Za-z0-9_$]+)[ \t]*=[ \t]*function[ \t]*\(/\1/f,function/
+--regex-js=/(function)*[ \t]*([A-Za-z$_][A-Za-z0-9_$]+)[ \t]*\([^)]*\)[ \t]*\{/\2/f,function/
+--regex-js=/['"]*([A-Za-z$][A-Za-z0-9_$]+)['"]*:[ \t]*function[ \t]*\(/\1/m,method/

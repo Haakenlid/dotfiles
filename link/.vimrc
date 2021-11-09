@@ -6,13 +6,9 @@ source ~/.vim/vimrc/keyboard_shortcuts.vim
 source ~/.vim/vimrc/language_server.vim
 source ~/.vim/vimrc/deoplete.vim
 
-" source ~/.vim/vimrc/youcompleteme.vim
-" source ~/.vim/vimrc/ale_linter.vim
-
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-vinegar'
 
-" Plug 'plytophogy/vim-virtualenv'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/ListToggle'
 Plug 'airblade/vim-gitgutter'
@@ -21,7 +17,7 @@ Plug 'elmcast/elm-vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/vim-peekaboo'
@@ -58,11 +54,8 @@ command! Sourcevimrc so $MYVIMRC | echo 'sourced '.$MYVIMRC
 " open vimrc with leader V
 autocmd rcgroup BufRead $MYVIMRC :map <buffer> <leader>v :bp<CR>:so $MYVIMRC<CR>
 
-" Neoformat
-augroup neoformat
-  autocmd!
-  autocmd BufWritePre * Neoformat
-augroup END
+" Neoformat when saving
+autocmd rcgroup BufWritePre * Neoformat
 
 augroup tmux_pane_title
   autocmd!
@@ -79,7 +72,7 @@ nnoremap <leader>f :Neoformat<CR>
 let g:neoformat_only_msg_on_error = 1
 " let g:neoformat_enabled_javascript = ['prettier']
 " let g:neoformat_enabled_scss = ['prettier']
-let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_enabled_python = ['yapf', 'isort']
 let g:neoformat_try_formatprg = 1
 let g:neoformat_run_all_formatters = 0
 
@@ -145,16 +138,25 @@ autocmd rcgroup Filetype vim let b:AutoPairs = {'{':'}', '(':')', '<':'>', '''':
 " https://github.com/jiangmiao/auto-pairs/issues/187
 " autocmd VimEnter,BufEnter,BufWinEnter * silent! iunmap <buffer> <M-">
 
+" Disable python2, node and ruby support
+let g:loaded_python_provider = 0
+let g:loaded_node_provider = 0
+let g:loaded_ruby_provider = 0
+
 " Python
-let g:autopep8_disable_show_diff=1
-let g:autopep8_max_line_length=79
-let g:python3_host_prog = 'python3'
+let g:autopep8_disable_show_diff = 1
+let g:autopep8_max_line_length = 79
+let g:python_host_prog = ''
+" let g:python3_host_prog = trim(system('which python3'))
+let g:python3_host_prog = '/home/haakenlid/.pyenv/versions/3.8.1/bin/python3'
+
 autocmd rcgroup FileType python BracelessEnable +indent +highlight
 
 " let g:lt_height = 5
 autocmd rcgroup FileType qf nmap <silent> <buffer> <CR> <CR>:lcl<CR>
 autocmd rcgroup FileType qf nmap <silent> <buffer> <ESC> :q<CR>
 autocmd rcgroup BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd rcgroup BufNewFile,BufReadPost *.js.snap set filetype=javascript.jsx
 
 " Dynamic quickfix height
 autocmd rcgroup FileType qf call AdjustWindowHeight(3, 10)
@@ -248,3 +250,6 @@ let g:sneak#prompt = 'vim-sneak >'
 let g:sneak#use_ic_scs = 1
 " nmap s <Plug>SneakLabel_s
 " nmap S <Plug>SneakLabel_S
+
+" use system clipboard
+set clipboard=unnamedplus

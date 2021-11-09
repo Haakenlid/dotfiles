@@ -77,3 +77,5 @@
 	singlekey = true
 [pull]
 	default = current
+[pager]
+	branch = less -FRX

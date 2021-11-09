@@ -13,7 +13,7 @@ let g:LanguageClient_autoStart = 1
 set hidden
 
 let g:LanguageClient_serverCommands = {
-    \ 'python': ['pyls', '--log-file', expand('$HOME/pyls.log')],
+    \ 'python': ['pylsp', '--log-file', expand('$HOME/pylsp.log')],
     \ 'javascript': ['javascript-typescript-stdio'],
     \ 'javascript.jsx': ['javascript-typescript-stdio'],
     \ }

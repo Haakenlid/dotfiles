@@ -147,8 +147,12 @@ let g:loaded_ruby_provider = 0
 let g:autopep8_disable_show_diff = 1
 let g:autopep8_max_line_length = 79
 let g:python_host_prog = ''
-" let g:python3_host_prog = trim(system('which python3'))
-let g:python3_host_prog = '/home/haakenlid/.pyenv/versions/3.8.1/bin/python3'
+
+if !empty(glob("/home/haakenlid/.pyenv/versions/3.8.1/bin/python3"))
+  let g:python3_host_prog = '/home/haakenlid/.pyenv/versions/3.8.1/bin/python3'
+else
+  let g:python3_host_prog = trim(system('which python3'))
+endif
 
 autocmd rcgroup FileType python BracelessEnable +indent +highlight
 

@@ -88,3 +88,4 @@ noremap <silent> <leader>n :if bufname('%') =~ '/' \| NERDTreeFind \| else \| NE
 
 " Ultisnips expand on <CR>
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrReturn()<CR>" : "\<CR>"
+" inoremap <expr> <CR> pumvisible() ? "\<c-y>\<cr>" : "\<cr>"

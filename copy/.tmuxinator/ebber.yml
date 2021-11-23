@@ -1,0 +1,25 @@
+# ~/.tmuxinator/ebber.yml
+
+name: ebber
+root: ~/ebhr/ebber/
+
+windows:
+  - editor:
+      layout: f438,119x58,0,0[119x34,0,0,0,119x23,0,35{59x23,0,35,1,59x23,60,35,2}]
+      panes:
+        - nvim:
+            - cd ~/ebhr/ebber/backend
+            - pipenv shell --fancy
+            - cd ..
+            - vim
+        - docker:
+            - docker-compose up -d
+            - docker-compose logs --follow --tail=100 web webpack
+        - git:
+            - git status
+  - watch:
+      panes:
+        - tagwatch:
+            - scripts/tagwatch
+        - server:
+            - mosh dev.ebhr.com

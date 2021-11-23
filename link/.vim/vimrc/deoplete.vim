@@ -17,9 +17,9 @@ set completeopt=menuone,longest,preview
 let g:python3_host_prog = '/usr/bin/python3'
 
 " Ctrl-Space: summon FULL (synced) autocompletion
-inoremap <silent><expr> <C-Space> deoplete#mappings#manual_complete()
+" inoremap <silent><expr> <C-Space> deoplete#mappings#manual_complete()
 
-" Escape: exit autocompletion, go to Normal mode
+" esc: exit autocompletion, go to Normal mode
 " inoremap <silent><expr> <Esc> pumvisible() ? "<C-e><Esc>" : "<Esc>"
 
 " close preview window

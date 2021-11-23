@@ -34,7 +34,7 @@ function tit() {
 function wtit() {
   # sets tmux window title
   TITLE=${1:-`pwd`}
-  printf '\033k'$TITLE'\033\\'
+  tmux rename-window $TITLE
   # echo $TITLE
 }
 

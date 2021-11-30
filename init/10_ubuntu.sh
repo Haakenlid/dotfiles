@@ -35,17 +35,20 @@ fi
 # Update APT.
 e_header "Updating APT"
 sudo apt-get -qq update
-sudo apt-get -q dist-upgrade
+sudo apt-get -q dist-upgrade --yes
 
 # Install APT packages.
-apt_packages=(
+packages=(
   git
+  wget
+  curl
   htop
   tree
   tmux
   silversearcher-ag
-  exuberant-ctags
-  CMake
+  universal-ctags
+  ripgrep
+  cmake
   xdotool
 )
 
@@ -61,8 +64,13 @@ if (( ${#packages[@]} > 0 )); then
   done
 fi
 
+if ! command -v 'pyenv' >/dev/null; then
+  echo 'installing pyenv'
+  curl -s https://pyenv.run | bash
+fi
+
 GEMS="ghi tmuxinator"
 EGGS="ipython ptpython autopep8"
 
 for GEM in $GEMS; do sudo -H gem install --conservative $GEM ; done
-for EGG in $EGGS; do sudo -H pip3 install -q $EGG; done
+for EGG in $EGGS; do sudo -H python -m pip install -q $EGG; done

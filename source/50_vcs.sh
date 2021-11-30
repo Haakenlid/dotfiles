@@ -19,7 +19,7 @@ alias gg='gl --decorate --oneline --graph --date-order --all'
 alias gs='git status'
 alias gst='gs'
 alias gd='git diff ":!**/Pipfile.lock" ":!**/package-lock.json"'
-alias gdc='gd --cached'
+alias gdc='git diff --cached'
 alias gb='git branch'
 alias gba='git branch -a'
 # function gc() { git checkout "${@:-master}"; } # Checkout master by default

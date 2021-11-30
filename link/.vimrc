@@ -71,7 +71,7 @@ nnoremap <leader>f :Neoformat<CR>
 
 let g:neoformat_only_msg_on_error = 1
 " let g:neoformat_enabled_javascript = ['prettier']
-" let g:neoformat_enabled_scss = ['prettier']
+let g:neoformat_enabled_markdown = ['prettier']
 let g:neoformat_enabled_python = ['yapf', 'isort']
 let g:neoformat_try_formatprg = 1
 let g:neoformat_run_all_formatters = 0
@@ -85,8 +85,8 @@ let g:neoformat_basic_format_align = 0
 
 " FZF keyboard shortcuts
 nmap <silent> <leader><leader>b :Buffers<cr>
-nmap <silent> <leader><leader>A :Ag <cr>
-nmap <silent> <leader><leader>a :Ag<cr>
+nmap <silent> <leader><leader>A :Rg <cr>
+nmap <silent> <leader><leader>a :Rg<cr>
 nmap <silent> <leader><leader>f :Files<cr>
 nmap <silent> <leader><leader>h :Helptags<cr>
 nmap <silent> <leader><leader>c :Commands<cr>

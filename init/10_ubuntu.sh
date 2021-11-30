@@ -50,6 +50,7 @@ packages=(
   ripgrep
   cmake
   xdotool
+  ruby
 )
 
 apt_packages=($(\
@@ -60,7 +61,7 @@ apt_packages=($(\
 if (( ${#packages[@]} > 0 )); then
   e_header "Installing APT packages: ${packages[*]}"
   for package in "${apt_packages[@]}"; do
-    sudo apt-get install "$package"
+    sudo apt-get install --yes "$package"
   done
 fi
 

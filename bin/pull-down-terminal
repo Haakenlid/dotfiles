@@ -16,7 +16,7 @@ get_emulator(){
 
 reset-keyboard() {
   [[ $DISPLAY ]] || return 1
-  # set english keyboard layout
+  # set english keyboard layout using X-keyboard-extension
   xkbcomp -I$HOME/.xkb $HOME/.xkb/keymap/en-improved $DISPLAY &> /dev/null
   # unset caps lock if it's on
   xset q | grep 'Caps Lock:\s*on' && xdotool key Caps_Lock

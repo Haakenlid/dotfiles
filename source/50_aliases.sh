@@ -9,6 +9,10 @@ alias tassen="$HOME/projects/tassen/tassen/run"
 
 program_exists fdfind && alias fd="fdfind"
 
+if ! command -v docker-compose > /dev/null; then
+  alias docker-compose="docker compose"
+fi
+
 doco() {
   # docker compose from git root directory
   gitroot=$(git rev-parse --show-toplevel 2>/dev/null || pwd)

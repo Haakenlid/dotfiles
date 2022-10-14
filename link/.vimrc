@@ -138,8 +138,9 @@ autocmd rcgroup Filetype vim let b:AutoPairs = {'{':'}', '(':')', '<':'>', '''':
 " https://github.com/jiangmiao/auto-pairs/issues/187
 " autocmd VimEnter,BufEnter,BufWinEnter * silent! iunmap <buffer> <M-">
 
-" Disable python2, node and ruby support
+" Disable python2, perl, node and ruby support
 let g:loaded_python_provider = 0
+let g:loaded_perl_provider = 0
 let g:loaded_node_provider = 0
 let g:loaded_ruby_provider = 0
 
@@ -160,7 +161,18 @@ autocmd rcgroup FileType python BracelessEnable +indent +highlight
 autocmd rcgroup FileType qf nmap <silent> <buffer> <CR> <CR>:lcl<CR>
 autocmd rcgroup FileType qf nmap <silent> <buffer> <ESC> :q<CR>
 autocmd rcgroup BufNewFile,BufReadPost *.md set filetype=markdown
+autocmd rcgroup BufNewFile,BufReadPost *.sh set filetype=bash
 autocmd rcgroup BufNewFile,BufReadPost *.js.snap set filetype=javascript.jsx
+autocmd rcgroup BufNewFile,BufReadPost */ebhr/backend/** call UseBlack()
+
+fun! UseBlack()
+  " use the black python formatter
+  let b:neoformat_enabled_python = ['black', 'isort']
+  let g:neoformat_python_black = { 'args': ['-l 120'] }
+  set tw=120
+endfun
+
+
 
 " Dynamic quickfix height
 autocmd rcgroup FileType qf call AdjustWindowHeight(3, 10)

@@ -1,19 +1,18 @@
-call plug#begin('~/.vim/plugged')
 source ~/.vim/vimrc/basic_options.vim
-source ~/.vim/vimrc/plugin_options.vim
 source ~/.vim/vimrc/vim_functions.vim
 source ~/.vim/vimrc/keyboard_shortcuts.vim
-source ~/.vim/vimrc/language_server.vim
-source ~/.vim/vimrc/deoplete.vim
+
+call plug#begin('~/.vim/plugged')
 
 " Plug 'tpope/vim-eunuch'
 " Plug 'tpope/vim-vinegar'
 
+Plug 'neovim/nvim-lspconfig'
 Plug 'SirVer/ultisnips'
+Plug 'rhysd/conflict-marker.vim'
 Plug 'Valloric/ListToggle'
 Plug 'airblade/vim-gitgutter'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'elmcast/elm-vim'
 Plug 'guns/xterm-color-table.vim'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'jiangmiao/auto-pairs'
@@ -24,8 +23,6 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'justinmk/vim-sneak'
 Plug 'majutsushi/tagbar'
 Plug 'mattn/emmet-vim'
-Plug 'mxw/vim-jsx'
-Plug 'pangloss/vim-javascript'
 Plug 'reedes/vim-lexical'
 Plug 'sbdchd/neoformat'
 Plug 'scrooloose/nerdtree'
@@ -42,7 +39,19 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tweekmonster/braceless.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
+
+" AUTOCOMPLETE
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+
 call plug#end()
+
+luafile ~/.vim/vimrc/nvim-cmp.lua
+luafile ~/.vim/vimrc/lsp.lua
 
 " reset autocommands
 aug rcgroup
@@ -70,11 +79,13 @@ augroup END
 nnoremap <leader>f :Neoformat<CR>
 
 let g:neoformat_only_msg_on_error = 1
-" let g:neoformat_enabled_javascript = ['prettier']
 let g:neoformat_enabled_markdown = ['prettier']
-let g:neoformat_enabled_python = ['yapf', 'isort']
+let g:neoformat_enabled_typescript = ['prettierd']
+let g:neoformat_enabled_python = ['isort', 'yapf']
+" let g:neoformat_enabled_python = ['black']
 let g:neoformat_try_formatprg = 1
-let g:neoformat_run_all_formatters = 0
+let g:neoformat_run_all_formatters = 1
+" let g:neoformat_run_all_formatters = 0
 
 " Enable trimmming of trailing whitespace globally
 let g:neoformat_basic_format_trim = 1
@@ -118,7 +129,7 @@ command! -bang -nargs=* Ag
 " Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
-      \   'rg --hidden --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+      \   'rg --glob "!.git" --hidden --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
       \   <bang>0 ? fzf#vim#with_preview('up:60%')
       \           : fzf#vim#with_preview('right:50%:hidden', '?'),
       \   <bang>0)
@@ -157,6 +168,14 @@ endif
 
 autocmd rcgroup FileType python BracelessEnable +indent +highlight
 
+fun! UseBlack()
+  " use the black python formatter on this project
+  let g:neoformat_enabled_python = ['black']
+
+  let g:neoformat_python_black = { 'args': ['-l 120 --fast'] }
+  set tw=120
+endfun
+
 " let g:lt_height = 5
 autocmd rcgroup FileType qf nmap <silent> <buffer> <CR> <CR>:lcl<CR>
 autocmd rcgroup FileType qf nmap <silent> <buffer> <ESC> :q<CR>
@@ -164,14 +183,6 @@ autocmd rcgroup BufNewFile,BufReadPost *.md set filetype=markdown
 autocmd rcgroup BufNewFile,BufReadPost *.sh set filetype=bash
 autocmd rcgroup BufNewFile,BufReadPost *.js.snap set filetype=javascript.jsx
 autocmd rcgroup BufNewFile,BufReadPost */ebhr/backend/** call UseBlack()
-
-fun! UseBlack()
-  " use the black python formatter
-  let b:neoformat_enabled_python = ['black', 'isort']
-  let g:neoformat_python_black = { 'args': ['-l 120'] }
-  set tw=120
-endfun
-
 
 
 " Dynamic quickfix height
@@ -216,7 +227,7 @@ augroup insertmode
   " Adjust timeouts for 'jj' insert mode command
   autocmd!
   autocmd InsertEnter * set timeoutlen=300
-  autocmd InsertLeave * set timeoutlen=1000
+  autocmd InsertLeave * set timeoutlen=800
 augroup END
 
 " NERDTree settings

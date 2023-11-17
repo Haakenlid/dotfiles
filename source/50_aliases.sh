@@ -3,6 +3,7 @@ program_exists () {
   type "$1" &> /dev/null ;
 }
 alias whois='whois -h whois.geektools.com'
+alias tt="stty sane && clear && echo terminal sanity restored!"
 
 # tassen run
 alias tassen="$HOME/projects/tassen/tassen/run"
@@ -73,7 +74,7 @@ function pp() {
 }
 
 # NEOVIM
-program_exists nvim && alias vim=nvim
+program_exists nvim.appimage && alias vim=nvim.appimage
 
 # Don't use vimrc with vi.
 program_exists vi && alias vi="vi -u NONE"

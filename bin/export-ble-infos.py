@@ -19,7 +19,7 @@ What is this: Export your Windows Bluetooth LE keys into Linux!
 
 Thanks to:
 * http://console.systems/2014/09/how-to-pair-low-energy-le-bluetooth.html
-* https://gist.github.com/corecoding/eac76d3da20c7e427a1848b8aed8e334/revisions #diff-6eeb0d27c24cc10680e8574f75648585
+* https://gist.github.com/corecoding/eac76d3da20c7e427a1848b8aed8e334/revisions#diff-6eeb0d27c24cc10680e8574f75648585
 
 Usage:
 
@@ -33,7 +33,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-
 from configparser import ConfigParser
 from optparse import OptionParser
 
@@ -75,8 +74,6 @@ Latency=60
 Timeout=300
 """
 
-SYSTEM = "/media/haakenlid/windows partition/Windows/System32/config/SYSTEM"
-
 
 def main():
     parser = OptionParser()
@@ -86,9 +83,10 @@ def main():
         "--system",
         dest="system",
         metavar="FILE",
-        default=SYSTEM,
-        help="Win SYSTEM file. Usually at /Windows/System32/config/system.",
-    )
+        default=
+        "/media/haakenlid/windows partition/Windows/System32/config/SYSTEM",
+        help=
+        "SYSTEM file in Windows. Usually at /Windows/System32/config/system.")
     parser.add_option(
         "-k",
         "--key",
@@ -96,27 +94,21 @@ def main():
         metavar="KEY",
         default=r"ControlSet001\Services\BTHPORT\Parameters\Keys",
         help="Registry key for BT. [default: %default]")
-    parser.add_option(
-        "-o",
-        "--output",
-        dest="output",
-        metavar="DIR",
-        default="bluetooth",
-        help="Output directory. [default: %default]",
-    )
-    parser.add_option(
-        "-t",
-        "--template",
-        dest="template",
-        metavar="FILE",
-        help="Template file.",
-    )
-    parser.add_option(
-        "-a",
-        "--attributes",
-        dest='attributes',
-        help="Additional attributes file to be copied.",
-    )
+    parser.add_option("-o",
+                      "--output",
+                      dest="output",
+                      metavar="DIR",
+                      default="bluetooth",
+                      help="Output directory. [default: %default]")
+    parser.add_option("-t",
+                      "--template",
+                      dest="template",
+                      metavar="FILE",
+                      help="Template file.")
+    parser.add_option("-a",
+                      "--attributes",
+                      dest='attributes',
+                      help="Additional attributes file to be copied.")
     options, args = parser.parse_args()
 
     if options.template:
@@ -191,7 +183,9 @@ def main():
             # KeyLength ignored for now
             config['LongTermKey']['Rand'] = read_reg('ERand', 'qword')
             config['LongTermKey']['EDiv'] = read_reg('EDIV', 'dword')
-            config['IdentityResolvingKey']['Key'] = read_reg('IRK', 'hex16')
+            if '"IRK"' in dump[section]:
+                config['IdentityResolvingKey']['Key'] = read_reg(
+                    'IRK', 'hex16')
             if '"CSRK"' in dump[section]:
                 config['LocalSignatureKey']['Key'] = read_reg('CSRK', 'hex16')
             output_dir = os.path.join(options.output, path[1], path[2])

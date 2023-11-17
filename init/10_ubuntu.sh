@@ -70,8 +70,6 @@ if ! command -v 'pyenv' >/dev/null; then
   curl -s https://pyenv.run | bash
 fi
 
-GEMS="ghi tmuxinator"
-EGGS="ipython ptpython autopep8"
+EGGS="ipython ptpython autopep8 tmuxp"
 
-for GEM in $GEMS; do sudo -H gem install --conservative $GEM ; done
 for EGG in $EGGS; do sudo -H python -m pip install -q $EGG; done

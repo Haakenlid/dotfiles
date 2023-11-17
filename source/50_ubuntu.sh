@@ -3,8 +3,8 @@
 
 # Package management
 alias update="sudo apt -q update && sudo apt upgrade"
-alias install="sudo $HOME/.dotfiles/bin/install.sh"
-alias uninstall="sudo apt remove -y"
+alias installit="sudo $HOME/.dotfiles/bin/install.sh"
+alias uninstallit="sudo apt remove -y"
 function search(){
   apt search $@ | less
 }

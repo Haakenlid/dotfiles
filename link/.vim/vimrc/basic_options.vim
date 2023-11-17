@@ -12,10 +12,6 @@ set nowritebackup
 " show at least N lines before and after cursor position
 set scrolloff=3
 
-" Printing
-set printoptions+=formfeed:y
-set printoptions+=header:0
-
 " No --INSERT-- in command line
 set noshowmode
 

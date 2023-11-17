@@ -15,6 +15,7 @@ __pycache__
 .cache
 .mypy_cache
 .eslintcache
+.~lock.*
 
 # Temporary files #
 ###################

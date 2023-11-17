@@ -73,7 +73,7 @@ EOF
 }
 
 function _nodejs() {
-  DOWNLOAD=https://deb.nodesource.com/setup_11.x
+  DOWNLOAD=https://deb.nodesource.com/setup_20.x
   echo "downloading and executing ${DOWNLOAD}" >&2
   curl -sL ${DOWNLOAD} | /bin/bash - | awk '/^##/' >&2
   echo 'nodejs'

@@ -50,7 +50,7 @@ packages=(
   ripgrep
   cmake
   xdotool
-  ruby
+  bat
 )
 
 apt_packages=($(\

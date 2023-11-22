@@ -15,6 +15,3 @@ fi
 
 export PYTHONPATH="$PYTHONPATH:/usr/bin/"
 
-# dont freeze terminal by pressing Ctrl-S
-stty -ixon >& /dev/null
-

@@ -13,5 +13,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
-# reset terminal settings
-stty sane
+# reset terminal settings in interactive session
+if [[ $- == *i* ]]; then
+  stty sane -ixon
+  # -ixon = don't freeze terminal by pressing Ctrl-S
+fi
